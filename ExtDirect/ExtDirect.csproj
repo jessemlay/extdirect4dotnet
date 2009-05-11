@@ -1,0 +1,714 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FB183614-8224-42AB-BA5A-10184C2DB2C2}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExtDirect</RootNamespace>
+    <AssemblyName>ExtDirect</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="ext-3.0\adapter\ext\ext-base.js" />
+    <Content Include="ext-3.0\adapter\jquery\ext-jquery-adapter.js" />
+    <Content Include="ext-3.0\adapter\prototype\ext-prototype-adapter.js" />
+    <Content Include="ext-3.0\adapter\yui\ext-yui-adapter.js" />
+    <Content Include="ext-3.0\ext-all-debug.js" />
+    <Content Include="ext-3.0\ext-all.js" />
+    <Content Include="ext-3.0\ext-base.js" />
+    <Content Include="ext-3.0\ext-core-debug.js" />
+    <Content Include="ext-3.0\ext-core.js" />
+    <Content Include="ext-3.0\resources\charts.swf" />
+    <Content Include="ext-3.0\resources\css\ext-all-notheme.css" />
+    <Content Include="ext-3.0\resources\css\ext-all.css" />
+    <Content Include="ext-3.0\resources\css\README.txt" />
+    <Content Include="ext-3.0\resources\css\reset-min.css" />
+    <Content Include="ext-3.0\resources\css\structure\borders.css" />
+    <Content Include="ext-3.0\resources\css\structure\box.css" />
+    <Content Include="ext-3.0\resources\css\structure\button.css" />
+    <Content Include="ext-3.0\resources\css\structure\combo.css" />
+    <Content Include="ext-3.0\resources\css\structure\core.css" />
+    <Content Include="ext-3.0\resources\css\structure\date-picker.css" />
+    <Content Include="ext-3.0\resources\css\structure\dd.css" />
+    <Content Include="ext-3.0\resources\css\structure\debug.css" />
+    <Content Include="ext-3.0\resources\css\structure\dialog.css" />
+    <Content Include="ext-3.0\resources\css\structure\editor.css" />
+    <Content Include="ext-3.0\resources\css\structure\form.css" />
+    <Content Include="ext-3.0\resources\css\structure\grid.css" />
+    <Content Include="ext-3.0\resources\css\structure\layout.css" />
+    <Content Include="ext-3.0\resources\css\structure\list-view.css" />
+    <Content Include="ext-3.0\resources\css\structure\menu.css" />
+    <Content Include="ext-3.0\resources\css\structure\panel-reset.css" />
+    <Content Include="ext-3.0\resources\css\structure\panel.css" />
+    <Content Include="ext-3.0\resources\css\structure\progress.css" />
+    <Content Include="ext-3.0\resources\css\structure\qtips.css" />
+    <Content Include="ext-3.0\resources\css\structure\reset.css" />
+    <Content Include="ext-3.0\resources\css\structure\resizable.css" />
+    <Content Include="ext-3.0\resources\css\structure\slider.css" />
+    <Content Include="ext-3.0\resources\css\structure\tabs.css" />
+    <Content Include="ext-3.0\resources\css\structure\toolbar.css" />
+    <Content Include="ext-3.0\resources\css\structure\tree.css" />
+    <Content Include="ext-3.0\resources\css\structure\window.css" />
+    <Content Include="ext-3.0\resources\css\visual\borders.css" />
+    <Content Include="ext-3.0\resources\css\visual\box.css" />
+    <Content Include="ext-3.0\resources\css\visual\button.css" />
+    <Content Include="ext-3.0\resources\css\visual\combo.css" />
+    <Content Include="ext-3.0\resources\css\visual\core.css" />
+    <Content Include="ext-3.0\resources\css\visual\date-picker.css" />
+    <Content Include="ext-3.0\resources\css\visual\dd.css" />
+    <Content Include="ext-3.0\resources\css\visual\debug.css" />
+    <Content Include="ext-3.0\resources\css\visual\dialog.css" />
+    <Content Include="ext-3.0\resources\css\visual\editor.css" />
+    <Content Include="ext-3.0\resources\css\visual\form.css" />
+    <Content Include="ext-3.0\resources\css\visual\grid.css" />
+    <Content Include="ext-3.0\resources\css\visual\layout.css" />
+    <Content Include="ext-3.0\resources\css\visual\list-view.css" />
+    <Content Include="ext-3.0\resources\css\visual\menu.css" />
+    <Content Include="ext-3.0\resources\css\visual\panel.css" />
+    <Content Include="ext-3.0\resources\css\visual\progress.css" />
+    <Content Include="ext-3.0\resources\css\visual\qtips.css" />
+    <Content Include="ext-3.0\resources\css\visual\resizable.css" />
+    <Content Include="ext-3.0\resources\css\visual\slider.css" />
+    <Content Include="ext-3.0\resources\css\visual\tabs.css" />
+    <Content Include="ext-3.0\resources\css\visual\toolbar.css" />
+    <Content Include="ext-3.0\resources\css\visual\tree.css" />
+    <Content Include="ext-3.0\resources\css\visual\window.css" />
+    <Content Include="ext-3.0\resources\css\xtheme-blue.css" />
+    <Content Include="ext-3.0\resources\expressinstall.swf" />
+    <Content Include="ext-3.0\resources\images\default\box\corners-blue.gif" />
+    <Content Include="ext-3.0\resources\images\default\box\corners.gif" />
+    <Content Include="ext-3.0\resources\images\default\box\l-blue.gif" />
+    <Content Include="ext-3.0\resources\images\default\box\l.gif" />
+    <Content Include="ext-3.0\resources\images\default\box\r-blue.gif" />
+    <Content Include="ext-3.0\resources\images\default\box\r.gif" />
+    <Content Include="ext-3.0\resources\images\default\box\tb-blue.gif" />
+    <Content Include="ext-3.0\resources\images\default\box\tb.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\arrow.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\btn.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\group-cs.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\group-lr.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\group-tb.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\s-arrow-b-noline.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\s-arrow-b.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\s-arrow-bo.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\s-arrow-noline.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\s-arrow-o.gif" />
+    <Content Include="ext-3.0\resources\images\default\button\s-arrow.gif" />
+    <Content Include="ext-3.0\resources\images\default\dd\drop-add.gif" />
+    <Content Include="ext-3.0\resources\images\default\dd\drop-no.gif" />
+    <Content Include="ext-3.0\resources\images\default\dd\drop-yes.gif" />
+    <Content Include="ext-3.0\resources\images\default\editor\tb-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\checkbox.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\clear-trigger.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\date-trigger.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\error-tip-corners.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\exclamation.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\radio.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\search-trigger.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\text-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\trigger-tpl.gif" />
+    <Content Include="ext-3.0\resources\images\default\form\trigger.gif" />
+    <Content Include="ext-3.0\resources\images\default\gradient-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\arrow-left-white.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\arrow-right-white.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\col-move-bottom.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\col-move-top.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\columns.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\dirty.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\done.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\drop-no.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\drop-yes.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\footer-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid-blue-hd.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid-blue-split.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid-hrow.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid-loading.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid-split.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid-vista-hd.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid3-hd-btn.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid3-hrow-over.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid3-hrow.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid3-special-col-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\grid3-special-col-sel-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\group-by.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\group-expand-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\hd-pop.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\hmenu-asc.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\hmenu-desc.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\hmenu-lock.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\hmenu-lock.png" />
+    <Content Include="ext-3.0\resources\images\default\grid\hmenu-unlock.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\hmenu-unlock.png" />
+    <Content Include="ext-3.0\resources\images\default\grid\invalid_line.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\loading.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\mso-hd.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\nowait.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\page-first-disabled.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\page-first.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\page-last-disabled.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\page-last.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\page-next-disabled.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\page-next.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\page-prev-disabled.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\page-prev.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\pick-button.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\refresh.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\row-check-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\row-expand-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\row-over.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\row-sel.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\sort-hd.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\sort_asc.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\sort_desc.gif" />
+    <Content Include="ext-3.0\resources\images\default\grid\wait.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\collapse.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\expand.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\gradient-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\mini-bottom.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\mini-left.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\mini-right.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\mini-top.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\ns-collapse.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\ns-expand.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\panel-close.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\panel-title-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\panel-title-light-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\stick.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\stuck.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\tab-close-on.gif" />
+    <Content Include="ext-3.0\resources\images\default\layout\tab-close.gif" />
+    <Content Include="ext-3.0\resources\images\default\menu\checked.gif" />
+    <Content Include="ext-3.0\resources\images\default\menu\group-checked.gif" />
+    <Content Include="ext-3.0\resources\images\default\menu\item-over.gif" />
+    <Content Include="ext-3.0\resources\images\default\menu\menu-parent.gif" />
+    <Content Include="ext-3.0\resources\images\default\menu\menu.gif" />
+    <Content Include="ext-3.0\resources\images\default\menu\unchecked.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\corners-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\left-right.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\light-hd.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\tool-sprite-tpl.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\tool-sprites.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\tools-sprites-trans.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\top-bottom.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\top-bottom.png" />
+    <Content Include="ext-3.0\resources\images\default\panel\white-corners-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\white-left-right.gif" />
+    <Content Include="ext-3.0\resources\images\default\panel\white-top-bottom.gif" />
+    <Content Include="ext-3.0\resources\images\default\progress\progress-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\qtip\bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\qtip\close.gif" />
+    <Content Include="ext-3.0\resources\images\default\qtip\tip-anchor-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\qtip\tip-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\s.gif" />
+    <Content Include="ext-3.0\resources\images\default\shadow-c.png" />
+    <Content Include="ext-3.0\resources\images\default\shadow-lr.png" />
+    <Content Include="ext-3.0\resources\images\default\shadow.png" />
+    <Content Include="ext-3.0\resources\images\default\shared\blue-loading.gif" />
+    <Content Include="ext-3.0\resources\images\default\shared\calendar.gif" />
+    <Content Include="ext-3.0\resources\images\default\shared\glass-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\shared\hd-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\shared\large-loading.gif" />
+    <Content Include="ext-3.0\resources\images\default\shared\left-btn.gif" />
+    <Content Include="ext-3.0\resources\images\default\shared\loading-balls.gif" />
+    <Content Include="ext-3.0\resources\images\default\shared\right-btn.gif" />
+    <Content Include="ext-3.0\resources\images\default\shared\warning.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\e-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\e-handle.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\ne-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\ne-handle.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\nw-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\nw-handle.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\s-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\s-handle.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\se-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\se-handle.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\square.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\sw-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\default\sizer\sw-handle.gif" />
+    <Content Include="ext-3.0\resources\images\default\slider\slider-bg.png" />
+    <Content Include="ext-3.0\resources\images\default\slider\slider-thumb.png" />
+    <Content Include="ext-3.0\resources\images\default\slider\slider-v-bg.png" />
+    <Content Include="ext-3.0\resources\images\default\slider\slider-v-thumb.png" />
+    <Content Include="ext-3.0\resources\images\default\tabs\scroll-left.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\scroll-right.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\scroller-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\tab-btm-inactive-left-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\tab-btm-inactive-right-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\tab-btm-left-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\tab-btm-right-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\tab-close.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\tab-strip-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\tab-strip-bg.png" />
+    <Content Include="ext-3.0\resources\images\default\tabs\tab-strip-btm-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\tabs\tabs-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\btn-arrow-light.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\btn-arrow.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\btn-over-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\gray-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\more.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\tb-bg.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\tb-btn-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\tb-xl-btn-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\default\toolbar\tb-xl-sep.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\arrows.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\drop-add.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\drop-between.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\drop-no.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\drop-over.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\drop-under.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\drop-yes.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-end-minus-nl.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-end-minus.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-end-plus-nl.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-end-plus.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-end.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-line.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-minus-nl.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-minus.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-plus-nl.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow-plus.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\elbow.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\folder-open.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\folder.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\leaf.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\loading.gif" />
+    <Content Include="ext-3.0\resources\images\default\tree\s.gif" />
+    <Content Include="ext-3.0\resources\images\default\window\icon-error.gif" />
+    <Content Include="ext-3.0\resources\images\default\window\icon-info.gif" />
+    <Content Include="ext-3.0\resources\images\default\window\icon-question.gif" />
+    <Content Include="ext-3.0\resources\images\default\window\icon-warning.gif" />
+    <Content Include="ext-3.0\resources\images\default\window\left-corners.png" />
+    <Content Include="ext-3.0\resources\images\default\window\left-right.png" />
+    <Content Include="ext-3.0\resources\images\default\window\right-corners.png" />
+    <Content Include="ext-3.0\resources\images\default\window\top-bottom.png" />
+    <Content Include="ext-3.0\resources\images\gray\button\btn-arrow.gif" />
+    <Content Include="ext-3.0\resources\images\gray\button\btn-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\gray\button\btn.gif" />
+    <Content Include="ext-3.0\resources\images\gray\button\group-cs.gif" />
+    <Content Include="ext-3.0\resources\images\gray\button\group-lr.gif" />
+    <Content Include="ext-3.0\resources\images\gray\button\group-tb.gif" />
+    <Content Include="ext-3.0\resources\images\gray\gradient-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\corners-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\left-right.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\light-hd.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\tool-sprite-tpl.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\tool-sprites.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\tools-sprites-trans.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\top-bottom.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\top-bottom.png" />
+    <Content Include="ext-3.0\resources\images\gray\panel\white-corners-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\white-left-right.gif" />
+    <Content Include="ext-3.0\resources\images\gray\panel\white-top-bottom.gif" />
+    <Content Include="ext-3.0\resources\images\gray\qtip\bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\qtip\close.gif" />
+    <Content Include="ext-3.0\resources\images\gray\qtip\tip-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\gray\s.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\scroll-left.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\scroll-right.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\scroller-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\tab-btm-inactive-left-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\tab-btm-inactive-right-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\tab-btm-left-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\tab-btm-right-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\tab-close.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\tab-strip-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\tab-strip-bg.png" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\tab-strip-btm-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\tabs\tabs-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\gray\toolbar\bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\toolbar\btn-arrow-light.gif" />
+    <Content Include="ext-3.0\resources\images\gray\toolbar\btn-arrow.gif" />
+    <Content Include="ext-3.0\resources\images\gray\toolbar\btn-over-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\toolbar\gray-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\toolbar\tb-bg.gif" />
+    <Content Include="ext-3.0\resources\images\gray\toolbar\tb-btn-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\gray\window\icon-error.gif" />
+    <Content Include="ext-3.0\resources\images\gray\window\icon-info.gif" />
+    <Content Include="ext-3.0\resources\images\gray\window\icon-question.gif" />
+    <Content Include="ext-3.0\resources\images\gray\window\icon-warning.gif" />
+    <Content Include="ext-3.0\resources\images\gray\window\left-corners.png" />
+    <Content Include="ext-3.0\resources\images\gray\window\left-right.png" />
+    <Content Include="ext-3.0\resources\images\gray\window\right-corners.png" />
+    <Content Include="ext-3.0\resources\images\gray\window\top-bottom.png" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\bg-center.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\bg-left.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\bg-right.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\close.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\collapse.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\dlg-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\e-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\expand.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\hd-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\s-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\se-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\basic-dialog\w-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\gradient-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\grid\grid-split.gif" />
+    <Content Include="ext-3.0\resources\images\vista\grid\grid-vista-hd.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\collapse.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\expand.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\gradient-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\ns-collapse.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\ns-expand.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\panel-close.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\panel-title-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\panel-title-light-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\stick.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\tab-close-on.gif" />
+    <Content Include="ext-3.0\resources\images\vista\layout\tab-close.gif" />
+    <Content Include="ext-3.0\resources\images\vista\qtip\bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\qtip\tip-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\vista\s.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\e-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\e-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\ne-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\ne-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\nw-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\nw-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\s-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\s-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\se-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\se-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\sw-handle-dark.gif" />
+    <Content Include="ext-3.0\resources\images\vista\sizer\sw-handle.gif" />
+    <Content Include="ext-3.0\resources\images\vista\tabs\tab-btm-inactive-left-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\tabs\tab-btm-inactive-right-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\tabs\tab-btm-left-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\tabs\tab-btm-right-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\tabs\tab-sprite.gif" />
+    <Content Include="ext-3.0\resources\images\vista\toolbar\gray-bg.gif" />
+    <Content Include="ext-3.0\resources\images\vista\toolbar\tb-btn-sprite.gif" />
+    <Content Include="Global.asax" />
+    <Content Include="shared\code-display.js" />
+    <Content Include="shared\examples.css" />
+    <Content Include="shared\examples.js" />
+    <Content Include="shared\extjs\css\extjs.css" />
+    <Content Include="shared\extjs\extjs2.png" />
+    <Content Include="shared\extjs\ft.png" />
+    <Content Include="shared\extjs\images\arrow.png" />
+    <Content Include="shared\extjs\images\bd-bg.gif" />
+    <Content Include="shared\extjs\images\big-box.png" />
+    <Content Include="shared\extjs\images\c-sep-l.gif" />
+    <Content Include="shared\extjs\images\c-sep.gif" />
+    <Content Include="shared\extjs\images\check.png" />
+    <Content Include="shared\extjs\images\checked.gif" />
+    <Content Include="shared\extjs\images\corners-sprite.gif" />
+    <Content Include="shared\extjs\images\extanim32.gif" />
+    <Content Include="shared\extjs\images\extjs2.png" />
+    <Content Include="shared\extjs\images\ft-bg.png" />
+    <Content Include="shared\extjs\images\ft.png" />
+    <Content Include="shared\extjs\images\full-box.png" />
+    <Content Include="shared\extjs\images\gxt.png" />
+    <Content Include="shared\extjs\images\inner-hd.png" />
+    <Content Include="shared\extjs\images\left-right.gif" />
+    <Content Include="shared\extjs\images\med-box.png" />
+    <Content Include="shared\extjs\images\med-shd.png" />
+    <Content Include="shared\extjs\images\msg-bg.png" />
+    <Content Include="shared\extjs\images\nav-left-over.gif" />
+    <Content Include="shared\extjs\images\nav-left-over.png" />
+    <Content Include="shared\extjs\images\nav-left.gif" />
+    <Content Include="shared\extjs\images\nav-left.png" />
+    <Content Include="shared\extjs\images\nav-over.gif" />
+    <Content Include="shared\extjs\images\nav-right-over.gif" />
+    <Content Include="shared\extjs\images\nav-right-over.png" />
+    <Content Include="shared\extjs\images\nav-right.gif" />
+    <Content Include="shared\extjs\images\nav-right.png" />
+    <Content Include="shared\extjs\images\nav-spacer.gif" />
+    <Content Include="shared\extjs\images\pdf.gif" />
+    <Content Include="shared\extjs\images\sample-over.gif" />
+    <Content Include="shared\extjs\images\side-box.png" />
+    <Content Include="shared\extjs\images\top-bottom.gif" />
+    <Content Include="shared\extjs\images\topbar.png" />
+    <Content Include="shared\extjs\site.js" />
+    <Content Include="shared\extjs\topbar.png" />
+    <Content Include="shared\icons\arrow-down.gif" />
+    <Content Include="shared\icons\arrow-up.gif" />
+    <Content Include="shared\icons\fam\add.gif" />
+    <Content Include="shared\icons\fam\application_go.png" />
+    <Content Include="shared\icons\fam\application_view_list.png" />
+    <Content Include="shared\icons\fam\book.png" />
+    <Content Include="shared\icons\fam\cog.png" />
+    <Content Include="shared\icons\fam\cog_edit.png" />
+    <Content Include="shared\icons\fam\connect.gif" />
+    <Content Include="shared\icons\fam\connect.png" />
+    <Content Include="shared\icons\fam\cross.gif" />
+    <Content Include="shared\icons\fam\delete.gif" />
+    <Content Include="shared\icons\fam\feed_add.png" />
+    <Content Include="shared\icons\fam\feed_delete.png" />
+    <Content Include="shared\icons\fam\feed_error.png" />
+    <Content Include="shared\icons\fam\folder_go.png" />
+    <Content Include="shared\icons\fam\folder_wrench.png" />
+    <Content Include="shared\icons\fam\grid.png" />
+    <Content Include="shared\icons\fam\image_add.png" />
+    <Content Include="shared\icons\fam\plugin.gif" />
+    <Content Include="shared\icons\fam\plugin_add.gif" />
+    <Content Include="shared\icons\fam\rss_go.png" />
+    <Content Include="shared\icons\fam\table_refresh.png" />
+    <Content Include="shared\icons\fam\user.gif" />
+    <Content Include="shared\icons\fam\user.png" />
+    <Content Include="shared\icons\fam\user_add.gif" />
+    <Content Include="shared\icons\fam\user_add.png" />
+    <Content Include="shared\icons\fam\user_comment.png" />
+    <Content Include="shared\icons\fam\user_delete.gif" />
+    <Content Include="shared\icons\fam\user_delete.png" />
+    <Content Include="shared\icons\fam\user_edit.png" />
+    <Content Include="shared\icons\fam\user_female.gif" />
+    <Content Include="shared\icons\fam\user_female.png" />
+    <Content Include="shared\icons\fam\user_gray.png" />
+    <Content Include="shared\icons\fam\user_green.gif" />
+    <Content Include="shared\icons\fam\user_green.png" />
+    <Content Include="shared\icons\fam\user_orange.png" />
+    <Content Include="shared\icons\fam\user_red.png" />
+    <Content Include="shared\icons\fam\user_suit.gif" />
+    <Content Include="shared\icons\fam\user_suit.png" />
+    <Content Include="shared\icons\save.gif" />
+    <Content Include="shared\icons\silk.css" />
+    <Content Include="shared\info-bg.gif" />
+    <Content Include="shared\lib-bar.png" />
+    <Content Include="shared\lib.css" />
+    <Content Include="shared\screens\air.gif" />
+    <Content Include="shared\screens\anchor.gif" />
+    <Content Include="shared\screens\blank.gif" />
+    <Content Include="shared\screens\border-layout.gif" />
+    <Content Include="shared\screens\buttons.gif" />
+    <Content Include="shared\screens\chooser.gif" />
+    <Content Include="shared\screens\combo-custom.gif" />
+    <Content Include="shared\screens\combo.gif" />
+    <Content Include="shared\screens\data-view.gif" />
+    <Content Include="shared\screens\dd-gridtoformpanel.gif" />
+    <Content Include="shared\screens\dd-gridtogrid.gif" />
+    <Content Include="shared\screens\dd-zones.gif" />
+    <Content Include="shared\screens\debug-console.gif" />
+    <Content Include="shared\screens\desktop.gif" />
+    <Content Include="shared\screens\direct.gif" />
+    <Content Include="shared\screens\feeds.gif" />
+    <Content Include="shared\screens\form-adv-vtypes.gif" />
+    <Content Include="shared\screens\form-check-radio.gif" />
+    <Content Include="shared\screens\form-custom.gif" />
+    <Content Include="shared\screens\form-dynamic.gif" />
+    <Content Include="shared\screens\form-file-upload.gif" />
+    <Content Include="shared\screens\form-grid-binding.gif" />
+    <Content Include="shared\screens\form-multiselect.gif" />
+    <Content Include="shared\screens\form-xml.gif" />
+    <Content Include="shared\screens\gmap-panel.gif" />
+    <Content Include="shared\screens\grid-array.gif" />
+    <Content Include="shared\screens\grid-buffer.gif" />
+    <Content Include="shared\screens\grid-data-binding.gif" />
+    <Content Include="shared\screens\grid-edit.gif" />
+    <Content Include="shared\screens\grid-filter.gif" />
+    <Content Include="shared\screens\grid-from-markup.gif" />
+    <Content Include="shared\screens\grid-grouping.gif" />
+    <Content Include="shared\screens\grid-paging.gif" />
+    <Content Include="shared\screens\grid-plugins.gif" />
+    <Content Include="shared\screens\grid-row-editor.gif" />
+    <Content Include="shared\screens\grid-summary.gif" />
+    <Content Include="shared\screens\grid-xml.gif" />
+    <Content Include="shared\screens\group-tabs.gif" />
+    <Content Include="shared\screens\history.gif" />
+    <Content Include="shared\screens\layout-browser.gif" />
+    <Content Include="shared\screens\list-view.gif" />
+    <Content Include="shared\screens\locale-dutch.gif" />
+    <Content Include="shared\screens\locale-switch.gif" />
+    <Content Include="shared\screens\msg-box.gif" />
+    <Content Include="shared\screens\organizer.gif" />
+    <Content Include="shared\screens\panel.gif" />
+    <Content Include="shared\screens\pieChart.gif" />
+    <Content Include="shared\screens\portal.gif" />
+    <Content Include="shared\screens\progress-bar-pager.gif" />
+    <Content Include="shared\screens\progress.gif" />
+    <Content Include="shared\screens\qtips.gif" />
+    <Content Include="shared\screens\resizable.gif" />
+    <Content Include="shared\screens\slider-pager.gif" />
+    <Content Include="shared\screens\slider.gif" />
+    <Content Include="shared\screens\spotlight.gif" />
+    <Content Include="shared\screens\statusbar-plugin.gif" />
+    <Content Include="shared\screens\statusbar.gif" />
+    <Content Include="shared\screens\tab-panel-scroller-menu.gif" />
+    <Content Include="shared\screens\tabs-adv.gif" />
+    <Content Include="shared\screens\tabs.gif" />
+    <Content Include="shared\screens\tasks.gif" />
+    <Content Include="shared\screens\templates.gif" />
+    <Content Include="shared\screens\toolbar-actions.gif" />
+    <Content Include="shared\screens\toolbar-button-groups.gif" />
+    <Content Include="shared\screens\toolbar-overflow.gif" />
+    <Content Include="shared\screens\toolbar.gif" />
+    <Content Include="shared\screens\tree-columns.gif" />
+    <Content Include="shared\screens\tree-reorder.gif" />
+    <Content Include="shared\screens\tree-two.gif" />
+    <Content Include="shared\screens\tree-xml-loader.gif" />
+    <Content Include="shared\screens\window-layout.gif" />
+    <Content Include="shared\screens\window.gif" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Default.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Direct\Direct.cs" />
+    <Compile Include="Direct\DirectProxyGenerator.cs" />
+    <Compile Include="Example\Form\Form.aspx.cs">
+      <DependentUpon>Form.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Example\Form\Form.aspx.designer.cs">
+      <DependentUpon>Form.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Example\Grid\Grid.aspx.cs">
+      <DependentUpon>Grid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Example\Grid\Grid.aspx.designer.cs">
+      <DependentUpon>Grid.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Example\Normal\Direct.aspx.cs">
+      <DependentUpon>Direct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Example\Normal\Direct.aspx.designer.cs">
+      <DependentUpon>Direct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Example\Pool.ashx.cs">
+      <DependentUpon>Pool.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Example\Router.ashx.cs">
+      <DependentUpon>Router.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxy.ashx.cs">
+      <DependentUpon>Proxy.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Direct\ExtAction.cs" />
+    <Compile Include="Direct\ExtRPC.cs" />
+    <Compile Include="Direct\ExtUtil.cs" />
+    <Compile Include="Direct\IAction.cs" />
+    <Compile Include="Direct\Request.cs" />
+    <Compile Include="Direct\Response.cs" />
+    <Compile Include="TextAction.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Example\Form\DirectForm.js" />
+    <Content Include="Example\Form\Form.aspx" />
+    <Content Include="Example\Grid\Grid.aspx" />
+    <Content Include="Example\Grid\GridDirect.js" />
+    <Content Include="Example\Normal\Direct.aspx" />
+    <Content Include="Example\Normal\Direct.js" />
+    <Content Include="Example\Router.ashx" />
+    <Content Include="Example\Pool.ashx" />
+    <None Include="ext-3.0\resources\images\default\form\clear-trigger.psd" />
+    <None Include="ext-3.0\resources\images\default\form\date-trigger.psd" />
+    <None Include="ext-3.0\resources\images\default\form\search-trigger.psd" />
+    <None Include="ext-3.0\resources\images\default\form\trigger.psd" />
+    <None Include="ext-3.0\resources\images\default\grid\Thumbs.db" />
+    <None Include="ext-3.0\resources\images\default\window\left-corners.psd" />
+    <None Include="ext-3.0\resources\images\default\window\left-right.psd" />
+    <None Include="ext-3.0\resources\images\default\window\right-corners.psd" />
+    <None Include="ext-3.0\resources\images\default\window\top-bottom.psd" />
+    <None Include="ext-3.0\resources\images\gray\window\left-corners.pspimage" />
+    <None Include="ext-3.0\resources\resources.jsb" />
+    <Content Include="Example\Writer\UserForm.js" />
+    <Content Include="Example\Writer\UserGrid.js" />
+    <Content Include="Example\Writer\writer.css" />
+    <Content Include="Example\Writer\writer.html" />
+    <Content Include="Example\Writer\writer.js" />
+    <Content Include="ext-3.0\data.js" />
+    <Content Include="Proxy.ashx" />
+    <None Include="shared\screens\Thumbs.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="ext-3.0\source\adapter\core\" />
+    <Folder Include="ext-3.0\source\core\core\" />
+    <Folder Include="ext-3.0\source\data\core\" />
+    <Folder Include="ext-3.0\source\dd\" />
+    <Folder Include="ext-3.0\source\direct\" />
+    <Folder Include="ext-3.0\source\locale\" />
+    <Folder Include="ext-3.0\source\state\" />
+    <Folder Include="ext-3.0\source\util\core\" />
+    <Folder Include="ext-3.0\source\widgets\chart\" />
+    <Folder Include="ext-3.0\source\widgets\form\" />
+    <Folder Include="ext-3.0\source\widgets\grid\" />
+    <Folder Include="ext-3.0\source\widgets\layout\" />
+    <Folder Include="ext-3.0\source\widgets\list\" />
+    <Folder Include="ext-3.0\source\widgets\menu\" />
+    <Folder Include="ext-3.0\source\widgets\tips\" />
+    <Folder Include="ext-3.0\source\widgets\tree\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3510</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
