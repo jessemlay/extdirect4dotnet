@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -49,14 +53,15 @@
   <ItemGroup>
     <Compile Include="attributes\DirectActionAttribute.cs" />
     <Compile Include="attributes\DirectMethodAttribute.cs" />
-    <Compile Include="ActionWithSessionState.cs" />
+    <Compile Include="baseclasses\ActionWithSessionState.cs" />
+    <Compile Include="baseclasses\IActionWithSessionState.cs" />
     <Compile Include="DirectAction.cs" />
-    <Compile Include="DirectException.cs" />
+    <Compile Include="DirectProxy.cs" />
+    <Compile Include="exceptions\DirectException.cs" />
     <Compile Include="DirectMethod.cs" />
     <Compile Include="DirectProcessor.cs" />
     <Compile Include="DirectProvider.cs" />
-    <Compile Include="DirectProviderCache.cs" />
-    <Compile Include="DirectProxy.cs" />
+    <Compile Include="helper\DirectProviderCache.cs" />
     <Compile Include="DirectRequest.cs" />
     <Compile Include="DirectResponse.cs" />
     <Compile Include="DirectRouter.cs" />
@@ -64,14 +69,7 @@
     <Compile Include="helper\DirectProxyGenerator.cs" />
     <Compile Include="helper\LoadResponse.cs" />
     <Compile Include="helper\Utility.cs" />
-    <Compile Include="IActionWithSessionState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Dokumente und Einstellungen\spaeth\Desktop\Json35b2-1\Src\Newtonsoft.Json\Newtonsoft.Json.csproj">
-      <Project>{A9AE40FF-1A21-414A-9FE7-3BE13644CC6D}</Project>
-      <Name>Newtonsoft.Json</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
