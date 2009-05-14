@@ -63,6 +63,52 @@ namespace ExtDirect4DotNet
             }
         }
 
+
+        /// <summary>
+        /// Configure the provider by adding the available API methods.
+        /// </summary>
+        /// <param name="items">A series of object instances that contain Ext.Direct methods.</param>
+        public void Configure(Assembly[] assemblyList)
+        {
+             
+            if (!this.Configured)
+            {
+                List<Type> types = new List<Type>();
+                foreach (var curAssembly in assemblyList)
+                {
+                    foreach (Type type in curAssembly.GetTypes())
+                    {
+                       
+                        types.Add(type);
+                    }                   
+                }
+               
+                this.Configure(types);
+            }
+        }
+
+        /// <summary>
+        /// Configure the provider by adding the available API methods.
+        /// </summary>
+        /// <param name="items">A series of object instances that contain Ext.Direct methods.</param>
+       /*
+        public void Configure(Type[] typelist)
+        {
+
+            if (!this.Configured)
+            {
+                List<object> types = new List<object>();
+                foreach (var allAssembly in assemblyList)
+                {
+                    if (allAssembly != null)
+                    {
+                        types.AddRange(allAssembly.GetTypes());
+                    }
+                }
+
+                this.Configure(types);
+            }
+        }*/
         /// <summary>
         /// Configure the provider by adding the available API methods.
         /// </summary>
@@ -88,6 +134,9 @@ namespace ExtDirect4DotNet
         {
             foreach (Type type in types)
             {
+                if(type.Name == "Class1"){
+                    string test = "";
+                }
                 if (DirectAction.IsAction(type))
                 {
                     this.actions.Add(type.Name, new DirectAction(type));

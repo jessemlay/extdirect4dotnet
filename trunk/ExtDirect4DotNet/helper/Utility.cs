@@ -17,7 +17,16 @@ namespace ExtDirect4DotNet.helper
         /// <returns>True if the type contains the attribute.</returns>
         internal static bool HasAttribute(Type t, Type attribute)
         {
-            return t.GetCustomAttributes(attribute, true).Length > 0;
+            try
+            {
+
+                return t.GetCustomAttributes(attribute, true).Length > 0;
+            }
+            catch {
+                // FIX """
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

@@ -37,8 +37,9 @@ namespace ExtDirect4DotNet
             //After being configured, the provider should be cached.
             if (!cache.ContainsKey(apiNamespace))
             {
+                ;
                 provider = new DirectProvider(apiNamespace, routerUrl);
-                provider.Configure(System.Reflection.Assembly.GetEntryAssembly());
+                provider.Configure(AppDomain.CurrentDomain.GetAssemblies());
                 cache.Add(apiNamespace, provider);
             }
             else
