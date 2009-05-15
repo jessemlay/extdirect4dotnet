@@ -9,7 +9,9 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    
+        <a href="CallTypes/CallTypes.html">Example with different Calltypes</a><br />
+        
+        <a href="CRUDSample/writer.html">CRUD - Example</a>
     </div>
     </form>
 </body>

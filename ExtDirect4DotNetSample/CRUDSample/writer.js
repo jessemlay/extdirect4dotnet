@@ -87,7 +87,7 @@ setTimeout(function() {
     Ext.fly('loading-mask').fadeOut({
         remove: true
     });
-    //store.load();
+    store.load();
 
 }, 250);
 });
