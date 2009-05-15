@@ -78,7 +78,16 @@ namespace ExtDirect4DotNet
             {
                 if (DirectMethod.IsMethod(mi))
                 {
-                    this.methods.Add(mi.Name, new DirectMethod(mi, this));
+                    DirectMethodType methType = ((DirectMethodAttribute)mi.GetCustomAttributes(typeof(DirectMethodAttribute), true)[0]).MethodType;
+                    if (methType == DirectMethodType.Hybrid)
+                    {
+                        this.methods.Add(mi.Name, new DirectMethod(mi, DirectMethodType.Normal, this));
+                        this.methods.Add(mi.Name + "_Form", new DirectMethod(mi, DirectMethodType.Form, this, mi.Name + "_Form"));
+                    }
+                    else
+                    {
+                        this.methods.Add(mi.Name, new DirectMethod(mi, methType, this));
+                    }
                 }
             }
         }

@@ -35,9 +35,20 @@ namespace ExtDirect4DotNet
         Delete,
 
         /// <summary>
-        /// Simple Function not usable in Store...
+        /// Simple Function...
         /// </summary>
-        Normal
+        Normal,
+
+        /// <summary>
+        /// Function with Form Specifix Handling (len gets set to 1 and the parameter will read out of the httpContext.Form)
+        /// </summary>
+        Form,
+
+        /// <summary>
+        /// This Method gets Handled as a normal Method but the Proxy will generate another Method with the posfix "_form"
+        /// where len gets set to 1 and the Parameterhandling for this gets done as a Form Method
+        /// </summary>
+        Hybrid
     }
 
     public enum ParameterHandling
@@ -69,6 +80,8 @@ namespace ExtDirect4DotNet
         /// 
         /// </summary>
         AutoResolve
+
+        
        
     }
 

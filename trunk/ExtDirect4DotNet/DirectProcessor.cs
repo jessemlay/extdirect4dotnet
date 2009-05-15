@@ -66,27 +66,7 @@ namespace ExtDirect4DotNet
             output += "]";
 
             return output;
-            // todo add html return...
             
-            /**
-            if (responses.Count > 1)
-            {
-                return JsonConvert.SerializeObject(responses);
-            }
-            else
-            {
-                DirectResponse response = responses[0];
-                if (response.IsUpload)
-                {
-                    string ser =JsonConvert.SerializeObject(response).Replace("&quot;", "\\&quot;");
-                    return String.Format("<html><body><textarea>{0}</textarea></body></html>", ser);
-                }
-                else
-                {
-                    return JsonConvert.SerializeObject(response);
-                }
-                
-            }*/
         }
 
         internal static List<DirectRequest> ParseRequest(HttpRequest httpRequest)
@@ -127,21 +107,10 @@ namespace ExtDirect4DotNet
                     proccessList.Add(new DirectRequest(dreq));
                 }
                
-              //  JArray test = JsonConvert.DeserializeObject<JArray>(json);
-               // Object test = JsonConvert.DeserializeObject<List<Object>>(json);
-                // It is not an array of actions...
-                /*if (proccessList.Count < 0)
-                {
-                    proccessList.Add(JsonConvert.DeserializeObject<DirectRequest>(json));
-                }*/
             }
             return proccessList;
         }
-        /*
-        private static DirectResponse ProcessRequest(DirectProvider provider, DirectRequest request)
-        {
-            return new DirectResponse(request, provider.Execute(request));
-        }*/
+       
 
     }
 }

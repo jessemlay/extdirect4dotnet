@@ -14,16 +14,27 @@ namespace ExtDirect4DotNet
     internal class DirectMethod
     {
 
+
+        internal DirectMethod(MethodInfo method, DirectMethodType methType, DirectAction parentAction)
+            : this( method,  methType,  parentAction, method.Name)
+        {
+             
+
+
+            // this.Parameters = method.GetParameters().Length;
+        }
+
         /// <summary>
         /// Creates an instance of this class.
         /// </summary>
         /// <param name="method">The method information.</param>
-        internal DirectMethod(MethodInfo method, DirectAction parentAction)
+        internal DirectMethod(MethodInfo method, DirectMethodType methType, DirectAction parentAction, string directMethodName)
         {
             this.ParentAction = parentAction;
+            this.MethodType = methType;
             this.Method = method;
-            this.IsForm = false; // FIX Utility.HasAttribute(method, typeof(DirectMethodFormAttribute));
-            this.Name = method.Name;
+            this.IsForm = (methType == DirectMethodType.Form); // FIX Utility.HasAttribute(method, typeof(DirectMethodFormAttribute));
+            this.Name = directMethodName;
 
             this.MethodAttributes  = ((DirectMethodAttribute)this.Method.GetCustomAttributes(typeof(DirectMethodAttribute), true)[0]);
                 
@@ -70,6 +81,8 @@ namespace ExtDirect4DotNet
             private set;
         }
 
+        internal DirectMethodType MethodType;
+
         /// <summary>
         /// Gets the number of parameters for the method.
         /// </summary>
@@ -79,28 +92,20 @@ namespace ExtDirect4DotNet
             {
 
                 if (this.MethodAttributes.ParameterHandling == ParameterHandling.PassThrough &&
-                    this.MethodAttributes.MethodType == DirectMethodType.Normal)
+                    this.MethodType == DirectMethodType.Normal)
                 {
-                    switch (this.MethodAttributes.MethodType)
-                    {
-                        case DirectMethodType.Normal:
-                            return this.Method.GetParameters().Length;
-                        case DirectMethodType.Update:
-                            return 2;
-
-                    }
-                    
+                    return this.Method.GetParameters().Length;                   
                 }
                 else if(this.MethodAttributes.ParameterHandling == ParameterHandling.AutoResolve)
                 {
-                    switch (this.MethodAttributes.MethodType)
+                    switch (this.MethodType)
                     {
                         case DirectMethodType.Normal:
                             return 1;
 
                     }
                 }
-                switch (this.MethodAttributes.MethodType)
+                switch (this.MethodType)
                 {
                     case DirectMethodType.Create:
                         return 1;
@@ -109,6 +114,8 @@ namespace ExtDirect4DotNet
                     case DirectMethodType.Update:
                         return 2;
                     case DirectMethodType.Delete:
+                        return 1;
+                    case DirectMethodType.Form:
                         return 1;
                 } 
                 return this.Method.GetParameters().Length;
@@ -244,7 +251,7 @@ namespace ExtDirect4DotNet
                     
                     try
                     {
-                        if (paramTyp == id.GetType())
+                        if (paramTyp == System.Type.GetType("System.Object"))
                         {
                             id = parameter[0];
                         }
@@ -291,27 +298,71 @@ namespace ExtDirect4DotNet
 
             if (directRequest.HttpRequest != null)
             {
-                // TODO do deserialization here too?
-                
-                HttpRequest curParam = directRequest.HttpRequest;
-                int i2 = 0;
-                // try to find Parameters in the Formvariables
-                foreach (var parm in parmInfo)
+                // do the methode wants to take care of the request by it self?
+                if (parmInfo[0].ParameterType == directRequest.HttpRequest.GetType())
                 {
-                    paramMap[i2] = ((HttpRequest)curParam).Form[parm.Name];
-                    i2++;
+                    paramMap[0] = directRequest.HttpRequest;
                 }
-
-                int i = 0;
-                // try to find Parameters in the Files-list
-                foreach (var parm in parmInfo)
+                else
                 {
-                    if (((HttpRequest)curParam).Files[parm.Name] != null)
+                    HttpRequest curParam = directRequest.HttpRequest;
+                    int i2 = 0;
+                    // try to find Parameters in the Formvariables
+                    foreach (var parm in parmInfo)
                     {
-                        paramMap[i2] = ((HttpRequest)curParam).Files[parm.Name];
+                        Type type = parmInfo[i2].ParameterType;
+                        if (type.Name == "HttpPostedFile")
+                        {
+
+                            i2++;
+                            continue;
+                        }
+                        String curentParameter = ((HttpRequest)curParam).Form[parm.Name];
+                        if (curentParameter == null)
+                        {
+
+                            i2++;
+                            continue;
+                        }
+                        try
+                        {
+                            if (type == System.Type.GetType("System.Object") || type == System.Type.GetType("System.String"))
+                            {
+                                paramMap[i2] = curentParameter;
+                            }
+                            else
+                            {
+                                paramMap[i2] = JsonConvert.DeserializeObject(curentParameter.ToString(), type);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            throw (new DirectParameterException("Illegal Argument: There did an Exception Occur while tryng to Desirialze the parameter " +
+                                parmInfo[i2].Name + " of the type " + parmInfo[i2].ParameterType.ToString() + " from json: " + curentParameter.ToString(), directRequest));
+                        }
+
+                        i2++;
                     }
-                    i2++;
+
+                    i2 = 0;
+                    // try to find Parameters in the Files-list
+                    foreach (var parm in parmInfo)
+                    {
+
+                        Type type = parmInfo[i2].ParameterType;
+                        if (((HttpRequest)curParam).Files[parm.Name] != null)
+                        {
+                            if (type.Name != "HttpPostedFile")
+                            {
+                                throw (new DirectParameterException("Illegal Argument: The Parameter "+parm.Name+" is not an instance of \"System.WebHttpPosted\" File.", directRequest));
+                            }
+                            paramMap[i2] = ((HttpRequest)curParam).Files[parm.Name];
+                        }
+                        i2++;
+                    }
                 }
+                
+                
             } else 
             if (this.MethodAttributes.ParameterHandling == ParameterHandling.PassThrough)
             {
@@ -351,8 +402,8 @@ namespace ExtDirect4DotNet
                 // serialize the attributes before invoking the method
             //}
 
-            Type type = this.ParentAction.Type;
-            Object actionInstanz = type.Assembly.CreateInstance(type.FullName);
+            Type actionClassType = this.ParentAction.Type;
+            Object actionInstanz = actionClassType.Assembly.CreateInstance(actionClassType.FullName);
             if(actionInstanz is IActionWithSessionState) {
                 ((IActionWithSessionState)actionInstanz).SetSession(sessionObject);
             }
