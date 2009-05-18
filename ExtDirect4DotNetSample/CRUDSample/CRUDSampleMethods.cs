@@ -79,7 +79,7 @@ namespace ExtDirect4DotNetSample
         {
 
             List<Person> personList = (List<Person>)Session["CRUDMethodsData"];
-            if (personList == null || !fresh)
+            if (personList == null || fresh)
             {
                 personList = new List<Person>();
 
@@ -149,7 +149,7 @@ namespace ExtDirect4DotNetSample
         /// <param name="dir">The Direction or "ASC"/"DESC"</param>
         /// <returns>A LoadRespone Object that wraps the Persons</returns>
         [DirectMethod(MethodType = DirectMethodType.Read, ParameterHandling = ParameterHandling.AutoResolve)]
-        public LoadResponse read(string sort, string dir)
+        public LoadResponse read(string sort, string dir, int start, int limit)
         {
 
             List<Person> rows = getData();
@@ -182,6 +182,21 @@ namespace ExtDirect4DotNetSample
             if (dir != "ASC")
             {
                 rows.Reverse();
+            }
+
+            if (start != null && limit != null)
+            {
+                List<Person> returnList = new List<Person>(); 
+                int i = 0;
+                foreach (Person curPers in rows)
+                {
+                    if (i >= start && i <= (start + limit))
+                    {
+                        returnList.Add(curPers);
+                    }
+                    i++;
+                }
+                return new LoadResponse() { Results = rows.Count, Rows = returnList };
             }
 
             return new LoadResponse() { Results = rows.Count, Rows = rows };

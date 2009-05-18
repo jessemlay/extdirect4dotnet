@@ -7,7 +7,7 @@ var Employee = Ext.data.Record.create([
 ]);
 
 var reader = new Ext.data.JsonReader({
-    totalProperty: 'total',
+    totalProperty: 'results',
     successProperty: 'success',
     idProperty: 'id',
     root: 'data'
@@ -48,6 +48,8 @@ var reader = new Ext.data.JsonReader({
 	});
 //
 
+var myPageSize = 10;
+
 var userColumns =  [
     {header: "ID", width: 40, sortable: true, dataIndex: 'id'},
     {header: "Email", width: 100, sortable: true, dataIndex: 'email', editor: new Ext.form.TextField({})},
@@ -72,6 +74,15 @@ Ext.onReady(function() {
 		renderTo: 'user-grid',
 		store: store,
 		columns : userColumns,
+		bbar: new Ext.PagingToolbar({
+            store: store,       // grid and PagingToolbar using same store
+            displayInfo: true,
+            pageSize: myPageSize,
+            prependButtons: true,
+            items: [
+                'text 1'
+            ]
+        }),
 		listeners: {
 			rowclick: function(g, index, ev) {
 				var rec = g.store.getAt(index);
@@ -87,7 +98,11 @@ setTimeout(function() {
     Ext.fly('loading-mask').fadeOut({
         remove: true
     });
-    store.load();
+    store.load({params: {
+            start: 0,          // specify params for the first page load if using paging
+            limit: myPageSize,
+            foo:   'bar'
+    }});
 
 }, 250);
 });

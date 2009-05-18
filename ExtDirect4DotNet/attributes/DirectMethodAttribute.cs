@@ -99,7 +99,7 @@ namespace ExtDirect4DotNet
         /// "... data[{\"propertiename\":\"propertyValue\"}] ..."  instead of
         /// "... date[{"propertiename":"propertieValue"}"] ... 
         /// </summary>
-        JSON
+        JSON    
     }
 
     /// <summary>
