@@ -32,7 +32,7 @@ App.user.Grid = Ext.extend(Ext.grid.EditorGridPanel, {
 
 		// build toolbars and buttons.
 		this.tbar = this.buildTopToolbar();
-		this.bbar = this.buildBottomToolbar();
+		//this.bbar = this.buildBottomToolbar();
 		this.buttons = this.buildUI();
 
 		// super
@@ -58,14 +58,7 @@ App.user.Grid = Ext.extend(Ext.grid.EditorGridPanel, {
 			iconCls: 'silk-refresh',
 			handler: this.onReset,
 			scope: this
-		}];
-	},
-
-	/**
-	 * buildBottomToolbar
-	 */
-	buildBottomToolbar : function() {
-		return ['<b>@cfg:</b>', '-', {
+		}, '->','<b>@cfg:</b>', '-', {
 			text: 'batchSave',
 			enableToggle: true,
 			tooltip: 'When enabled, Store will save only with user intervention.',
@@ -82,6 +75,13 @@ App.user.Grid = Ext.extend(Ext.grid.EditorGridPanel, {
 			},
 			scope: this
 		}, '-'];
+	},
+
+	/**
+	 * buildBottomToolbar
+	 */
+	buildBottomToolbar : function() {
+		return [];
 	},
 
 	/**
