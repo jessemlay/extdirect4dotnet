@@ -377,6 +377,7 @@ namespace ExtDirect4DotNet
                     case DirectMethodType.Create:
                     case DirectMethodType.Read:
                     case DirectMethodType.Delete:
+                    case DirectMethodType.Hybrid:
                         paramMap = ResolveParametersByName(directRequest);
                         break;
                     case DirectMethodType.Update:
