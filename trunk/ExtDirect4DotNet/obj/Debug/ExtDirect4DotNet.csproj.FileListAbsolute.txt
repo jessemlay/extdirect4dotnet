@@ -1,6 +1,0 @@
-C:\Local Repository\Lokale Projekte\ExtDirect4DotNet\ExtDirect4DotNet\obj\Debug\ResolveAssemblyReference.cache
-C:\Local Repository\Lokale Projekte\extdirect4dotnet\ExtDirect4DotNet\bin\Debug\ExtDirect4DotNet.dll
-C:\Local Repository\Lokale Projekte\extdirect4dotnet\ExtDirect4DotNet\bin\Debug\ExtDirect4DotNet.pdb
-C:\Local Repository\Lokale Projekte\extdirect4dotnet\ExtDirect4DotNet\obj\Debug\ExtDirect4DotNet.dll
-C:\Local Repository\Lokale Projekte\extdirect4dotnet\ExtDirect4DotNet\obj\Debug\ExtDirect4DotNet.pdb
-C:\Local Repository\Lokale Projekte\extdirect4dotnet\ExtDirect4DotNet\bin\Debug\Newtonsoft.Json.dll
