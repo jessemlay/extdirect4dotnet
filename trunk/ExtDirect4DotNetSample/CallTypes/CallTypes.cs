@@ -42,10 +42,11 @@ namespace WebApplication1.CallTypes
         /// 
         /// </summary>
         /// <param name="request"></param>
-        [DirectMethod(MethodType = DirectMethodType.Form)]
+        [DirectMethod(MethodType = DirectMethodType.Form, OutputHandling=OutputHandling.JSON)]
         public string UploadHttpRequestParam(HttpRequest request)
         {
-            return "the File: " + request.Files[0].FileName + " was successfully uploaded Firstname:" + request.Form["firstName"]; 
+            return "{success:false, errors: {firstName: 'bullshit'}}";
+            // return "the File: " + request.Files[0].FileName + " was successfully uploaded Firstname:" + request.Form["firstName"]; 
         }
 
         /// <summary>
