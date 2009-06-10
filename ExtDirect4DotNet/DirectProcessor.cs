@@ -38,7 +38,7 @@ namespace ExtDirect4DotNet
                 // try to Invoke the Method and serialize the Data
                 try
                 {
-                    Object result = directMethod.invoke(request, httpContext.Session);
+                    Object result = directMethod.invoke(request, httpContext);
                     response = new DirectResponse(request, result, directMethod.OutputHandling);
                 }
                 catch (DirectParameterException e)
