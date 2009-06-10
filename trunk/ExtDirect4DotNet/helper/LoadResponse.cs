@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using System.Data;
+using System.Collections;
 
 namespace ExtDirect4DotNet.helper
 {
@@ -11,6 +13,15 @@ namespace ExtDirect4DotNet.helper
     /// </summary>
     public class LoadResponse
     {
+        public LoadResponse() { }
+        public LoadResponse(DataTable dataTable)
+        {
+            DataRow[] arr = new DataRow[ dataTable.Rows.Count];
+            dataTable.Rows.CopyTo(arr, 0);
+
+            Rows = arr;
+            Results = dataTable.Rows.Count;
+        }
 
         [JsonProperty(PropertyName = "success")]
         public bool Success = true;

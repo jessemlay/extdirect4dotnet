@@ -53,8 +53,10 @@
   <ItemGroup>
     <Compile Include="attributes\DirectActionAttribute.cs" />
     <Compile Include="attributes\DirectMethodAttribute.cs" />
+    <Compile Include="baseclasses\ActionWithServer.cs" />
     <Compile Include="baseclasses\ActionWithSessionState.cs" />
     <Compile Include="baseclasses\IActionWithSessionState.cs" />
+    <Compile Include="baseclasses\IActionWithServer.cs" />
     <Compile Include="DirectAction.cs" />
     <Compile Include="DirectProxy.cs" />
     <Compile Include="exceptions\DirectException.cs" />

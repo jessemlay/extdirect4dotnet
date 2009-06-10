@@ -287,7 +287,7 @@ namespace ExtDirect4DotNet
         /// </summary>
         /// <param name="parameter">An Object of Parametr</param>
         /// <returns></returns>
-        internal Object invoke(DirectRequest directRequest, HttpSessionState sessionObject)
+        internal Object invoke(DirectRequest directRequest, HttpContext httpContext)
         {
 
             ParameterInfo[] parmInfo = this.Method.GetParameters();
@@ -406,7 +406,12 @@ namespace ExtDirect4DotNet
             Type actionClassType = this.ParentAction.Type;
             Object actionInstanz = actionClassType.Assembly.CreateInstance(actionClassType.FullName);
             if(actionInstanz is IActionWithSessionState) {
-                ((IActionWithSessionState)actionInstanz).SetSession(sessionObject);
+                ((IActionWithSessionState)actionInstanz).SetSession(httpContext.Session);
+            }
+
+            if (actionInstanz is IActionWithServer)
+            {
+                ((IActionWithServer)actionInstanz).SetServer(httpContext.Server);
             }
             return this.Method.Invoke(actionInstanz, paramMap);
         }
