@@ -57,6 +57,7 @@
     <Compile Include="baseclasses\ActionWithSessionState.cs" />
     <Compile Include="baseclasses\IActionWithSessionState.cs" />
     <Compile Include="baseclasses\IActionWithServer.cs" />
+    <Compile Include="customJsonConverter\DataRowArrayConverter.cs" />
     <Compile Include="DirectAction.cs" />
     <Compile Include="DirectProxy.cs" />
     <Compile Include="exceptions\DirectException.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="helper\LoadResponse.cs" />
     <Compile Include="helper\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="responsewrapper\StoreLoadResponseWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

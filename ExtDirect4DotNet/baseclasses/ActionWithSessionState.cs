@@ -11,9 +11,15 @@ namespace ExtDirect4DotNet
     {
         public HttpSessionState Session;
 
+        #region IActionWithSessionState Member
+
         public void SetSession(HttpSessionState session)
         {
             Session = session;
         }
+
+        #endregion
+
+       
     }
 }
