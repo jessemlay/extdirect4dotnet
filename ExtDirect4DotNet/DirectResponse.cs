@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 using System.IO;
+using ExtDirect4DotNet.customJsonConverter;
 
 namespace ExtDirect4DotNet
 {
@@ -28,7 +29,9 @@ namespace ExtDirect4DotNet
             }
             else
             {
-                this.Result = JsonConvert.SerializeObject(result);
+                JsonConverterCollection jc = new JsonConverterCollection();
+              
+                this.Result = JsonConvert.SerializeObject(result, new DataRowConverter());
             }
 
 

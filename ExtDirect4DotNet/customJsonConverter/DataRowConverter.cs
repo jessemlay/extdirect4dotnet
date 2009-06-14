@@ -2,44 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace ExtDirect4DotNet.customJsonConverter
 {
-    class DataRowArrayConverter : JsonConverter
+    class DataRowConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
         /// <param name="value">The value.</param>
-        public override void WriteJson(JsonWriter writer, object dataRowArray)
+        public override void WriteJson(JsonWriter writer, object dataRow)
         {
-            DataRowCollection rows = dataRowArray as DataRowCollection;
+            DataRow row = dataRow as DataRow;
 
             
 
             // *** HACK: need to use root serializer to write the column value
             //     should be fixed in next ver of JSON.NET with writer.Serialize(object)
             JsonSerializer ser = new JsonSerializer();
-            writer.WriteStartArray();
-            for (int i = 0; i < rows.Count; i++)
+       
+            writer.WriteStartObject();
+            foreach (DataColumn column in row.Table.Columns)
             {
-               
-
-                DataRow row = (DataRow)rows[i];
-                
-
-                writer.WriteStartObject();
-                foreach (DataColumn column in row.Table.Columns)
-                {
-                    writer.WritePropertyName(column.ColumnName);
-                    ser.Serialize(writer, row[column]);
-                }
-                writer.WriteEndObject();
+                writer.WritePropertyName(column.ColumnName);
+                ser.Serialize(writer, row[column]);
             }
-            writer.WriteEndArray();
+            writer.WriteEndObject();
+        
         }
 
         
@@ -53,7 +45,7 @@ namespace ExtDirect4DotNet.customJsonConverter
         /// </returns>
         public override bool CanConvert(Type valueType)
         {
-            return typeof(DataRowCollection).IsAssignableFrom(valueType);
+            return typeof(DataRow).IsAssignableFrom(valueType);
         }
 
         /// <summary>
@@ -67,6 +59,4 @@ namespace ExtDirect4DotNet.customJsonConverter
             throw new NotImplementedException();
         }
     }
-
-    
 }
