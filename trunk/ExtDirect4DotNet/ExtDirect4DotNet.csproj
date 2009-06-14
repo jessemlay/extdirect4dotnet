@@ -58,6 +58,7 @@
     <Compile Include="baseclasses\IActionWithSessionState.cs" />
     <Compile Include="baseclasses\IActionWithServer.cs" />
     <Compile Include="customJsonConverter\DataRowArrayConverter.cs" />
+    <Compile Include="customJsonConverter\DataRowConverter.cs" />
     <Compile Include="DirectAction.cs" />
     <Compile Include="DirectProxy.cs" />
     <Compile Include="exceptions\DirectException.cs" />
