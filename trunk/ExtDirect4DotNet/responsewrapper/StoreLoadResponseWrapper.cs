@@ -11,7 +11,6 @@ namespace ExtDirect4DotNet.responsewrapper
     public class StoreLoadResponseWrapper
     {
         [JsonProperty]
-        [JsonConverter(typeof(DataRowArrayConverter))]
         public DataRowCollection rows;
 
         [JsonProperty]
