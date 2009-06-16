@@ -14,9 +14,9 @@ namespace ExtDirect4DotNet.customJsonConverter
         /// </summary>
         /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
         /// <param name="value">The value.</param>
-        public override void WriteJson(JsonWriter writer, object dataRowArray)
+        public override void WriteJson(JsonWriter writer, object dataRow)
         {
-            DataRowCollection rows = dataRowArray as DataRowCollection;
+            DataRowCollection rows = dataRow as DataRowCollection;
 
             
 
