@@ -111,12 +111,14 @@ namespace ExtDirect4DotNet
                         return 1;
                     case DirectMethodType.Read:
                         return 1;
-                    case DirectMethodType.Update:
-                        return 2;
                     case DirectMethodType.Delete:
                         return 1;
                     case DirectMethodType.Form:
                         return 1;
+                    case DirectMethodType.Update:
+                    case DirectMethodType.TreeLoad:
+                        return 2;
+                   
                 } 
                 return this.Method.GetParameters().Length;
             }
@@ -226,7 +228,7 @@ namespace ExtDirect4DotNet
         }
 
         /// <summary>
-        /// 
+        /// Since a Update Function has another parameter Structure we need our own resolve logic function here 
         /// </summary>
         /// <param name="directRequest"></param>
         /// <returns></returns>
@@ -240,7 +242,7 @@ namespace ExtDirect4DotNet
             {
                 if (parameter.Count <2)
                 {
-                    throw new Exception("Tried to call an Updatemethod with less than 2 Parameters.");
+                    throw new DirectParameterException("Tried to call an Updatemethod with less than 2 Parameters.", directRequest);
                 }
                 Type paramTyp = parmInfo[0].ParameterType;
 
@@ -381,6 +383,7 @@ namespace ExtDirect4DotNet
                         paramMap = ResolveParametersByName(directRequest);
                         break;
                     case DirectMethodType.Update:
+                    case DirectMethodType.TreeLoad: // use same function cause structure is simmilar
                         paramMap = ResolveUpdateParameter(directRequest);
                         break;
                     

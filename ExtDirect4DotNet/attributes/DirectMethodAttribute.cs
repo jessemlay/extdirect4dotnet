@@ -35,6 +35,11 @@ namespace ExtDirect4DotNet
         Delete,
 
         /// <summary>
+        /// Len gets set tu 2 since the Treeloader will send two values to the Server, the Node Id and an object of Parameter
+        /// </summary>
+        TreeLoad,
+
+        /// <summary>
         /// Simple Function...
         /// </summary>
         Normal,
