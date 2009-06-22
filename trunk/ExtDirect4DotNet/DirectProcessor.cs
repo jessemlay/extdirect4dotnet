@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -41,9 +42,9 @@ namespace ExtDirect4DotNet
                     Object result = directMethod.invoke(request, httpContext);
                     response = new DirectResponse(request, result, directMethod.OutputHandling);
                 }
-                catch (DirectParameterException e)
-                {
-                    response = new DirectResponse(request, e);
+                catch (TargetInvocationException e)
+                {   
+                    response = new DirectResponse(request, e.InnerException);
                 }
                 responses.Add(response);
 
