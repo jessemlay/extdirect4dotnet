@@ -31,7 +31,7 @@ namespace ExtDirect4DotNet
             {
                 JsonConverterCollection jc = new JsonConverterCollection();
 
-                this.Result = JsonConvert.SerializeObject(result, new DataRowConverter(), new DataRowCollectionConverter());
+                this.Result = JsonConvert.SerializeObject(result, new DataRowConverter(),new DataRowViewConverter(), new DataRowCollectionConverter());
             }
 
 
