@@ -36,17 +36,49 @@ namespace ExtDirect4DotNet
                 // try to find the method in the provider 
                 DirectMethod directMethod = provider.GetDirectMethod(request);
                 DirectResponse response;
+                
+
                 // try to Invoke the Method and serialize the Data
                 try
                 {
                     Object result = directMethod.invoke(request, httpContext);
-                    response = new DirectResponse(request, result, directMethod.OutputHandling);
+
+                    
+                    // Handle as Poll?
+                    if (directMethod.OutputHandling == OutputHandling.Poll)
+                    {
+                        
+                        response = new DirectResponse(request, "{success:true}", directMethod.OutputHandling);
+                        responses.Add(response);
+
+                        if (result is List<DirectEvent>)
+                        {
+                            foreach (DirectEvent currEvent in (List<DirectEvent>)result)
+                            {
+                                response = new DirectResponse(currEvent);
+                                responses.Add(response);
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("A Method with outputhandling Poll has to return a List<DirectEvent>");
+                        }
+
+                    }
+                    else
+                    {
+                        response = new DirectResponse(request, result, directMethod.OutputHandling);
+                        responses.Add(response);
+
+                    }
                 }
                 catch (TargetInvocationException e)
                 {   
                     response = new DirectResponse(request, e.InnerException);
+                    responses.Add(response);
                 }
-                responses.Add(response);
+                
+                
 
             }
 

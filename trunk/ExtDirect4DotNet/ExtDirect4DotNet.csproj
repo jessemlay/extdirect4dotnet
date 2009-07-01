@@ -60,6 +60,7 @@
     <Compile Include="customJsonConverter\DataRowArrayConverter.cs" />
     <Compile Include="customJsonConverter\DataRowConverter.cs" />
     <Compile Include="DirectAction.cs" />
+    <Compile Include="DirectEvent.cs" />
     <Compile Include="DirectProxy.cs" />
     <Compile Include="exceptions\DirectException.cs" />
     <Compile Include="DirectMethod.cs" />

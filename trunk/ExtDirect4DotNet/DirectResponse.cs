@@ -38,6 +38,15 @@ namespace ExtDirect4DotNet
             this.IsUpload = request.IsUpload;
         }
 
+        public DirectResponse(DirectEvent eventObj)
+        {
+            this.Type = "event";
+            this.Name = eventObj.name;
+            JsonConverterCollection jc = new JsonConverterCollection();
+
+            this.Result = JsonConvert.SerializeObject(eventObj.data, new DataRowConverter(), new DataRowViewConverter(), new DataRowCollectionConverter());
+        }
+
         public DirectResponse(DirectRequest request, Exception e)
         {
             this.Type = "exception";
@@ -56,6 +65,13 @@ namespace ExtDirect4DotNet
         
         [JsonProperty(PropertyName = "type")]
         public string Type
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name
         {
             get;
             set;
@@ -127,6 +143,9 @@ namespace ExtDirect4DotNet
             
             writer.WritePropertyName("type");
             writer.WriteValue(this.Type);
+
+            writer.WritePropertyName("name");
+            writer.WriteValue(this.Name);
 
             writer.WritePropertyName("tid");
             writer.WriteValue(this.TransactionId);

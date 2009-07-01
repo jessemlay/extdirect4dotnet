@@ -104,7 +104,14 @@ namespace ExtDirect4DotNet
         /// "... data[{\"propertiename\":\"propertyValue\"}] ..."  instead of
         /// "... date[{"propertiename":"propertieValue"}"] ... 
         /// </summary>
-        JSON    
+        JSON,
+    
+        /// <summary>
+        /// Signalize the router logiic to handle the response of this methode as an collection of events
+        /// 
+        /// The Returned Value has to be a List<DirectEvent>
+        /// </summary>
+        Poll
     }
 
     /// <summary>
