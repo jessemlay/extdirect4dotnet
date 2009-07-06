@@ -23,7 +23,7 @@ namespace ExtDirect4DotNet.customJsonConverter
             // *** HACK: need to use root serializer to write the column value
             //     should be fixed in next ver of JSON.NET with writer.Serialize(object)
             JsonSerializer ser = new JsonSerializer();
-       
+            ser.Converters.Add(new DataRowConverter());
             writer.WriteStartObject();
             foreach (DataColumn column in row.Table.Columns)
             {
@@ -76,12 +76,14 @@ namespace ExtDirect4DotNet.customJsonConverter
             // *** HACK: need to use root serializer to write the column value
             //     should be fixed in next ver of JSON.NET with writer.Serialize(object)
             JsonSerializer ser = new JsonSerializer();
+            
 
             writer.WriteStartObject();
             int i = 0;
             foreach (DataColumn column in row.DataView.Table.Columns)
             {
                 writer.WritePropertyName(column.ColumnName);
+                
                 ser.Serialize(writer, row[i]);
                 i++;
             }
