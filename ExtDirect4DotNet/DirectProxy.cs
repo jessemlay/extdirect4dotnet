@@ -17,19 +17,14 @@ namespace ExtDirect4DotNet
     /// </summary>
     public class DirectProxy : IHttpHandler
     {
-
-        public void ProcessRequest(HttpContext context)
+        public static DirectProvider getDirectProviderCache(string apiNameSpace)
         {
-
+            
             string routerUrl = ConfigurationCache.getRouterUrl();
 
             // set default namspace for the remoting API
-            string apiNamespace = "Ext.app.REMOTING_API";
-            if (context.Request.Form["ns"] != null)
-            {
-                // if there is an namespace parameter, use it...
-                apiNamespace = context.Request.Form["ns"].ToString();
-            }
+            string apiNamespace = (apiNameSpace == null || apiNameSpace == "") ? "Ext.app.REMOTING_API" : apiNameSpace;
+           
 
             DirectProviderCache cache = DirectProviderCache.GetInstance();
             DirectProvider provider;
@@ -37,7 +32,6 @@ namespace ExtDirect4DotNet
             //After being configured, the provider should be cached.
             if (!cache.ContainsKey(apiNamespace))
             {
-                ;
                 provider = new DirectProvider(apiNamespace, routerUrl);
                 provider.Configure(AppDomain.CurrentDomain.GetAssemblies());
                 cache.Add(apiNamespace, provider);
@@ -46,6 +40,20 @@ namespace ExtDirect4DotNet
             {
                 provider = cache[apiNamespace];
             }
+            return provider;
+        }
+       
+        public void ProcessRequest(HttpContext context)
+        {
+
+            // set default namspace for the remoting API
+            string apiNamespace = "Ext.app.REMOTING_API";
+            if (context.Request.Form["ns"] != null)
+            {
+                // if there is an namespace parameter, use it...
+                apiNamespace = context.Request.Form["ns"].ToString();
+            }
+            DirectProvider provider = getDirectProviderCache(apiNamespace);
 
             context.Response.Write(provider.ToString());
 

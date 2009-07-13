@@ -37,7 +37,7 @@ namespace ExtDirect4DotNet
            // var rpc = new ExtRPC();
 
 
-            DirectProvider provider = DirectProviderCache.GetInstance()["Ext.app.REMOTING_API"];
+            DirectProvider provider = DirectProxy.getDirectProviderCache("Ext.app.REMOTING_API");
             string json = DirectProcessor.Execute(provider, context);
 
 
