@@ -5,6 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.IO;
 using ExtDirect4DotNet.customJsonConverter;
+using Newtonsoft.Json.Converters;
 
 namespace ExtDirect4DotNet
 {
@@ -31,7 +32,7 @@ namespace ExtDirect4DotNet
             {
                 JsonConverterCollection jc = new JsonConverterCollection();
 
-                this.Result = JsonConvert.SerializeObject(result, new DataRowConverter(),new DataRowViewConverter(), new DataRowCollectionConverter());
+                this.Result = JsonConvert.SerializeObject(result, new JavaScriptDateTimeConverter(), new DataRowConverter(),new DataRowViewConverter(), new DataRowCollectionConverter());
             }
 
 
@@ -44,7 +45,7 @@ namespace ExtDirect4DotNet
             this.Name = eventObj.name;
             JsonConverterCollection jc = new JsonConverterCollection();
 
-            this.Result = JsonConvert.SerializeObject(eventObj.data, new DataRowConverter(), new DataRowViewConverter(), new DataRowCollectionConverter());
+            this.Result = JsonConvert.SerializeObject(eventObj.data, new JavaScriptDateTimeConverter(), new DataRowConverter(), new DataRowViewConverter(), new DataRowCollectionConverter());
         }
 
         public DirectResponse(DirectRequest request, Exception e)

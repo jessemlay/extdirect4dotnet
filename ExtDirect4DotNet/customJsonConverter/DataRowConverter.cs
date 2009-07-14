@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace ExtDirect4DotNet.customJsonConverter
 {
@@ -23,11 +24,13 @@ namespace ExtDirect4DotNet.customJsonConverter
             // *** HACK: need to use root serializer to write the column value
             //     should be fixed in next ver of JSON.NET with writer.Serialize(object)
             JsonSerializer ser = new JsonSerializer();
+            
             ser.Converters.Add(new DataRowConverter());
+            ser.Converters.Add(new JavaScriptDateTimeConverter());
             writer.WriteStartObject();
             foreach (DataColumn column in row.Table.Columns)
             {
-                writer.WritePropertyName(column.ColumnName);
+                writer.WritePropertyName(column.ColumnName);                
                 ser.Serialize(writer, row[column]);
             }
             writer.WriteEndObject();
@@ -76,7 +79,8 @@ namespace ExtDirect4DotNet.customJsonConverter
             // *** HACK: need to use root serializer to write the column value
             //     should be fixed in next ver of JSON.NET with writer.Serialize(object)
             JsonSerializer ser = new JsonSerializer();
-            
+
+            ser.Converters.Add(new JavaScriptDateTimeConverter());
 
             writer.WriteStartObject();
             int i = 0;
@@ -136,6 +140,7 @@ namespace ExtDirect4DotNet.customJsonConverter
             //     should be fixed in next ver of JSON.NET with writer.Serialize(object)
             JsonSerializer ser = new JsonSerializer();
 
+            ser.Converters.Add(new JavaScriptDateTimeConverter());
             writer.WriteStartArray();
             if (dataRows != null)
             {
