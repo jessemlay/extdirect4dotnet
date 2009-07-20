@@ -16,6 +16,9 @@ namespace ExtDirect4DotNet.responsewrapper
         [JsonProperty]
         public int results;
 
+        [JsonProperty]
+        public Object additionalData = null;
+
         public StoreLoadResponseWrapper(DataRowCollection dataRows)
         {
             rows = new List<Object>();
