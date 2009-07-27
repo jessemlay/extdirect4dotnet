@@ -72,6 +72,17 @@ namespace ExtDirect4DotNet
             jw.WriteEndArray();
         }
 
+        internal void WriteDocumentation(JsonTextWriter jw)
+        {
+            jw.WriteRaw("var " + this.Name + " = ");
+            jw.WriteStartObject();
+            foreach (DirectMethod method in this.methods.Values)
+            {
+                method.Write(jw);
+            }
+            jw.WriteEndObject();
+        }
+
         private void Configure()
         {
             foreach (MethodInfo mi in this.Type.GetMethods())

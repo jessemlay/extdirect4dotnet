@@ -17,10 +17,16 @@ namespace ExtDirect4DotNet
     /// </summary>
     public class DirectProxy : IHttpHandler
     {
+        private static string url = "";
+        public static string routerUrl {
+            get { return url; }
+            set { url = value; }
+        }
+
         public static DirectProvider getDirectProviderCache(string apiNameSpace)
         {
-            
-            string routerUrl = ConfigurationCache.getRouterUrl();
+
+            string routerUrl = (DirectProxy.routerUrl == "") ? ConfigurationCache.getRouterUrl() : DirectProxy.routerUrl;
 
             // set default namspace for the remoting API
             string apiNamespace = (apiNameSpace == null || apiNameSpace == "") ? "Ext.app.REMOTING_API" : apiNameSpace;
@@ -30,22 +36,23 @@ namespace ExtDirect4DotNet
             DirectProvider provider;
 
             //After being configured, the provider should be cached.
-            if (!cache.ContainsKey(apiNamespace))
+            if (!cache.ContainsKey(apiNamespace + "/" + routerUrl))
             {
                 provider = new DirectProvider(apiNamespace, routerUrl);
                 provider.Configure(AppDomain.CurrentDomain.GetAssemblies());
-                if (!cache.ContainsKey(apiNamespace))
-                    cache.Add(apiNamespace, provider);
+                if (!cache.ContainsKey(apiNamespace + "/" + routerUrl))
+                    cache.Add(apiNamespace + "/" + routerUrl, provider);
             }
             else
             {
-                provider = cache[apiNamespace];
+                provider = cache[apiNamespace + "/" + routerUrl];
             }
             return provider;
         }
        
         public void ProcessRequest(HttpContext context)
         {
+
 
             // set default namspace for the remoting API
             string apiNamespace = "Ext.app.REMOTING_API";

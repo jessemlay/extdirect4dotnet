@@ -56,6 +56,10 @@ namespace ExtDirect4DotNet
             this.Method = request.Method;
             this.Message = e.Message;
             this.Where = e.StackTrace;
+            if (e is DirectException)
+            {
+                this.ErrorCode = ((DirectException)e).errorCode;
+            }
             this.Result = "{success:false}";
 
             
@@ -108,6 +112,13 @@ namespace ExtDirect4DotNet
        
         [JsonProperty(PropertyName = "where")]
         public string Where
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty(PropertyName = "errorcode")]
+        public uint ErrorCode
         {
             get;
             set;
@@ -175,8 +186,10 @@ namespace ExtDirect4DotNet
 
             writer.WritePropertyName("where");
             writer.WriteValue(this.Where);
-           
 
+            writer.WritePropertyName("errorcode");
+            writer.WriteValue(this.ErrorCode);
+           
 
             // }
             writer.WriteEndObject();
