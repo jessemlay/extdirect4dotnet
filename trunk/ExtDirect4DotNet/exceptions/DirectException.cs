@@ -17,10 +17,18 @@ namespace ExtDirect4DotNet
         {
         }
 
+        public DirectException(string msg)
+            : base(msg)
+        {
+        }
+
+
         public DirectException(string msg, DirectRequest directRequest)
             : base(msg+" DirectAction: "+ directRequest.Action + " DirectMethod "+ directRequest.Method )
         {
         }
+
+        public uint errorCode;
 
     }
 
