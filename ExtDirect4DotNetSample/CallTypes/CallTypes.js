@@ -408,7 +408,7 @@ var upload2 = new Ext.form.FormPanel({
 
         layout: 'column',
 
-        items: [echo, time, upload, form, upload2/*dates*/],
+        items: [echo, time, upload, upload2/*dates*/],
 
         renderTo: document.body
 
