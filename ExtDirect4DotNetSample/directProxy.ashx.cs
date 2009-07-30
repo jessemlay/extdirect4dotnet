@@ -20,7 +20,7 @@ namespace WebApplication1
 
         public directProxy()
         {
-            DirectProxy.routerUrl = "directRouter.ashx";
+            DirectProxy.routerUrl = "../directRouter.ashx";
         }
 
     }
