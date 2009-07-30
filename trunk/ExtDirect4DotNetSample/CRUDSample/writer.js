@@ -25,9 +25,9 @@ var reader = new Ext.data.JsonReader({
 
 	var store = new Ext.data.DirectStore({	    	    
 	    api: {
-	        load: CRUDSampleMethods.read,
+	        read: CRUDSampleMethods.read,
 	        create: CRUDSampleMethods.create,
-	        save: CRUDSampleMethods.update,
+	        update: CRUDSampleMethods.update,
 	        destroy: CRUDSampleMethods.destroy
 	    },
 	    reader: reader,
@@ -35,6 +35,7 @@ var reader = new Ext.data.JsonReader({
 	    writer: writer, 	// <-- plug a DataWriter into the store just as you would a Reader
 	    paramsAsHash: true,
 	    batchSave: false,
+	    batch: false,
 	    prettyUrls: false,
 	    remoteSort: true,
 	    listeners: {
