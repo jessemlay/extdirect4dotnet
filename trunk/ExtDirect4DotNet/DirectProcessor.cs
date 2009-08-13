@@ -11,6 +11,9 @@ using Newtonsoft.Json.Linq;
 
 namespace ExtDirect4DotNet
 {
+
+    
+
     /// <summary>
     /// Class for processing Ext Direct requests.
     /// </summary>
@@ -23,8 +26,11 @@ namespace ExtDirect4DotNet
         /// <param name="provider">The provider that triggered the request.</param>
         /// <param name="httpRequest">The http information.</param>
         /// <returns>The result from the client method.</returns>
-        public static string Execute(DirectProvider provider, HttpContext httpContext)
+        public static DirectExceution Execute(DirectProvider provider, HttpContext httpContext)
         {
+
+            DirectExceution directExecution = new DirectExceution();
+
             HttpRequest httpRequest = httpContext.Request;
             // parse the a list of requests from the httpRequest
             List<DirectRequest> requests = ParseRequest(httpRequest);
@@ -56,6 +62,7 @@ namespace ExtDirect4DotNet
                             foreach (DirectEvent currEvent in (List<DirectEvent>)result)
                             {
                                 response = new DirectResponse(currEvent);
+                                
                                 responses.Add(response);
                             }
                         }
@@ -87,7 +94,10 @@ namespace ExtDirect4DotNet
             int i3 = 1; 
             foreach(DirectResponse response in responses)
             {
-                
+                if(response.Type ==  "exception")
+                {
+                    directExecution.containsErrors = true;
+                }
                 output += response.toJson();
                 if (responses.Count > i3) 
                 {
@@ -97,8 +107,9 @@ namespace ExtDirect4DotNet
             }
 
             output += "]";
+            directExecution.jsonResponse = output;
 
-            return output;
+            return directExecution;
             
         }
 
