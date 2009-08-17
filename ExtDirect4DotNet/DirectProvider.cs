@@ -220,7 +220,7 @@ namespace ExtDirect4DotNet
             return this.api;
         }
 
-        public string toDocString()
+        public string toDocString(string docDescriptionPath)
         {
             this.doc = "";
             if (this.Configured && String.IsNullOrEmpty(this.doc))
@@ -241,12 +241,12 @@ namespace ExtDirect4DotNet
                         jw.WriteStartObject();*/
                         foreach (DirectAction action in this.actions.Values)
                         {
-                            this.doc += action.toDocString();
+                            this.doc += action.toDocString("");
                         }
                         /*
                         jw.WriteEndObject();
                         jw.WriteEndObject();*/
-                        this.api = String.Format("{0} = {1};", this.Name, sw.ToString());
+                        //this.api = String.Format("{0} = {1};", this.Name, sw.ToString());
                     }
                 }
             }

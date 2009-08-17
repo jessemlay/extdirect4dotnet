@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System.Web;
 using ExtDirect4DotNet.helper;
 using System.Web.SessionState;
+using System.Xml;
 
 namespace ExtDirect4DotNet
 {
