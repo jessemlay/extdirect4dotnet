@@ -25,6 +25,8 @@ namespace ExtDirect4DotNet
         /// <returns>The result from the client method.</returns>
         public static DirectExecution Execute(DirectProvider provider, HttpContext httpContext)
         {
+            DirectExecution directExecution = new DirectExecution();
+
             HttpRequest httpRequest = httpContext.Request;
             // parse the a list of requests from the httpRequest
             List<DirectRequest> requests = ParseRequest(httpRequest);
