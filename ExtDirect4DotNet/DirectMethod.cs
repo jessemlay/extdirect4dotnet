@@ -432,6 +432,152 @@ namespace ExtDirect4DotNet
             jw.WriteEndObject();
         }
 
+        private string resolveParamType(ParameterInfo paramInfo)
+        {
+            // TODO implement more than just string....
+            /*
+            switch (paramInfo.GetType().ToString())
+            {
+                case ((new String("")).GetType().ToString()):
+                    return "String";
+                
+
+
+            }*/
+            return "string";
+        }
+
+        private string getParameterDesciption(string paramName) {
+            return paramName + " parameter Descirption";
+        }
+
+        public string toDocString(XmlDocument docDesciptionDoc)
+        {
+            if (this.MethodAttributes.ParameterHandling == ParameterHandling.PassThrough &&
+                    this.MethodType == DirectMethodType.Normal)
+            {
+                string functionString = this.Method.Name + " : function (";
+                string docString = "/**\n";
+                docString += " * "+ "Method description " + "\n";
+                foreach(ParameterInfo param in this.Method.GetParameters()) {
+                    docString += " * @param {"+resolveParamType(param) + "} " + getParameterDesciption(param.Name) + "\n";
+                    functionString += param.Name + ", ";
+                }
+                docString += " * @param cb {Function} The Callback Function (gets called when the Method returned from the Server) \n";
+                docString += " * @param scope {Object} The Scope to call the Callbackfunction with. \n";
+                functionString += "cb, scope) {}";
+                docString += " */ \n "+ functionString;
+                return docString;
+                
+            }
+            else if (this.MethodAttributes.ParameterHandling == ParameterHandling.AutoResolve)
+            {
+                switch (this.MethodType)
+                {
+                    case DirectMethodType.Normal:
+                        string functionString = this.Method.Name + " : function (hash,";
+                        string docString = "/**\n";
+                        docString += " * "+ "Method description " + "\n";
+                        docString += " * @param {Object} hash \n";
+                        foreach(ParameterInfo param in this.Method.GetParameters()) {
+                            docString += " * @param {"+resolveParamType(param) + "} hash." + getParameterDesciption(param.Name) + "\n";
+                            //functionString += param.Name + ", ";
+                        }
+                        
+                        docString += " * @param cb {Function} The Callback Function (gets called when the Method returned from the Server) \n";
+                        docString += " * @param scope {Object} The Scope to call the Callbackfunction with. \n";
+                        functionString += "cb, scope) {}";
+                        docString += " */ \n "+ functionString;
+                        return docString;
+
+                }
+            } 
+            switch (this.MethodType)
+            {
+                case DirectMethodType.Create:
+                    string functionString = this.Method.Name + " : function (rec,";
+                    string docString = "/**\n";
+                    docString += " * "+ "Method description " + "\n";
+                    docString += " * @param {Ext.data.Record} rec \n";
+                    docString += " * @param cb {Function} The Callback Function (gets called when the Method returned from the Server) \n";
+                    docString += " * @param scope {Object} The Scope to call the Callbackfunction with. \n";
+                    functionString += "cb, scope) {}";
+                    docString += " */ \n "+ functionString;
+                    return docString;
+                case DirectMethodType.Read:
+                     // Ein Parameter (Read parameter vom Store)
+                    functionString = this.Method.Name + " : function (params,";
+                    docString = "/**\n";
+                    docString += " * "+ "Method description " + "\n";
+                    docString += " * @param {Object} params parameter of the Store \n";
+                    docString += " * @param cb {Function} The Callback Function (gets called when the Method returned from the Server) \n";
+                    docString += " * @param scope {Object} The Scope to call the Callbackfunction with. \n";
+                    functionString += "cb, scope) {}";
+                    docString += " */ \n "+ functionString;
+                    return docString;
+                case DirectMethodType.Delete:
+                    functionString = this.Method.Name + " : function (id,";
+                    docString = "/**\n";
+                    docString += " * "+ "Method description " + "\n";
+                    docString += " * @param id Id of the Record to delete \n";
+                    docString += " * @param cb {Function} The Callback Function (gets called when the Method returned from the Server) \n";
+                    docString += " * @param scope {Object} The Scope to call the Callbackfunction with. \n";
+                    functionString += "cb, scope) {}";
+                    docString += " */ \n "+ functionString;
+                    return docString;
+                case DirectMethodType.Form:
+                    functionString = this.Method.Name + " : function (form,";
+                    docString = "/**\n";
+                    docString += " * "+ "Method description " + "\n";
+                    docString += " * @param form a dom form Node or an Ext.form.BasicForm \n";
+                    docString += " * @param cb {Function} The Callback Function (gets called when the Method returned from the Server) \n";
+                    docString += " * @param scope {Object} The Scope to call the Callbackfunction with. \n";
+                    functionString += "cb, scope) {}";
+                    docString += " */ \n "+ functionString;
+                    return docString;
+                case DirectMethodType.Update: // Zwei Parameter Die Id des Records und der Record der geupdatet werden soll
+                    functionString = this.Method.Name + " : function (id, record";
+                    docString = "/**\n";
+                    docString += " * "+ "Method description " + "\n";
+                    docString += " * @param id Id of the Record to update \n";
+                    docString += " * @param record {Object} the recordFields you wish to update \n";
+                    docString += " * @param cb {Function} The Callback Function (gets called when the Method returned from the Server) \n";
+                    docString += " * @param scope {Object} The Scope to call the Callbackfunction with. \n";
+                    functionString += "cb, scope) {}";
+                    docString += " */ \n "+ functionString;
+                    return docString;
+                case DirectMethodType.TreeLoad: // Zwei Parameter die ID des Parents und die Parameter die die Funktion füllen sollen.
+                    functionString = this.Method.Name + " : function (id, params";
+                    docString = "\n/**\n";
+                    docString += " * "+ "Method description " + "\n";
+                    docString += " * @param id Id the Node to load \n";
+                    docString += " * @param params extra Prameter you want to call the loadmethod with \n";
+                    docString += " * @param cb {Function} The Callback Function (gets called when the Method returned from the Server) \n";
+                    docString += " * @param scope {Object} The Scope to call the Callbackfunction with. \n";
+                    functionString += "cb, scope) {}";
+                    docString += " */ \n "+ functionString;
+                    return docString;
+
+            }
+
+            string functionString2 = this.Method.Name + " : function (";
+            string docString2 = "/**\n";
+            docString2 += " * " + "Method description " + "\n";
+            foreach (ParameterInfo param in this.Method.GetParameters())
+            {
+                docString2 += " * @param {" + resolveParamType(param) + "} " + getParameterDesciption(param.Name) + "\n";
+                functionString2 += param.Name + ", ";
+            }
+            docString2 += " * @param cb {Function} The Callback Function (gets called when the Method returned from the Server) \n";
+            docString2 += " * @param scope {Object} The Scope to call the Callbackfunction with. \n";
+            functionString2 += "cb, scope) {}";
+            docString2 += " */ \n " + functionString2;
+            return docString2;
+
+        }
+
+        
+
         /// <summary>
         /// Checks whether the passed method is a direct method.
         /// </summary>

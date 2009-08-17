@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using Newtonsoft.Json;
 using ExtDirect4DotNet.helper;
+using System.Xml;
 
 namespace ExtDirect4DotNet
 {
@@ -70,6 +71,24 @@ namespace ExtDirect4DotNet
                 method.Write(jw);
             }
             jw.WriteEndArray();
+        }
+
+        public string toDocString(string docDesciptionPath)
+        {
+            XmlDocument docDocument = new XmlDocument();
+            
+            string docString = "\nvar " + this.Name + " = {";
+
+            int i = 0;
+            foreach (DirectMethod method in this.methods.Values)
+            {
+                i++;
+                
+                docString += method.toDocString(docDocument) + ((i < this.methods.Values.Count) ? "," : "");
+            }
+
+            docString += "};";
+            return docString;
         }
 
         internal void WriteDocumentation(JsonTextWriter jw)

@@ -20,6 +20,7 @@ namespace ExtDirect4DotNet
 
         private Dictionary<string, DirectAction> actions;
         private string api = string.Empty;
+        private string doc = string.Empty;
 
         /// <summary>
         /// Creates an instance of the object.
@@ -217,6 +218,39 @@ namespace ExtDirect4DotNet
                 }
             }
             return this.api;
+        }
+
+        public string toDocString()
+        {
+            this.doc = "";
+            if (this.Configured && String.IsNullOrEmpty(this.doc))
+            {
+                using (System.IO.StringWriter sw = new System.IO.StringWriter())
+                {
+                    using (JsonTextWriter jw = new JsonTextWriter(sw))
+                    {
+                        /*
+                        jw.WriteStartObject();
+                        Utility.WriteProperty<string>(jw, "type", this.Type);
+
+                        Utility.WriteProperty<string>(jw, "id", "1");
+                         * 
+                        // Utility.WriteProperty<int>(jw, "enableBuffer", 3000);
+                        Utility.WriteProperty<string>(jw, "url", this.Url);
+                        jw.WritePropertyName("actions");
+                        jw.WriteStartObject();*/
+                        foreach (DirectAction action in this.actions.Values)
+                        {
+                            this.doc += action.toDocString();
+                        }
+                        /*
+                        jw.WriteEndObject();
+                        jw.WriteEndObject();*/
+                        this.api = String.Format("{0} = {1};", this.Name, sw.ToString());
+                    }
+                }
+            }
+            return this.doc;
         }
 
         /// <summary>

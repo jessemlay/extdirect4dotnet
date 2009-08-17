@@ -23,11 +23,6 @@ namespace WebApplication1.CallTypes
     [DirectAction]
     public class CallTypes
     {
-        /// <summary>
-        /// Takes the Value of the Parameter Name, adds an "Echo:" and returns it
-        /// </summary>
-        /// <param name="name">the string wich should get returned in the way: "Echo: "+ name</param>
-        /// <returns>Returns "Echo:" + the parameter</returns>
         [DirectMethod]
         public string Echo(string name)
         {
