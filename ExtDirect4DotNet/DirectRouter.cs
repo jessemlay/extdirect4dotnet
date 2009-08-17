@@ -38,14 +38,19 @@ namespace ExtDirect4DotNet
 
 
             DirectProvider provider = DirectProxy.getDirectProviderCache("Ext.app.REMOTING_API");
-            string json = DirectProcessor.Execute(provider, context);
+            DirectExceution directExecution = DirectProcessor.Execute(provider, context);
 
+            if (directExecution.containsErrors)
+            {
+                context.Response.StatusCode = 207;
+            }
 
             // send eventually wraped content back to the browser
 
             context.Response.Write(responseWrapStart);
 
-            context.Response.Write(json);
+            context.Response.Write(directExecution.jsonResponse);
+
 
             context.Response.Write(responseWrapEnd);
 
