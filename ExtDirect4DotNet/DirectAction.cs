@@ -73,18 +73,25 @@ namespace ExtDirect4DotNet
             jw.WriteEndArray();
         }
 
-        public string toDocString(string docDesciptionPath)
+        public string toDocString(XmlDocument docDesciptionPath)
         {
-            XmlDocument docDocument = new XmlDocument();
-            
-            string docString = "\nvar " + this.Name + " = {";
+            string docString = "\n/**";
+            foreach (XmlNode member in docDesciptionPath.GetElementsByTagName("member"))
+            {
+                if (member.Attributes["name"].Value.EndsWith(this.Name))
+                {
+                    docString += "\n * "+ member.FirstChild.InnerText;
+                }
+            }
+            docString += " */ ";
+            docString += "\nvar " + this.Name + " = {";
 
             int i = 0;
             foreach (DirectMethod method in this.methods.Values)
             {
                 i++;
-                
-                docString += method.toDocString(docDocument) + ((i < this.methods.Values.Count) ? "," : "");
+
+                docString += method.toDocString(docDesciptionPath) + ((i < this.methods.Values.Count) ? "," : "");
             }
 
             docString += "};";

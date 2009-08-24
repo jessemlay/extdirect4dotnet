@@ -6,6 +6,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ExtDirect4DotNet.helper;
+using System.Xml;
 
 
 namespace ExtDirect4DotNet
@@ -222,6 +223,10 @@ namespace ExtDirect4DotNet
 
         public string toDocString(string docDescriptionPath)
         {
+            XmlDocument docDesciptionXML = new XmlDocument();
+
+            docDesciptionXML.Load(docDescriptionPath);
+
             this.doc = "";
             if (this.Configured && String.IsNullOrEmpty(this.doc))
             {
@@ -241,7 +246,7 @@ namespace ExtDirect4DotNet
                         jw.WriteStartObject();*/
                         foreach (DirectAction action in this.actions.Values)
                         {
-                            this.doc += action.toDocString("");
+                            this.doc += action.toDocString(docDesciptionXML);
                         }
                         /*
                         jw.WriteEndObject();

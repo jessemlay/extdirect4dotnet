@@ -55,6 +55,7 @@ namespace ExtDirect4DotNet
         {
 
             string docDescriptionPath = "./bin/Documentation.XML";
+            docDescriptionPath = context.Server.MapPath(docDescriptionPath);
             // set default namspace for the remoting API
             string apiNamespace = "Ext.app.REMOTING_API";
             if (context.Request.Form["ns"] != null)
@@ -63,11 +64,13 @@ namespace ExtDirect4DotNet
                 apiNamespace = context.Request.Form["ns"].ToString();
             }
             DirectProvider provider = getDirectProviderCache(apiNamespace);
+            context.Response.Write(provider.ToString());
 
+            /*
 
             string documentation = provider.toDocString(docDescriptionPath);
 
-            context.Response.Write(provider.ToString());
+            
             string relativPath = "DirectDocu.js";
             string buildPath = context.Server.MapPath(".") + "/" + relativPath;
             if (File.Exists(buildPath))
@@ -83,7 +86,7 @@ namespace ExtDirect4DotNet
 
             }
             
-            
+            */
 
             /*
             old code..
