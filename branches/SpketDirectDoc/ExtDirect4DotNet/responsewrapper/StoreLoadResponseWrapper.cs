@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using ExtDirect4DotNet.customJsonConverter;
 using Newtonsoft.Json;
+using System.Collections;
 
 namespace ExtDirect4DotNet.responsewrapper
 {
@@ -21,8 +22,16 @@ namespace ExtDirect4DotNet.responsewrapper
 
         [JsonProperty]
         public bool comitted = true;
+        
+        [JsonProperty]
+        public Object metaData = null;
 
-        public StoreLoadResponseWrapper(DataRowCollection dataRows)
+        /// <summary>
+        /// Creates a StoreLoadResponseWrapper from the assigned dataRows
+        /// </summary>
+        /// <param name="dataRows">dataRows the StoreLoadResponseWrapper shoud contain</param>
+        /// <param name="addMetaData">generate and add Metadata?</param>
+        public StoreLoadResponseWrapper(DataRowCollection dataRows, bool addMetaData)
         {
             rows = new List<Object>();
             DataRow[] arr = new DataRow[dataRows.Count];
@@ -31,11 +40,16 @@ namespace ExtDirect4DotNet.responsewrapper
             if (arr.Length > 0)
             {
                 this.comitted = !arr[0].Table.DataSet.HasChanges();
+                if (addMetaData)
+                {
+                    addMetaData(arr[0].Table);
+                }
             }
             results = rows.Count;
         }
 
-        public StoreLoadResponseWrapper(DataRowCollection dataRows, int count)
+
+        public StoreLoadResponseWrapper(DataRowCollection dataRows, int count, bool addMetaData)
         {
             rows = new List<Object>();
             DataRow[] arr = new DataRow[dataRows.Count];
@@ -44,11 +58,15 @@ namespace ExtDirect4DotNet.responsewrapper
             if (arr.Length > 0)
             {
                 this.comitted = !arr[0].Table.DataSet.HasChanges();
+                if (addMetaData)
+                {
+                    addMetaData(arr[0].Table);
+                }
             }
             results = count;
         }
 
-        public StoreLoadResponseWrapper(DataRowCollection dataRows, int start, int limit)
+        public StoreLoadResponseWrapper(DataRowCollection dataRows, int start, int limit, bool addMetaData)
         {
             rows = new List<Object>();
             DataRow[] arr = new DataRow[dataRows.Count];
@@ -57,12 +75,16 @@ namespace ExtDirect4DotNet.responsewrapper
             if (arr.Length > 0)
             {
                 this.comitted = !arr[0].Table.DataSet.HasChanges();
+                if (addMetaData)
+                {
+                    addMetaData(arr[0].Table);
+                }
             }
             results = rows.Count;
             rows = page(rows, start, limit);
         }
 
-        public StoreLoadResponseWrapper(DataRowCollection dataRows, int start, int limit, int count)
+        public StoreLoadResponseWrapper(DataRowCollection dataRows, int start, int limit, int count, bool addMetaData)
         {
             
             rows = new List<Object>();
@@ -74,13 +96,17 @@ namespace ExtDirect4DotNet.responsewrapper
             if (arr.Length > 0)
             {
                 this.comitted = !arr[0].Table.DataSet.HasChanges();
+                if (addMetaData)
+                {
+                    addMetaData(arr[0].Table);
+                }
             }
             rows = page(rows, start, limit);
             results = count;
         }
 
 
-        public StoreLoadResponseWrapper(DataView dataRows)
+        public StoreLoadResponseWrapper(DataView dataRows, bool addMetaData)
         {
             rows = new List<Object>();
             DataRowView[] arr = new DataRowView[dataRows.Count];
@@ -90,11 +116,16 @@ namespace ExtDirect4DotNet.responsewrapper
             {
 
                 this.comitted = !dataRows.Table.DataSet.HasChanges(); ;
+                
+            }
+            if (addMetaData)
+            {
+                addMetaData(dataRows.Table);
             }
             results = rows.Count;
         }
 
-        public StoreLoadResponseWrapper(DataView dataRows, int count)
+        public StoreLoadResponseWrapper(DataView dataRows, int count, bool addMetaData)
         {
             rows = new List<Object>();
             DataRowView[] arr = new DataRowView[ dataRows.Count];
@@ -105,10 +136,14 @@ namespace ExtDirect4DotNet.responsewrapper
 
                 this.comitted = !dataRows.Table.DataSet.HasChanges(); ;
             }
+            if (addMetaData)
+            {
+                addMetaData(dataRows.Table);
+            }
             results = count;
         }
 
-        public StoreLoadResponseWrapper(DataView dataRows, int start, int limit)
+        public StoreLoadResponseWrapper(DataView dataRows, int start, int limit, bool addMetaData)
         {
             rows = new List<Object>();
             DataRowView[ ] arr = new DataRowView[ dataRows.Count];
@@ -119,11 +154,15 @@ namespace ExtDirect4DotNet.responsewrapper
 
                 this.comitted = !dataRows.Table.DataSet.HasChanges(); ;
             }
+            if (addMetaData)
+            {
+                addMetaData(dataRows.Table);
+            }
             results = rows.Count;
             rows = page(rows, start, limit);
         }
 
-        public StoreLoadResponseWrapper(DataView dataRows, int start, int limit, int count)
+        public StoreLoadResponseWrapper(DataView dataRows, int start, int limit, int count, bool addMetaData)
         {
             rows = new List<Object>();
             DataRowView[] arr = new DataRowView[dataRows.Count];
@@ -134,51 +173,94 @@ namespace ExtDirect4DotNet.responsewrapper
 
                 this.comitted = !dataRows.Table.DataSet.HasChanges(); ;
             }
+            if (addMetaData)
+            {
+                addMetaData(dataRows.Table);
+            }
             rows = page(rows, start, limit);
             results = count;
         }
 
 
-        public StoreLoadResponseWrapper(DataRow[] dataRows)
+        public StoreLoadResponseWrapper(DataRow[] dataRows, bool addMetaData)
         {
             if (dataRows.Length > 0)
             {
                 this.comitted = !dataRows[0].Table.DataSet.HasChanges();
+                if (addMetaData)
+                {
+                    addMetaData(dataRows[0].Table);
+                }
             }
             rows = dataRows.ToList<Object>();
             results = dataRows.Length;
         }
 
-        public StoreLoadResponseWrapper(DataRow[] dataRows, int count)
+        public StoreLoadResponseWrapper(DataRow[] dataRows, int count, bool addMetaData)
         {
             if (dataRows.Length > 0)
             {
                 this.comitted = !dataRows[0].Table.DataSet.HasChanges();
+                if (addMetaData)
+                {
+                    addMetaData(dataRows[0].Table);
+                }
             }
             rows = dataRows.ToList<Object>();
             results = count;
         }
 
-        public StoreLoadResponseWrapper(DataRow[] dataRows, int start, int limit)
+        public StoreLoadResponseWrapper(DataRow[] dataRows, int start, int limit, bool addMetaData)
         {
             if (dataRows.Length > 0)
             {
                 this.comitted = !dataRows[0].Table.DataSet.HasChanges();
+                if (addMetaData)
+                {
+                    addMetaData(dataRows[0].Table);
+                }
             }
             rows = dataRows.ToList<Object>();
             rows = page(rows, start, limit);
             results = dataRows.Length;
         }
 
-        public StoreLoadResponseWrapper(DataRow[] dataRows, int start, int limit, int count)
+        public StoreLoadResponseWrapper(DataRow[] dataRows, int start, int limit, int count, bool addMetaData)
         {
             if (dataRows.Length > 0)
             {
                 this.comitted = !dataRows[0].Table.DataSet.HasChanges();
+                if (addMetaData)
+                {
+                    addMetaData(dataRows[0].Table);
+                }
             }
             rows = dataRows.ToList<Object>();
             rows = page(rows, start, limit);
             results = count;
+        }
+
+        /// <summary>
+        /// adds the Meta-Data to this StoreLoadResponseWrapper
+        /// </summary>
+        /// <param name="dataTable">The DataTable to generate the metaData from</param>
+        private void addMetaData(DataTable dataTable)
+        {
+            this.metaData = new Hashtable();
+            this.metaData.add("root", "rows");
+            this.metaData.add("totalProperty", "results");
+
+            ArrayList fields = new ArrayList();
+            foreach(DataColumn dc in dataTable.Columns) {
+                // TODO add DataType
+                Hashtable field = new Hashtable();
+                field.Add("name", dc.ColumnName);
+            }
+            // TODO add success Property
+            //this.metaData.add("success", "success");
+
+            // TODO add sortInfo
+            // TODO Add pagingInfo
         }
 
         private List<Object> page(List<Object> datarows, int start, int limit)
