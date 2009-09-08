@@ -24,7 +24,7 @@ namespace ExtDirect4DotNet.responsewrapper
         public bool comitted = true;
         
         [JsonProperty]
-        public Object metaData = null;
+        public Hashtable metaData = null;
 
         /// <summary>
         /// Creates a StoreLoadResponseWrapper from the assigned dataRows
@@ -42,7 +42,7 @@ namespace ExtDirect4DotNet.responsewrapper
                 this.comitted = !arr[0].Table.DataSet.HasChanges();
                 if (addMetaData)
                 {
-                    addMetaData(arr[0].Table);
+                    addMetaDataWrapper(arr[0].Table);
                 }
             }
             results = rows.Count;
@@ -60,7 +60,7 @@ namespace ExtDirect4DotNet.responsewrapper
                 this.comitted = !arr[0].Table.DataSet.HasChanges();
                 if (addMetaData)
                 {
-                    addMetaData(arr[0].Table);
+                    addMetaDataWrapper(arr[0].Table);
                 }
             }
             results = count;
@@ -77,7 +77,7 @@ namespace ExtDirect4DotNet.responsewrapper
                 this.comitted = !arr[0].Table.DataSet.HasChanges();
                 if (addMetaData)
                 {
-                    addMetaData(arr[0].Table);
+                    addMetaDataWrapper(arr[0].Table);
                 }
             }
             results = rows.Count;
@@ -98,7 +98,7 @@ namespace ExtDirect4DotNet.responsewrapper
                 this.comitted = !arr[0].Table.DataSet.HasChanges();
                 if (addMetaData)
                 {
-                    addMetaData(arr[0].Table);
+                    addMetaDataWrapper(arr[0].Table);
                 }
             }
             rows = page(rows, start, limit);
@@ -120,7 +120,7 @@ namespace ExtDirect4DotNet.responsewrapper
             }
             if (addMetaData)
             {
-                addMetaData(dataRows.Table);
+                addMetaDataWrapper(dataRows.Table);
             }
             results = rows.Count;
         }
@@ -138,7 +138,7 @@ namespace ExtDirect4DotNet.responsewrapper
             }
             if (addMetaData)
             {
-                addMetaData(dataRows.Table);
+                addMetaDataWrapper(dataRows.Table);
             }
             results = count;
         }
@@ -156,7 +156,7 @@ namespace ExtDirect4DotNet.responsewrapper
             }
             if (addMetaData)
             {
-                addMetaData(dataRows.Table);
+                addMetaDataWrapper(dataRows.Table);
             }
             results = rows.Count;
             rows = page(rows, start, limit);
@@ -175,7 +175,7 @@ namespace ExtDirect4DotNet.responsewrapper
             }
             if (addMetaData)
             {
-                addMetaData(dataRows.Table);
+                addMetaDataWrapper(dataRows.Table);
             }
             rows = page(rows, start, limit);
             results = count;
@@ -189,7 +189,7 @@ namespace ExtDirect4DotNet.responsewrapper
                 this.comitted = !dataRows[0].Table.DataSet.HasChanges();
                 if (addMetaData)
                 {
-                    addMetaData(dataRows[0].Table);
+                    addMetaDataWrapper(dataRows[0].Table);
                 }
             }
             rows = dataRows.ToList<Object>();
@@ -203,7 +203,7 @@ namespace ExtDirect4DotNet.responsewrapper
                 this.comitted = !dataRows[0].Table.DataSet.HasChanges();
                 if (addMetaData)
                 {
-                    addMetaData(dataRows[0].Table);
+                    addMetaDataWrapper(dataRows[0].Table);
                 }
             }
             rows = dataRows.ToList<Object>();
@@ -217,7 +217,7 @@ namespace ExtDirect4DotNet.responsewrapper
                 this.comitted = !dataRows[0].Table.DataSet.HasChanges();
                 if (addMetaData)
                 {
-                    addMetaData(dataRows[0].Table);
+                    addMetaDataWrapper(dataRows[0].Table);
                 }
             }
             rows = dataRows.ToList<Object>();
@@ -232,7 +232,7 @@ namespace ExtDirect4DotNet.responsewrapper
                 this.comitted = !dataRows[0].Table.DataSet.HasChanges();
                 if (addMetaData)
                 {
-                    addMetaData(dataRows[0].Table);
+                    addMetaDataWrapper(dataRows[0].Table);
                 }
             }
             rows = dataRows.ToList<Object>();
@@ -244,23 +244,43 @@ namespace ExtDirect4DotNet.responsewrapper
         /// adds the Meta-Data to this StoreLoadResponseWrapper
         /// </summary>
         /// <param name="dataTable">The DataTable to generate the metaData from</param>
-        private void addMetaData(DataTable dataTable)
+        private void addMetaDataWrapper(DataTable dataTable)
         {
             this.metaData = new Hashtable();
-            this.metaData.add("root", "rows");
-            this.metaData.add("totalProperty", "results");
+            this.metaData.Add("root", "rows");
+            this.metaData.Add("totalProperty", "results");
 
             ArrayList fields = new ArrayList();
             foreach(DataColumn dc in dataTable.Columns) {
                 // TODO add DataType
                 Hashtable field = new Hashtable();
                 field.Add("name", dc.ColumnName);
+                fields.Add(field);
+                mapType(dc.DataType,ref field);
+                
+                int maxLength = 0;
+                if(dc.ExtendedProperties.Contains("maxlength")) {
+                    maxLength = int.Parse(dc.ExtendedProperties["maxlength"].ToString());
+                } else {
+                    maxLength = dc.MaxLength;
+                }
+                if(maxLength > 0)
+                    field.Add("maxLength",maxLength);
             }
+
+            this.metaData.Add("fields", fields);
             // TODO add success Property
             //this.metaData.add("success", "success");
 
             // TODO add sortInfo
             // TODO Add pagingInfo
+        }
+
+        private void mapType(Type type, ref Hashtable ht)
+        {
+            if (type == typeof(System.DateTime))
+                ht.Add("type", "date");
+
         }
 
         private List<Object> page(List<Object> datarows, int start, int limit)
