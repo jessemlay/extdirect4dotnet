@@ -114,8 +114,15 @@ namespace ExtDirect4DotNet.responsewrapper
             rows.AddRange(arr);
             if (dataRows.Count > 0)
             {
+                if (dataRows.Table.DataSet != null)
+                {
 
-                this.comitted = !dataRows.Table.DataSet.HasChanges(); ;
+                    this.comitted = !dataRows.Table.DataSet.HasChanges();
+                }
+                else
+                {
+                    this.comitted = true;
+                }
                 
             }
             if (addMetaData)
@@ -249,6 +256,7 @@ namespace ExtDirect4DotNet.responsewrapper
             this.metaData = new Hashtable();
             this.metaData.Add("root", "rows");
             this.metaData.Add("totalProperty", "results");
+            this.metaData.Add("idProperty", dataTable.ExtendedProperties["primaryKeyColumn"]);
 
             ArrayList fields = new ArrayList();
             foreach(DataColumn dc in dataTable.Columns) {
