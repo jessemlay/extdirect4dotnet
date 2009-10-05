@@ -26,6 +26,10 @@ namespace ExtDirect4DotNet.responsewrapper
         [JsonProperty]
         public Hashtable metaData = null;
 
+        protected StoreLoadResponseWrapper()
+        {
+        }
+
         /// <summary>
         /// Creates a StoreLoadResponseWrapper from the assigned dataRows
         /// </summary>
@@ -284,14 +288,14 @@ namespace ExtDirect4DotNet.responsewrapper
             // TODO Add pagingInfo
         }
 
-        private void mapType(Type type, ref Hashtable ht)
+        protected void mapType(Type type, ref Hashtable ht)
         {
             if (type == typeof(System.DateTime))
                 ht.Add("type", "date");
 
         }
 
-        private List<Object> page(List<Object> datarows, int start, int limit)
+        protected List<Object> page(List<Object> datarows, int start, int limit)
         {
             /*
             if (datarows.Count > 0)
