@@ -265,6 +265,9 @@ namespace ExtDirect4DotNet.responsewrapper
             ArrayList fields = new ArrayList();
             foreach(DataColumn dc in dataTable.Columns) {
                 // TODO add DataType
+                if (dc.ColumnName == "PASSNR")
+                    continue;
+
                 Hashtable field = new Hashtable();
                 field.Add("name", dc.ColumnName);
                 fields.Add(field);
