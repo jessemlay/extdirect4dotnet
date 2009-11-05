@@ -307,7 +307,7 @@ namespace ExtDirect4DotNet.responsewrapper
                 this.comitted = !datarows[0].Table.DataSet.HasChanges();
             }*/
             List<Object> pagedRows = new List<Object>();
-            for (int i = start; i < datarows.Count && i < (start + limit); i++)
+            for (int i = start; i < datarows.Count && (i < (start + limit) || limit == 0); i++)
             {
                 pagedRows.Add(datarows[i]);
             }
