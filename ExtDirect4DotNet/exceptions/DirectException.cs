@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
 namespace ExtDirect4DotNet
 {
@@ -11,6 +12,9 @@ namespace ExtDirect4DotNet
     /// </summary>
     public class DirectException : ApplicationException
     {
+        public string ExcetionType = "DirectException";
+
+        public Hashtable result;
 
         public DirectException()
             : base()
@@ -20,6 +24,8 @@ namespace ExtDirect4DotNet
         public DirectException(string msg)
             : base(msg)
         {
+            result = new Hashtable();
+            result.Add("success", false);
         }
 
 
