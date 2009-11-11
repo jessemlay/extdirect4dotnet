@@ -10,7 +10,7 @@ var reader = new Ext.data.JsonReader({
     totalProperty: 'results',
     successProperty: 'success',
     idProperty: 'id',
-    root: 'data'
+    root: 'rows'
     },[
 	    { name: 'id' },
 	    { name: 'email', allowBlank: false },
@@ -34,7 +34,6 @@ var reader = new Ext.data.JsonReader({
 	    baseParams: {dummy:'blubb'},
 	    writer: writer, 	// <-- plug a DataWriter into the store just as you would a Reader
 	    paramsAsHash: true,
-	    batchSave: false,
 	    batch: false,
 	    prettyUrls: false,
 	    remoteSort: true,

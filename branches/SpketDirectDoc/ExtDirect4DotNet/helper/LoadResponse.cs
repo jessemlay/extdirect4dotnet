@@ -37,7 +37,7 @@ namespace ExtDirect4DotNet.helper
         }
 
 
-        [JsonProperty(PropertyName = "data")]
+        [JsonProperty(PropertyName = "rows")]
         public Object Rows
         {
             get;

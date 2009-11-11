@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ExtDirect4DotNet.helper;
 using System.Xml;
+using ExtDirect4DotNet.exceptions;
 
 
 namespace ExtDirect4DotNet
@@ -136,9 +137,6 @@ namespace ExtDirect4DotNet
         {
             foreach (Type type in types)
             {
-                if(type.Name == "Class1"){
-                    string test = "";
-                }
                 if (DirectAction.IsAction(type))
                 {
                     this.actions.Add(type.Name, new DirectAction(type));

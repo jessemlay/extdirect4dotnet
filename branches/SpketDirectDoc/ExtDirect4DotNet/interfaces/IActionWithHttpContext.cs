@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace ExtDirect4DotNet
+namespace ExtDirect4DotNet.baseclasses
 {
-    public interface IActionWithServer
+    interface IActionWithHttpContext
     {
-         void SetServer(HttpServerUtility server);
+        void SetHttpContext(HttpContext httpContext);
     }
 }

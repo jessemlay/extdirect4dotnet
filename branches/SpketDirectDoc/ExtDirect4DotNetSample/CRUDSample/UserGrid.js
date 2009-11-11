@@ -32,7 +32,7 @@ App.user.Grid = Ext.extend(Ext.grid.EditorGridPanel, {
 
 		// build toolbars and buttons.
 		this.tbar = this.buildTopToolbar();
-		//this.bbar = this.buildBottomToolbar();
+		//this.bbar = this.buildBottomToolbar();    
 		this.buttons = this.buildUI();
 
 		// super

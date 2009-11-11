@@ -81,12 +81,27 @@ App.user.Form = Ext.extend(Ext.form.FormPanel, {
 			handler: this.onCreate,
 			scope: this
 		}, {
+			text: 'Delete',
+			iconCls: 'silk-user-add',
+			handler: this.onDelete,
+			scope: this
+		},
+		
+		{
 			text: 'Reset',
 			handler: function(btn, ev){
 				this.getForm().reset();
 			},
 			scope: this
 		}];
+	},
+	
+	onDelete : function(){
+	    if (this.record == null) {
+			return;
+		}
+		this.fireEvent('update', this, this.record);
+		
 	},
 
 	/**
