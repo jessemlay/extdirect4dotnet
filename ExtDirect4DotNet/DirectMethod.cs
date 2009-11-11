@@ -253,29 +253,30 @@ namespace ExtDirect4DotNet
                 Type paramType = actionInstance.GetType().GetMethod("beforeMethodInvoke").GetParameters()[1].ParameterType;
 
                 // create the parameter object to call the method with
-                Object[] parameter = new Object[2];
-                parameter[0] = this.Name;
+                Object[] parameter = new Object[3];
+                parameter[0] = this.MethodType;
+                parameter[1] = this.Name;
                 // four differnet Possibiliteas 
                 // 1. the beforeMethodInvoke wants the DirectRequest
                 if (paramType == typeof(DirectRequest))
                 {
-                    parameter[1] = directRequest;
+                    parameter[2] = directRequest;
                 }
                 else if (paramType == typeof(HttpContext))
                 { // 2. The method asks for a HttpContext 
-                    parameter[1] = directRequest.HttpContext;
+                    parameter[2] = directRequest.HttpContext;
                 }
                 else if (paramType == typeof(IList<>) && requestData != null)
                 { // 3. The Action asks for a serializable type that implements IList so we will serialize all parametr into it
-                    parameter[1] = JsonConvert.DeserializeObject(requestData.ToString(), paramType);
+                    parameter[2] = JsonConvert.DeserializeObject(requestData.ToString(), paramType);
                 }
                 else if (requestData != null)
                 { // 4. the method wants a normal serialzed Object we will pass the first Parameter (usefull for CRUD actions)
-                    parameter[1] = JsonConvert.DeserializeObject(requestData[0].ToString(), paramType);
+                    parameter[2] = JsonConvert.DeserializeObject(requestData[0].ToString(), paramType);
                 }
                 else
                 {
-                    parameter[1] = null;
+                    parameter[2] = null;
                 }
                 actionInstance.GetType().GetMethod("beforeMethodInvoke").Invoke(actionInstance, parameter);
             }
@@ -387,7 +388,9 @@ namespace ExtDirect4DotNet
                 {
                     resultWrapper.Add(metadata.getSuccessPropertyName(), true);
                     if (((bool)actionInstance.GetType().GetMethod("addMetaData").Invoke(actionInstance, new Object[] { })))
+                    {
                         resultWrapper.Add("metaData", metadata);
+                    }
                     resultWrapper.Add(metadata.getTotalPropertyName(), ((int)actionInstance.GetType().GetMethod("getResultCount").Invoke(actionInstance, new Object[] { })));
                     resultWrapper.Add(metadata.getRootPropertyName(), result);
 
@@ -399,7 +402,7 @@ namespace ExtDirect4DotNet
             if (implementsIActionWithAfterInvoke)
             {
                 // call the afterMethodInvoke Method with the result
-                ((IActionWithAfterInvoke)actionInstance).afterMethodInvoke(this.Name, result);
+                result = ((IActionWithAfterInvoke)actionInstance).afterMethodInvoke(this.MethodType, this.Name, result);
             }
             return result;
         }
