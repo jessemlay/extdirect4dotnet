@@ -12,6 +12,10 @@ using System.Xml.Linq;
 using ExtDirect4DotNet;
 using System.Collections.Generic;
 using ExtDirect4DotNet.helper;
+using ExtDirect4DotNet.baseclasses;
+using System.Web.SessionState;
+using ExtDirect4DotNet.interfaces;
+using ExtDirect4DotNet.dataclasses;
 
 namespace ExtDirect4DotNetSample
 {
@@ -49,7 +53,7 @@ namespace ExtDirect4DotNetSample
     /// availible via the Session member.
     /// </summary>
     [DirectAction]
-    public class CRUDSampleMethods : ActionWithSessionState
+    public class CRUDSampleMethods : SimpleCRUDAction, IActionWithAfterCreation<HttpContext>, IActionWithBeforeDestroy
     {
         /// <summary>
         /// Just a small Id generator jusing the Session to store the highest id
@@ -57,8 +61,8 @@ namespace ExtDirect4DotNetSample
         /// <returns>the Id</returns>
         private string generateId()
         {
-            Session["lastId"] = ((int)Session["lastId"]) + 1;
-            return Session["lastId"].ToString();
+           lastId = lastId + 1;
+           return lastId+"";
         }
 
         /// <summary>
@@ -77,27 +81,6 @@ namespace ExtDirect4DotNetSample
         /// <returns>The List of Persons</returns>
         private List<Person> getData(Boolean fresh)
         {
-
-            List<Person> personList = (List<Person>)Session["CRUDMethodsData"];
-            if (personList == null || fresh)
-            {
-                personList = new List<Person>();
-
-
-                Person p1 = new Person() { first = "Martin", last = "Späth", email = "email1@extjs.com", id = "1" };
-                personList.Add(p1);
-
-
-                Person p2 = new Person() { first = "Heinz", last = "Erhart", email = "email2@extjs.com", id = "2" };
-                personList.Add(p2);
-
-                Person p3 = new Person() { first = "Albert", last = "Einstein", email = "email1@extjs.com", id = "3" };
-                personList.Add(p3);
-                Session["CRUDMethodsData"] = personList;
-                Session["lastId"] = 3;
-
-            }
-
             return personList;
         }
 
@@ -149,7 +132,7 @@ namespace ExtDirect4DotNetSample
         /// <param name="dir">The Direction or "ASC"/"DESC"</param>
         /// <returns>A LoadRespone Object that wraps the Persons</returns>
         [DirectMethod(MethodType = DirectMethodType.Read, ParameterHandling = ParameterHandling.AutoResolve)]
-        public LoadResponse read(string sort, string dir, int start, int limit)
+        public List<Person> read(string sort, string dir, int start, int limit)
         {
 
             List<Person> rows = getData();
@@ -196,10 +179,10 @@ namespace ExtDirect4DotNetSample
                     }
                     i++;
                 }
-                return new LoadResponse() { Results = rows.Count, Rows = returnList };
+                return rows;
             }
 
-            return new LoadResponse() { Results = rows.Count, Rows = rows };
+            return rows;
         }
 
         /// <summary>
@@ -222,9 +205,10 @@ namespace ExtDirect4DotNetSample
         /// <param name="sort">the property to Sort the List of Persons by</param>
         /// <param name="dir">The Direction or "ASC"/"DESC"</param>
         /// <returns>A LoadRespone Object that wraps the Persons</returns>
-        [DirectMethod(MethodType = DirectMethodType.Update)]
-        public Person update(string id, Person personWithUpdatedValues)
+        [DirectMethod(MethodType=DirectMethodType.Update)]
+        public Person update(Person personWithUpdatedValues)
         {
+            string id = personWithUpdatedValues.id;
             List<Person> persons = getData();
             Person person = persons.Find(t => t.id == id);
 
@@ -263,14 +247,14 @@ namespace ExtDirect4DotNetSample
         /// </summary>
         /// <param name="id">Id Of the Person which should get deleted</param>
         /// <returns>just retunrs Success to tell the store that the record was deleted on the Server.</returns>
-        [DirectMethod(MethodType = DirectMethodType.Delete, OutputHandling=OutputHandling.JSON)]
-        public string destroy(string id)
+        [DirectMethod(MethodType = DirectMethodType.Delete )]
+        public bool destroy(string id)
         {
             List<Person> persons = getData();
             Person person = persons.Find(t => t.id == id);
             persons.Remove(person);
 
-            return "{\"success\": true}";
+            return true;
         }
 
         /// <summary>
@@ -280,6 +264,72 @@ namespace ExtDirect4DotNetSample
         public void reset()
         {
             getData(true);
+        }
+
+        private List<Person> personList;
+        private int lastId = 0;
+
+        #region IActionWithAfterCreation<HttpContext> Member
+
+        /// <summary>
+        /// This method gets called once per request. We use it here to acces the data from the Sesseion
+        /// </summary>
+        /// <param name="parameter">Cause we set up HttpContext as Parameter it gets filled with the current
+        /// http Context from the actual request</param>
+        public void afterCreation(HttpContext parameter)
+        {
+
+            personList = (List<Person>)parameter.Session["CRUDMethodsData"];
+            if (personList == null)
+            {
+                personList = new List<Person>();
+
+
+                Person p1 = new Person() { first = "Martin", last = "Späth", email = "email1@extjs.com", id = "1" };
+                personList.Add(p1);
+
+
+                Person p2 = new Person() { first = "Heinz", last = "Erhart", email = "email2@extjs.com", id = "2" };
+                personList.Add(p2);
+
+                Person p3 = new Person() { first = "Albert", last = "Einstein", email = "email1@extjs.com", id = "3" };
+                personList.Add(p3);
+                parameter.Session["CRUDMethodsData"] = personList;
+                parameter.Session["lastId"] = 3;
+
+            }
+
+            lastId = (int)parameter.Session["lastId"];
+
+
+        }
+
+        #endregion
+
+        #region IActionWithBeforeDestroy Member
+
+        /// <summary>
+        /// This method gets called once per request just before this instance of the class gets destroyed
+        /// we use it her to write data back to the session
+        /// </summary>
+        public void beforeDestroy(HttpContext parameter)
+        {
+            // write the person list back to the session object
+            parameter.Session["CRUDMethodsData"] = personList;
+            // write back the last id as well.
+            parameter.Session["lastId"] = lastId;
+        }
+
+        #endregion
+
+        public override int getResultCount()
+        {
+            return personList.Count;
+        }
+
+        public override bool addMetaData()
+        {
+            return false;
         }
     }
 }

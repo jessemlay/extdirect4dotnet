@@ -9,21 +9,30 @@ using System.Web;
 using ExtDirect4DotNet.helper;
 using System.Web.SessionState;
 using System.Xml;
+using ExtDirect4DotNet.baseclasses;
+using ExtDirect4DotNet.parametermapper;
+using System.Collections;
+using ExtDirect4DotNet.interfaces;
 
 namespace ExtDirect4DotNet
 {
+    /// <summary>
+    /// An Instance of this class Stores all the Information about a single Method
+    /// thats Accessible via Extdirect. 
+    /// Its been used by the Direct Proxy to get Information
+    /// like the Parameter lenght, Methodname and ParentAction
+    /// 
+    /// And its been used Direct Processor to invoke the Method.
+    /// 
+    /// In this Class all the Parameter mapping logic happens
+    /// </summary>
     internal class DirectMethod
     {
 
 
         internal DirectMethod(MethodInfo method, DirectMethodType methType, DirectAction parentAction)
             : this( method,  methType,  parentAction, method.Name)
-        {
-             
-
-
-            // this.Parameters = method.GetParameters().Length;
-        }
+        { }
 
         /// <summary>
         /// Creates an instance of this class.
@@ -52,12 +61,18 @@ namespace ExtDirect4DotNet
             private set;
         }
 
+        /// <summary>
+        /// Contains all the Method Attribute this method is tagged with
+        /// </summary>
         internal DirectMethodAttribute MethodAttributes
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Contains the class this Method belongs to
+        /// </summary>
         internal DirectAction ParentAction
         {
             get;
@@ -86,12 +101,13 @@ namespace ExtDirect4DotNet
 
         /// <summary>
         /// Gets the number of parameters for the method.
+        /// This returned Number may depends on the DirectMethodType and on the ParameterHandling
+        /// Which can be set via Method attributes
         /// </summary>
         internal int Parameters
         {
             get 
             {
-
                 if (this.MethodAttributes.ParameterHandling == ParameterHandling.PassThrough &&
                     this.MethodType == DirectMethodType.Normal)
                 {
@@ -109,14 +125,11 @@ namespace ExtDirect4DotNet
                 switch (this.MethodType)
                 {
                     case DirectMethodType.Create:
-                        return 1;
                     case DirectMethodType.Read:
-                        return 1;
                     case DirectMethodType.Delete:
-                        return 1;
                     case DirectMethodType.Form:
-                        return 1;
                     case DirectMethodType.Update:
+                         return 1;
                     case DirectMethodType.TreeLoad:
                         return 2;
                    
@@ -134,290 +147,261 @@ namespace ExtDirect4DotNet
             }
         }
 
-        private Object[] ResolveParametersByIndex(DirectRequest directRequest)
-        {
-            ParameterInfo[] parmInfo = this.Method.GetParameters();
-            Object[] paramMap = new object[parmInfo.Length];
-
-            if (!(directRequest.Data is JValue))
-            {
-
-                JArray parameter = ((JArray)directRequest.Data);
-                int i = 0;
-                // use the Position as Indicator
-                for (i = 0; i < parameter.Count && i < paramMap.Length; i++)
-                {
-                    
-                        Type type = parmInfo[i].ParameterType;
-
-                        try
-                        {
-                            if (type == System.Type.GetType("System.Object"))
-                            {
-                                paramMap[i] = parameter[i];
-                            } else {
-                                paramMap[i] = JsonConvert.DeserializeObject(parameter[i].ToString(), type);
-                            }
-
-                             
-                        }
-                        catch (Exception e)
-                        {
-                            throw (new DirectParameterException("Illegal Argument: There did an Exception Occur while tryng to Desirialze the parameter " +
-                                parmInfo[i].Name +" of the type "+ parmInfo[i].ParameterType.ToString() + " from json: "+parameter[i].ToString(),directRequest));
-                        }
-                    
-                }
-            }
-            return paramMap;
-        }
-
-        private Object[] ResolveParametersByName(DirectRequest directRequest)
-        {
-            JArray parameter = ((JArray)directRequest.Data);
-            return ResolveParametersByName(directRequest, parameter);
-        }
-
-        private Object[] ResolveParametersByName(DirectRequest directRequest, JArray parameter) 
-        {
-            ParameterInfo[] parmInfo = this.Method.GetParameters();
-            Object[] paramMap = new object[parmInfo.Length];
-
-            if (parameter != null)
-            {
-                for (int i = 0; i < parameter.Count; i++)
-                {
-                    Object curParam = parameter[i];
-                    if (curParam is Newtonsoft.Json.Linq.JObject)
-                    {
-                        int i2 = 0;
-
-                        foreach (var parm in parmInfo)
-                        {
-                            if (((Newtonsoft.Json.Linq.JObject)curParam)[parm.Name] != null)
-                            {
-                                Object curentParameter = ((Newtonsoft.Json.Linq.JObject)curParam)[parm.Name];
-
-                                if (curentParameter != null)
-                                {
-
-                                    Type type = parmInfo[i2].ParameterType;
-                                    try
-                                    {
-                                        if (type == System.Type.GetType("System.Object"))
-                                        {
-                                            paramMap[i2] = curentParameter;
-                                        }
-                                        else
-                                        {
-                                            paramMap[i2] = JsonConvert.DeserializeObject(curentParameter.ToString(), type);
-                                        }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        throw (new DirectParameterException("Illegal Argument: There did an Exception Occur while tryng to Desirialze the parameter " +
-                                            parmInfo[i2].Name + " of the type " + parmInfo[i2].ParameterType.ToString() + " from json: " + parameter[i2].ToString(), directRequest));
-                                    }
-                                }
-                            }
-                            i2++;
-                        }
-                    }
-                }
-            }
-            return paramMap;
-        }
-
-        /// <summary>
-        /// Since a Update Function has another parameter Structure we need our own resolve logic function here 
-        /// </summary>
-        /// <param name="directRequest"></param>
-        /// <returns></returns>
-        private Object[] ResolveUpdateParameter(DirectRequest directRequest)
-        {
-            ParameterInfo[] parmInfo = this.Method.GetParameters();
-            Object[] paramMap = new object[parmInfo.Length];
-
-            JArray parameter = ((JArray)directRequest.Data);
-            if (parameter != null)
-            {
-                if (parameter.Count <2)
-                {
-                    throw new DirectParameterException("Tried to call an Updatemethod with less than 2 Parameters.", directRequest);
-                }
-                Type paramTyp = parmInfo[0].ParameterType;
-
-                Object id = new Object();
-                //paramMap[0] = ((paramTyp)parameter[0]);
-                if (parameter[0] is JValue)
-                {
-                    
-                    try
-                    {
-                        if (paramTyp == System.Type.GetType("System.Object"))
-                        {
-                            id = parameter[0];
-                        }
-                        else
-                        {
-                            id = JsonConvert.DeserializeObject(parameter[0].ToString(), paramTyp);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        throw (new DirectParameterException("Illegal Argument: There did an Exception Occur while tryng to Desirialze the parameter " +
-                            parmInfo[0].Name + " of the type " + parmInfo[0].ParameterType.ToString() + " from json: " + parameter[0].ToString(), directRequest));
-                    }
-
-                }
-
-                JArray tempParams = new JArray();
-
-                tempParams.Add(parameter[1]);
-
-                paramMap = ResolveParametersByName(directRequest, tempParams);
-
-                paramMap[0] = id;
-
-            }
-            return paramMap;
-
-        }
+  
 
         /// <summary>
         /// Calls this Direct Methods and parses the Paramter as via the customAttribute DirectMethodAttribute 
-        /// configured
+        /// configured provided by the directRequest parameter
         /// </summary>
-        /// <param name="parameter">An Object of Parametr</param>
-        /// <returns></returns>
-        internal Object invoke(DirectRequest directRequest, HttpContext httpContext)
+        /// <param name="directRequest">The Direct Request Object containing all information needed for the directMethodCall</param>
+        /// <param name="instances">A Hashtable containing all DirectAction Class instances of the current Request for reuse</param>
+        /// <returns>the Object Returned by the called function</returns>
+        internal Object invoke(DirectRequest directRequest, Hashtable instances)
         {
+            Type actionClassType = this.ParentAction.Type;
 
-            ParameterInfo[] parmInfo = this.Method.GetParameters();
+            // now check which interfacecs this class implments
+            Boolean implementsIActionWithAfterCreation = false;
+            Boolean implementsIActionWithBeforeInvoke = false;
+            Boolean implementsIActionWithAfterInvoke = false;
+            Boolean implementsICRUDAction = false;
 
-            // will contain the paramters the function gets called with
-            Object[] paramMap = new object[parmInfo.Length];
 
+            JArray requestData = directRequest.Data != null && ((JToken)directRequest.Data).HasValues != false ? ((JArray)directRequest.Data) : null;
 
-            if (directRequest.HttpRequest != null)
+            // create an instance of the class
+            Object actionInstance = actionClassType.Assembly.CreateInstance(actionClassType.FullName);
+            Boolean instanceJustCreated = false;
+
+            string className = actionClassType.FullName;
+
+            if (actionClassType is IActionWithMultipleInstancesPerRequest && requestData != null)
             {
-                // do the methode wants to take care of the request by it self?
-                if (parmInfo[0].ParameterType == directRequest.HttpRequest.GetType())
-                {
-                    paramMap[0] = directRequest.HttpRequest;
-                }
-                else
-                {
-                    HttpRequest curParam = directRequest.HttpRequest;
-                    int i2 = 0;
-                    // try to find Parameters in the Formvariables
-                    foreach (var parm in parmInfo)
-                    {
-                        Type type = parmInfo[i2].ParameterType;
-                        if (type.Name == "HttpPostedFile")
-                        {
+                className = className + "-" + ((IActionWithMultipleInstancesPerRequest)actionInstance).getIstanceId((Hashtable)JsonConvert.DeserializeObject(requestData[0].ToString(), typeof(Hashtable)));
+            }
 
-                            i2++;
-                            continue;
-                        }
-                        String curentParameter = ((HttpRequest)curParam).Form[parm.Name];
-                        if (curentParameter == null)
-                        {
-
-                            i2++;
-                            continue;
-                        }
-                        try
-                        {
-                            if (type == System.Type.GetType("System.Object") || type == System.Type.GetType("System.String"))
-                            {
-                                paramMap[i2] = curentParameter;
-                            }
-                            else
-                            {
-                                paramMap[i2] = JsonConvert.DeserializeObject(curentParameter.ToString(), type);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            throw (new DirectParameterException("Illegal Argument: There did an Exception Occur while tryng to Desirialze the parameter " +
-                                parmInfo[i2].Name + " of the type " + parmInfo[i2].ParameterType.ToString() + " from json: " + curentParameter.ToString(), directRequest));
-                        }
-
-                        i2++;
-                    }
-
-                    i2 = 0;
-                    // try to find Parameters in the Files-list
-                    foreach (var parm in parmInfo)
-                    {
-
-                        Type type = parmInfo[i2].ParameterType;
-                        if (((HttpRequest)curParam).Files[parm.Name] != null)
-                        {
-                            if (type.Name != "HttpPostedFile")
-                            {
-                                throw (new DirectParameterException("Illegal Argument: The Parameter "+parm.Name+" is not an instance of \"System.WebHttpPosted\" File.", directRequest));
-                            }
-                            paramMap[i2] = ((HttpRequest)curParam).Files[parm.Name];
-                        }
-                        i2++;
-                    }
-                }
-                
-                
-            } else 
-            if (this.MethodAttributes.ParameterHandling == ParameterHandling.PassThrough)
+            // check if during this request an instance of the current action the method belongs to
+            // allready exists
+            if (instances[className] == null)
             {
-                paramMap = ResolveParametersByIndex(directRequest);
-
+                // save the reference into instances
+                instances[className] = actionInstance;
+                instanceJustCreated = true;
             }
             else
             {
-                switch (this.MethodAttributes.MethodType)
+                actionInstance = instances[className];
+            }
+
+            foreach (var i in actionInstance.GetType().GetInterfaces())
+            {
+                if (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IActionWithAfterCreation<>))
                 {
-                    case DirectMethodType.Normal:
-                    case DirectMethodType.Create:
+                    implementsIActionWithAfterCreation = true;
+                } else 
+                if(i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IActionWithBeforeInvoke<>)) {
+                    implementsIActionWithBeforeInvoke = true;
+                } else 
+                if (i == typeof(IActionWithAfterInvoke))
+                {
+                    implementsIActionWithAfterInvoke = true;
+                } else
+                if (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICRUDAction<>))
+                {
+                    implementsICRUDAction = true;
+                }
+
+            }
+
+            // eventually call the afterCreation method
+            if (instanceJustCreated && implementsIActionWithAfterCreation)
+            {
+
+                Type paramType = actionInstance.GetType().GetMethod("afterCreation").GetParameters()[0].ParameterType;
+
+
+                // four differnet Possibiliteas 
+                // 1. the afterCreation wants the DirectRequest
+                if (paramType == typeof(DirectRequest))
+                {
+                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { directRequest });
+                }
+                else if (paramType == typeof(HttpContext))
+                { // 2. The method asks for a HttpContext 
+                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { directRequest.HttpContext });
+                }
+                else if (paramType == typeof(IList<>) && requestData != null)
+                { // 3. The Action asks for a serializable type that implements IList so we will serialize all parametr into it
+                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { JsonConvert.DeserializeObject(requestData.ToString(), paramType) });
+                }
+                else if (requestData != null)
+                { // 4. the method wants a normal serialzed Object we will pass the first Parameter (usefull for CRUD actions)
+                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { JsonConvert.DeserializeObject(requestData[0].ToString(), paramType) });
+                }
+                else
+                { // A method with no parameter was called... ther is no data to serialize
+                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { null });
+                }
+
+                // call the method setStoreParameter which exists for all implementation of ICRUDAction with the first parameter of the store request
+
+            
+            }
+            if (implementsIActionWithBeforeInvoke)
+            {
+                // getting the type of the first paramter to deserialize to it
+                Type paramType = actionInstance.GetType().GetMethod("beforeMethodInvoke").GetParameters()[1].ParameterType;
+
+                // create the parameter object to call the method with
+                Object[] parameter = new Object[2];
+                parameter[0] = this.Name;
+                // four differnet Possibiliteas 
+                // 1. the beforeMethodInvoke wants the DirectRequest
+                if (paramType == typeof(DirectRequest))
+                {
+                    parameter[1] = directRequest;
+                }
+                else if (paramType == typeof(HttpContext))
+                { // 2. The method asks for a HttpContext 
+                    parameter[1] = directRequest.HttpContext;
+                }
+                else if (paramType == typeof(IList<>) && requestData != null)
+                { // 3. The Action asks for a serializable type that implements IList so we will serialize all parametr into it
+                    parameter[1] = JsonConvert.DeserializeObject(requestData.ToString(), paramType);
+                }
+                else if (requestData != null)
+                { // 4. the method wants a normal serialzed Object we will pass the first Parameter (usefull for CRUD actions)
+                    parameter[1] = JsonConvert.DeserializeObject(requestData[0].ToString(), paramType);
+                }
+                else
+                {
+                    parameter[1] = null;
+                }
+                actionInstance.GetType().GetMethod("beforeMethodInvoke").Invoke(actionInstance, parameter);
+            }
+
+            // get the method info to mapp the parameter with
+            ParameterInfo[] paramInfo = this.Method.GetParameters();
+         
+            Object[] paramMap = null;
+            IMetaData metadata = null;
+            string rootname = null;
+            // just collect additional Information for CRUD
+            if (implementsICRUDAction)
+            {
+                metadata = actionInstance.GetType().GetMethod("getMetaData").Invoke(actionInstance, new Object[] { }) as IMetaData;
+                rootname = metadata.getRootPropertyName();
+            }
+            
+            DirectMethodType methodType = this.MethodAttributes.MethodType;
+
+            if (directRequest.IsForm)
+            {
+                FormParameterMapper formMapper = new FormParameterMapper();
+                paramMap = formMapper.MapParameter(paramInfo, directRequest);
+            }
+            else if (methodType == DirectMethodType.Normal && this.MethodAttributes.ParameterHandling == ParameterHandling.PassThrough)
+            {
+                IndexParameterMapper indexMapper = new IndexParameterMapper();
+                paramMap = indexMapper.MapParameter(paramInfo, directRequest);
+            }
+            else
+            {
+                NameParameterMapper nameMapper;
+                switch (methodType)
+                {
                     case DirectMethodType.Read:
-                    case DirectMethodType.Delete:
+                        // check if it implements ICRUD Action
+                        if (!implementsICRUDAction)
+                        {
+                            throw new Exception("The Class " + this.ParentAction.Name + " has to implement the interface ICRUDAction if it wants to implement a CRUD Action. (Tried to call " + this.Name + " which is markt as a CRUD method");
+                        }
+                        nameMapper = new NameParameterMapper();
+                        paramMap = nameMapper.MapParameter(paramInfo, directRequest);
+                        break;
+                    case DirectMethodType.Normal:
                     case DirectMethodType.Hybrid:
-                        paramMap = ResolveParametersByName(directRequest);
+                        nameMapper = new NameParameterMapper();
+                        paramMap = nameMapper.MapParameter(paramInfo, directRequest);
                         break;
                     case DirectMethodType.Update:
+                    case DirectMethodType.Create:
+                    case DirectMethodType.Delete:
+                        // check if it implements ICRUD Action
+                        if (!implementsICRUDAction)
+                        {
+                            throw new Exception("The Class " + this.ParentAction.Name + " has to implement the interface ICRUDAction if it wants to implement a CRUD Action. (Tried to call " + this.Name + " which is markt as a CRUD method");
+                        }
+                        CUDParameterMapper updateMaper1 = new CUDParameterMapper();
+                        paramMap = updateMaper1.MapParameter(paramInfo, directRequest, rootname);
+                        break;
                     case DirectMethodType.TreeLoad: // use same function cause structure is simmilar
-                        paramMap = ResolveUpdateParameter(directRequest);
+                        CUDParameterMapper updateMaper = new CUDParameterMapper();
+                        paramMap = updateMaper.MapParameter(paramInfo, directRequest);
                         break;
                     
                 }
             }
+
+            // actually inkoe the method save the reference to the returned value
+            Object result = this.Method.Invoke(actionInstance, paramMap);
+
             
 
-
-
-    
-
-
-            // will contain the paramters the function gets called with
-
-
-          
-            // this is not really usefull since the deserialization has allready been done...
-            // maybe for forms?
-           // if(da.SerializeParameterTypes){
-                // serialize the attributes before invoking the method
-            //}
-
-            Type actionClassType = this.ParentAction.Type;
-            Object actionInstanz = actionClassType.Assembly.CreateInstance(actionClassType.FullName);
-            if(actionInstanz is IActionWithSessionState) {
-                ((IActionWithSessionState)actionInstanz).SetSession(httpContext.Session);
-            }
-
-            if (actionInstanz is IActionWithServer)
+            // add post invoke handling for crud methods here
+            if (methodType == DirectMethodType.Update || 
+                methodType == DirectMethodType.Create || 
+                methodType == DirectMethodType.Delete || 
+                methodType == DirectMethodType.Read )
             {
-                ((IActionWithServer)actionInstanz).SetServer(httpContext.Server);
+                Hashtable resultWrapper = new Hashtable();
+
+                
+
+                if (methodType == DirectMethodType.Create)
+                {
+                    // add the orginal result to the hashtable
+                    // okay Ext want it to be an Array in case of an Create... so wrap it eventually
+                    if (methodType == DirectMethodType.Create && !result.GetType().IsArray && !(result is IList))
+                    {
+                        // okay lets wrap the result for extjs :)
+                        result = new Object[] { result };
+                    }
+                }
+
+
+                if (methodType == DirectMethodType.Update)
+                {
+                    // do nothing yet just return the returned value (maybe for batch this behave needs a change)
+                }
+
+                if (methodType == DirectMethodType.Delete)
+                {
+                    resultWrapper.Add(metadata.getSuccessPropertyName(), result);
+                    result = resultWrapper;
+                }
+
+                
+                
+                if (methodType == DirectMethodType.Read )
+                {
+                    resultWrapper.Add(metadata.getSuccessPropertyName(), true);
+                    if (((bool)actionInstance.GetType().GetMethod("addMetaData").Invoke(actionInstance, new Object[] { })))
+                        resultWrapper.Add("metaData", metadata);
+                    resultWrapper.Add(metadata.getTotalPropertyName(), ((int)actionInstance.GetType().GetMethod("getResultCount").Invoke(actionInstance, new Object[] { })));
+                    resultWrapper.Add(metadata.getRootPropertyName(), result);
+
+                    result = resultWrapper;
+                }
             }
-            return this.Method.Invoke(actionInstanz, paramMap);
+
+            // after invoke handling?
+            if (implementsIActionWithAfterInvoke)
+            {
+                // call the afterMethodInvoke Method with the result
+                ((IActionWithAfterInvoke)actionInstance).afterMethodInvoke(this.Name, result);
+            }
+            return result;
         }
 
         /// <summary>
