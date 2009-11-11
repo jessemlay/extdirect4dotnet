@@ -56,18 +56,31 @@ namespace ExtDirect4DotNet
             this.Method = request.Method;
             this.Message = e.Message;
             this.Where = e.StackTrace;
+            this.Result = "{success:false}";
             if (e is DirectException)
             {
                 this.ErrorCode = ((DirectException)e).errorCode;
+                this.ExceptionType = ((DirectException)e).ExcetionType;
+                if (((DirectException)e).result != null)
+                    this.Result = JsonConvert.SerializeObject(((DirectException)e).result);
             }
-            this.Result = "{success:false}";
+
+            
+            
 
             
 
             this.IsUpload = request.IsUpload;
         }
 
-        
+        [JsonProperty(PropertyName = "exceptionType")]
+        public string ExceptionType
+        {
+            get;
+            set;
+        }
+
+
         [JsonProperty(PropertyName = "type")]
         public string Type
         {
@@ -174,9 +187,13 @@ namespace ExtDirect4DotNet
             {
                 writer.WriteRawValue("null");
             }
-            else
+            else if (this.Result is string)
             {
                 writer.WriteRawValue((string)this.Result);
+            }
+            else
+            {
+                writer.WriteValue(this.Result);
             }
 
 
@@ -189,6 +206,9 @@ namespace ExtDirect4DotNet
 
             writer.WritePropertyName("errorcode");
             writer.WriteValue(this.ErrorCode);
+
+            writer.WritePropertyName("exceptionType");
+            writer.WriteValue(this.ExceptionType);
            
 
             // }

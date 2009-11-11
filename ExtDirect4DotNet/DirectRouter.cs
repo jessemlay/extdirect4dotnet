@@ -38,7 +38,7 @@ namespace ExtDirect4DotNet
 
 
             DirectProvider provider = DirectProxy.getDirectProviderCache("Ext.app.REMOTING_API");
-            DirectExceution directExecution = DirectProcessor.Execute(provider, context);
+            DirectExecution directExecution = DirectProcessor.Execute(provider, context);
 
             if (directExecution.containsErrors)
             {
@@ -50,6 +50,7 @@ namespace ExtDirect4DotNet
             context.Response.Write(responseWrapStart);
 
             context.Response.Write(directExecution.jsonResponse);
+
 
             context.Response.Write(responseWrapEnd);
 
