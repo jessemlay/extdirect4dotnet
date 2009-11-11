@@ -14,6 +14,6 @@ namespace ExtDirect4DotNet.interfaces
         /// Implement this method to do some after invokation logic
         /// </summary>
         /// <param name="theReturnedObject"></param>
-        void afterMethodInvoke(string methodName, Object theReturnedObject);
+        Object afterMethodInvoke(DirectMethodType methodType, string methodName, Object theReturnedObject);
     }
 }

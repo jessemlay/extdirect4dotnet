@@ -5,8 +5,9 @@ using System.Text;
 using System.Collections;
 using ExtDirect4DotNet.dataclasses;
 using ExtDirect4DotNet.baseclasses;
+using ExtDirect4DotNet.interfaces;
 
-namespace ExtDirect4DotNet.interfaces
+namespace ExtDirect4DotNet.baseclasses
 {
     public abstract class SimpleCRUDAction : IActionWithBeforeInvoke<Hashtable>, ICRUDAction<SimpleMetaData>
     {
@@ -18,7 +19,7 @@ namespace ExtDirect4DotNet.interfaces
 
         #region IActionWithBeforeInvoke<DirectRequest> Member
 
-        public void beforeMethodInvoke(string methodName, Hashtable storeParameter)
+        public void beforeMethodInvoke(DirectMethodType methodType, string methodName, Hashtable storeParameter)
         {
             StoreParameter = storeParameter;
         }

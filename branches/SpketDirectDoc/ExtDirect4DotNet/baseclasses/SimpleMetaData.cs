@@ -36,6 +36,16 @@ namespace ExtDirect4DotNet.baseclasses
             throw new NotImplementedException();
         }
 
+        public string getPagingStartPropertyName()
+        {
+            return "start";
+        }
+
+        public string getPagingLimitPropertyName()
+        {
+            return "limit";
+        }
+
         #endregion
     }
 }

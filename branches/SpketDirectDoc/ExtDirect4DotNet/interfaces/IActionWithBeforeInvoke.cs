@@ -10,6 +10,6 @@ namespace ExtDirect4DotNet.interfaces
     /// </summary>
     public interface IActionWithBeforeInvoke<T>
     {
-        void beforeMethodInvoke(string methodName, T parameter);
+        void beforeMethodInvoke(DirectMethodType methodType, string methodName, T parameter);
     }
 }
