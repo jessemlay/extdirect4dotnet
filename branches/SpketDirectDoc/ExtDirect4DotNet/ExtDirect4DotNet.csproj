@@ -71,7 +71,9 @@
     <Compile Include="attributes\DirectActionAttribute.cs" />
     <Compile Include="attributes\DirectMethodAttribute.cs" />
     <Compile Include="baseclasses\SimpleCRUDAction.cs" />
+    <Compile Include="baseclasses\SimpleCRUDWithGrouping.cs" />
     <Compile Include="baseclasses\SimpleCRUDWithPaging.cs" />
+    <Compile Include="baseclasses\SimpleCRUDWithSorting.cs" />
     <Compile Include="baseclasses\SimpleMetaData.cs" />
     <Compile Include="exceptions\DirectFormInvalidException.cs" />
     <Compile Include="exceptions\DirectParameterException.cs" />

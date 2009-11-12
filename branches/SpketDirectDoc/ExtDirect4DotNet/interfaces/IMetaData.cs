@@ -14,6 +14,10 @@ namespace ExtDirect4DotNet.interfaces
         string getSuccessPropertyName();
         string getPagingStartPropertyName();
         string getPagingLimitPropertyName();
+        string getSortByPropertyName();
+        string getSortDirPropertyName();
+        string getGroupByPropertyName();
+        string getGroupDirPropertyName();
         ArrayList getFieldDescription();
     }
 }

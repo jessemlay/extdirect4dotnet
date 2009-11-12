@@ -46,6 +46,28 @@ namespace ExtDirect4DotNet.baseclasses
             return "limit";
         }
 
+
+        public string getGroupByPropertyName()
+        {
+            return "groupBy";
+        }
+
+        public string getGroupDirPropertyName()
+        {
+            return "groupDir";
+        }
+
+
+        public string getSortByPropertyName()
+        {
+            return "sort";
+        }
+
+        public string getSortDirPropertyName()
+        {
+            return "dir";
+        }
+
         #endregion
     }
 }
