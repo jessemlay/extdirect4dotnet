@@ -53,7 +53,7 @@ namespace ExtDirect4DotNetSample
     /// availible via the Session member.
     /// </summary>
     [DirectAction]
-    public class CRUDSampleMethods : SimpleCRUDAction, IActionWithAfterCreation<HttpContext>, IActionWithBeforeDestroy
+    public class CRUDSampleMethods : SimpleCRUDWithPaging, IActionWithAfterCreation<HttpContext>, IActionWithBeforeDestroy
     {
         /// <summary>
         /// Just a small Id generator jusing the Session to store the highest id
@@ -132,7 +132,7 @@ namespace ExtDirect4DotNetSample
         /// <param name="dir">The Direction or "ASC"/"DESC"</param>
         /// <returns>A LoadRespone Object that wraps the Persons</returns>
         [DirectMethod(MethodType = DirectMethodType.Read, ParameterHandling = ParameterHandling.AutoResolve)]
-        public List<Person> read(string sort, string dir, int start, int limit)
+        public List<Person> read(string sort, string dir)
         {
 
             List<Person> rows = getData();
@@ -167,21 +167,7 @@ namespace ExtDirect4DotNetSample
                 rows.Reverse();
             }
 
-            if (start != null && limit != null)
-            {
-                List<Person> returnList = new List<Person>(); 
-                int i = 0;
-                foreach (Person curPers in rows)
-                {
-                    if (i >= start && i <= (start + limit))
-                    {
-                        returnList.Add(curPers);
-                    }
-                    i++;
-                }
-                return rows;
-            }
-
+           
             return rows;
         }
 

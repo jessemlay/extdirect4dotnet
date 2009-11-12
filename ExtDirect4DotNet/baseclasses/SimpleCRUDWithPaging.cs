@@ -8,6 +8,9 @@ using System.Data;
 
 namespace ExtDirect4DotNet.baseclasses
 {
+    /// <summary>
+    /// An Abstract Class that adds Paging functionality to the Read Method of a CRUD action
+    /// </summary>
     public abstract class SimpleCRUDWithPaging : SimpleCRUDAction, IActionWithAfterInvoke
     {
 
@@ -25,10 +28,11 @@ namespace ExtDirect4DotNet.baseclasses
                 int limit = 0;
 
 
-                if(storeResponse[this.getMetaData().getPagingLimitPropertyName()] != null && 
-                    storeResponse[this.getMetaData().getPagingStartPropertyName()] != null) {
-                    start = (int)storeResponse[this.getMetaData().getPagingStartPropertyName()];
-                    limit = (int)storeResponse[this.getMetaData().getPagingLimitPropertyName()];
+                if(StoreParameter[this.getMetaData().getPagingLimitPropertyName()] != null &&
+                    StoreParameter[this.getMetaData().getPagingStartPropertyName()] != null)
+                {
+                    start = Int32.Parse(StoreParameter[this.getMetaData().getPagingStartPropertyName()].ToString());
+                    limit = Int32.Parse(StoreParameter[this.getMetaData().getPagingLimitPropertyName()].ToString());
                 }
                 storeResponse[this.getMetaData().getRootPropertyName()] = this.extractPage(returnedByTheReadMethod, start, limit);
                 return storeResponse;
@@ -54,15 +58,15 @@ namespace ExtDirect4DotNet.baseclasses
             {
                 return extractPage((DataRowCollection)objectToCast, start, limit);
             }
-            else if (objectToCast is List<Object>)
+            else if (objectToCast is IList)
             {
-                return extractPage((List<Object>)objectToCast, start, limit);
+                IList il = objectToCast as IList;
+                return extractPage(il, start, limit);
             }
             else
             {
                 throw new Exception(objectToCast.GetType().Name + " is not supported by extractPage yet");
             }
-
         }
 
         /// <summary>
@@ -116,11 +120,11 @@ namespace ExtDirect4DotNet.baseclasses
             return extractPage(dataTable.DefaultView, start, limit);
         }
 
-        private List<Object> extractPage(List<Object> datarows, int start, int limit)
+        private List<Object> extractPage(IList datarows, int start, int limit)
         {
             if (start == 0 && limit == 0)
             {
-                return datarows;
+                limit = datarows.Count;
             }
             List<Object> pagedRows = new List<Object>();
             for (int i = start; i < datarows.Count && i < (start + limit); i++)
