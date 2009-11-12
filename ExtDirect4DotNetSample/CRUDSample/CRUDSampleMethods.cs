@@ -16,6 +16,7 @@ using ExtDirect4DotNet.baseclasses;
 using System.Web.SessionState;
 using ExtDirect4DotNet.interfaces;
 using ExtDirect4DotNet.dataclasses;
+using System.Collections;
 
 namespace ExtDirect4DotNetSample
 {
@@ -53,7 +54,7 @@ namespace ExtDirect4DotNetSample
     /// availible via the Session member.
     /// </summary>
     [DirectAction]
-    public class CRUDSampleMethods : SimpleCRUDWithPaging, IActionWithAfterCreation<HttpContext>, IActionWithBeforeDestroy
+    public class CRUDSampleMethods : SimpleCRUDWithPaging, IActionWithAfterCreation<HttpContext>, IActionWithAfterCreation<Hashtable>, IActionWithBeforeDestroy
     {
         /// <summary>
         /// Just a small Id generator jusing the Session to store the highest id
@@ -317,5 +318,14 @@ namespace ExtDirect4DotNetSample
         {
             return false;
         }
+
+        #region IActionWithAfterCreation<Hashtable> Member
+
+        public void afterCreation(Hashtable parameter)
+        {
+            string test = "";
+        }
+
+        #endregion
     }
 }

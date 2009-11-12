@@ -11,18 +11,30 @@ namespace ExtDirect4DotNet.baseclasses
     /// <summary>
     /// An Abstract Class that adds Paging functionality to the Read Method of a CRUD action
     /// </summary>
-    public abstract class SimpleCRUDWithPaging : SimpleCRUDAction, IActionWithAfterInvoke
+    public abstract class SimpleCRUDWithPaging : SimpleCRUDWithSorting, IActionWithAfterInvoke
     {
 
         #region IActionWithAfterInvoke Member
 
         public object afterMethodInvoke(DirectMethodType methodType, string methodName, object theReturnedObject)
         {
+            
 
             if (methodType == DirectMethodType.Read)
             {
+               
+
                 Hashtable storeResponse = (Hashtable)theReturnedObject;
                 Object returnedByTheReadMethod = storeResponse[this.getMetaData().getRootPropertyName()];
+
+                // if the sorting is supported for the given Object do Srting sorting...
+                if (returnedByTheReadMethod is DataTable || returnedByTheReadMethod is DataView)
+                {
+                    theReturnedObject = base.afterMethodInvoke(methodType, methodName, theReturnedObject);
+                    // just reset the references
+                    storeResponse = (Hashtable)theReturnedObject;
+                    returnedByTheReadMethod = storeResponse[this.getMetaData().getRootPropertyName()];
+                }
 
                 int start = 0;
                 int limit = 0;

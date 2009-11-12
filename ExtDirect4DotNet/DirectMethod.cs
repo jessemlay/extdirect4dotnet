@@ -217,35 +217,46 @@ namespace ExtDirect4DotNet
             if (instanceJustCreated && implementsIActionWithAfterCreation)
             {
 
-                Type paramType = actionInstance.GetType().GetMethod("afterCreation").GetParameters()[0].ParameterType;
-
-
-                // four differnet Possibiliteas 
-                // 1. the afterCreation wants the DirectRequest
-                if (paramType == typeof(DirectRequest))
+                Type actionType = actionInstance.GetType();
+                
+                // 1. check if class implements an afterCreation with DirectRequest as param
+                MethodInfo methodInfo1 = actionType.GetMethod("afterCreation", new Type[]{typeof(DirectRequest)});
+                if (methodInfo1 != null)
                 {
-                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { directRequest });
+                    methodInfo1.Invoke(actionInstance, new Object[] { directRequest });
                 }
-                else if (paramType == typeof(HttpContext))
-                { // 2. The method asks for a HttpContext 
-                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { directRequest.HttpContext });
+
+                // 2. check if the class implements an afterCreation with HttpContext as param
+                MethodInfo methodInfo2 = actionType.GetMethod("afterCreation", new Type[]{typeof(HttpContext)});
+                if (methodInfo2 != null)
+                { 
+                    methodInfo2.Invoke(actionInstance, new Object[] { directRequest.HttpContext });
                 }
-                else if (paramType == typeof(IList<>) && requestData != null)
+                
+                // 3. check if the class implements an afterCreation with IList<> as param
+                MethodInfo methodInfo3= actionType.GetMethod("afterCreation", new Type[]{typeof(IList<>)});
+                if (methodInfo3 != null && requestData != null)
                 { // 3. The Action asks for a serializable type that implements IList so we will serialize all parametr into it
-                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { JsonConvert.DeserializeObject(requestData.ToString(), paramType) });
-                }
-                else if (requestData != null)
-                { // 4. the method wants a normal serialzed Object we will pass the first Parameter (usefull for CRUD actions)
-                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { JsonConvert.DeserializeObject(requestData[0].ToString(), paramType) });
-                }
-                else
-                { // A method with no parameter was called... ther is no data to serialize
-                    actionInstance.GetType().GetMethod("afterCreation").Invoke(actionInstance, new Object[] { null });
+                    methodInfo3.Invoke(actionInstance, new Object[] { JsonConvert.DeserializeObject(requestData.ToString(), typeof(IList<>)) });
                 }
 
-                // call the method setStoreParameter which exists for all implementation of ICRUDAction with the first parameter of the store request
+                foreach(MethodInfo mi in actionInstance.GetType().GetMethods()) {
+                    if(mi.Name != "afterCreation" )
+                        continue;
+                    if(mi.GetParameters().Length > 0) {
+                        Type curParamType = mi.GetParameters()[0].ParameterType;
+                        if(curParamType == typeof(DirectRequest) || curParamType == typeof(HttpContext) || curParamType == typeof(IList<>))
+                            continue;
+                        if(requestData != null) {
+                            mi.Invoke(actionInstance, new Object[] { JsonConvert.DeserializeObject(requestData[0].ToString(), curParamType) });
+                        } else {
+                            mi.Invoke(actionInstance, new Object[] { null });
+                        }
+                    } else {
+                          mi.Invoke(actionInstance, new Object[] {});
+                    }
+                }
 
-            
             }
             if (implementsIActionWithBeforeInvoke)
             {
