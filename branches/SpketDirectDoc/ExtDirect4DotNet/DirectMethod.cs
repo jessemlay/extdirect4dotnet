@@ -250,7 +250,7 @@ namespace ExtDirect4DotNet
             if (implementsIActionWithBeforeInvoke)
             {
                 // getting the type of the first paramter to deserialize to it
-                Type paramType = actionInstance.GetType().GetMethod("beforeMethodInvoke").GetParameters()[1].ParameterType;
+                Type paramType = actionInstance.GetType().GetMethod("beforeMethodInvoke").GetParameters()[2].ParameterType;
 
                 // create the parameter object to call the method with
                 Object[] parameter = new Object[3];
