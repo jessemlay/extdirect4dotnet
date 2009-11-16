@@ -281,7 +281,7 @@ namespace ExtDirect4DotNet
                 { // 3. The Action asks for a serializable type that implements IList so we will serialize all parametr into it
                     parameter[2] = JsonConvert.DeserializeObject(requestData.ToString(), paramType);
                 }
-                else if (requestData != null)
+                else if (requestData != null && requestData[0] is JObject)
                 { // 4. the method wants a normal serialzed Object we will pass the first Parameter (usefull for CRUD actions)
                     parameter[2] = JsonConvert.DeserializeObject(requestData[0].ToString(), paramType);
                 }

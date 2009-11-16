@@ -9,7 +9,7 @@ using ExtDirect4DotNet.interfaces;
 namespace ExtDirect4DotNet.baseclasses
 {
     
-    public abstract class SimpleCRUDWithSorting : SimpleCRUDAction, IActionWithBeforeInvoke<Hashtable>
+    public abstract class SimpleCRUDWithSorting : SimpleCRUDAction, IActionWithAfterInvoke
     {
 
         #region IActionWithAfterInvoke Member
