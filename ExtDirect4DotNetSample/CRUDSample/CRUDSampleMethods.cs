@@ -103,6 +103,7 @@ namespace ExtDirect4DotNetSample
         public Person create(Person personToCreate)
         {
             personToCreate.id = generateId();
+        //    throw new ExtDirect4DotNet.exceptions.DirectParameterException(new ArrayList());
 
             getData().Add(personToCreate);
 
@@ -272,14 +273,14 @@ namespace ExtDirect4DotNetSample
                 personList = new List<Person>();
 
 
-                Person p1 = new Person() { first = "Martin", last = "Späth", email = "email1@extjs.com", id = "1" };
+                Person p1 = new Person() { first = "Martin", last = "Späth", email = "extrulez@company.com", id = "1" };
                 personList.Add(p1);
 
 
-                Person p2 = new Person() { first = "Heinz", last = "Erhart", email = "email2@extjs.com", id = "2" };
+                Person p2 = new Person() { first = "The", last = "Count", email = "thecount@sesamestreet.com", id = "2" };
                 personList.Add(p2);
 
-                Person p3 = new Person() { first = "Albert", last = "Einstein", email = "email1@extjs.com", id = "3" };
+                Person p3 = new Person() { first = "Kermit", last = "Frog", email = "kermit@sesamestreet.com", id = "3" };
                 personList.Add(p3);
                 parameter.Session["CRUDMethodsData"] = personList;
                 parameter.Session["lastId"] = 3;

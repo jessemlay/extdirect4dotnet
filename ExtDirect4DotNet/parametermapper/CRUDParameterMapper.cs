@@ -30,7 +30,9 @@ namespace ExtDirect4DotNet.parametermapper
             // we have to extract it here
             JObject allParams = (JObject)parameter[0];
             // extract the  crud object
-            JObject crudObject = (JObject)allParams[rootParameter];
+            Object crudObject = (Object)allParams[rootParameter];
+
+
 
             // okay use the name resover to resolve the additional parameters the store may sent
             NameParameterMapper nameMapper = new NameParameterMapper();
