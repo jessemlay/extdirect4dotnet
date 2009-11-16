@@ -12,6 +12,10 @@ namespace ExtDirect4DotNet.baseclasses
     public abstract class SimpleCRUDWithSorting : SimpleCRUDAction, IActionWithAfterInvoke
     {
 
+
+        protected string defaultSortBy = "";
+        protected string defaultSortDir = "ASC";
+
         #region IActionWithAfterInvoke Member
 
         public object afterMethodInvoke(DirectMethodType methodType, string methodName, object theReturnedObject)
@@ -22,16 +26,14 @@ namespace ExtDirect4DotNet.baseclasses
                 Hashtable storeResponse = (Hashtable)theReturnedObject;
                 Object returnedByTheReadMethod = storeResponse[this.getMetaData().getRootPropertyName()];
 
-                string sortBy = "";
-                string sortDir = "ASC";
+                string sortBy = StoreParameter[this.getMetaData().getSortByPropertyName()] != null ? StoreParameter[this.getMetaData().getSortByPropertyName()].ToString() : defaultSortBy;
+                
 
 
-                if (StoreParameter[this.getMetaData().getSortByPropertyName()] != null)
+                if (sortBy != "")
                 {
-                    sortBy = StoreParameter[this.getMetaData().getSortByPropertyName()].ToString();
-                    if (StoreParameter[this.getMetaData().getSortDirPropertyName()] != null)
-                        sortDir = StoreParameter[this.getMetaData().getSortDirPropertyName()].ToString();
-
+                    string sortDir = StoreParameter[this.getMetaData().getSortDirPropertyName()] != null? StoreParameter[this.getMetaData().getSortDirPropertyName()].ToString() : defaultSortDir;
+                
                     storeResponse[this.getMetaData().getRootPropertyName()] = this.sortResult(returnedByTheReadMethod, sortBy, sortDir);
                 }
 
@@ -59,10 +61,10 @@ namespace ExtDirect4DotNet.baseclasses
         /// <summary>
         /// Groups the given dataView by the groupBy field and the groupDir
         /// </summary>
-        /// <param name="dataRows">A DataView Containing all Records you want to page in</param>
-        /// <param name="start">the index of the first Record of the page</param>
-        /// <param name="limit">the number of records a Page can contain</param>
-        /// <returns>returns a list of the DataRows iside the range</returns>
+        /// <param name="dataRows">A DataView Containing all Records you want to sort</param>
+        /// <param name="sortBy">the field to sort in</param>
+        /// <param name="sortDir">the direction to sort by ASC | DESC</param>
+        /// <returns>returns a sorted list of the DataRows </returns>
         protected DataView sortResult(DataView dataRows, string sortBy, string sortDir)
         {
             string sortString = dataRows.Sort;
@@ -76,6 +78,7 @@ namespace ExtDirect4DotNet.baseclasses
         {
             return sortResult(dataTable.DefaultView, sortBy, sortDir);
         }
+
 
         #endregion
     }

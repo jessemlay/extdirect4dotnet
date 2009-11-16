@@ -11,7 +11,7 @@ namespace ExtDirect4DotNet.interfaces
     /// Implement this Interface to have multiple instances of the extending Class
     /// per Request. 
     /// </summary>
-    interface IActionWithMultipleInstancesPerRequest
+    public interface IActionWithMultipleInstancesPerRequest
     {
         /// <summary>
         /// This Method gets called with the Parameter of an ExtDirect.Method invokation and
