@@ -11,26 +11,31 @@ namespace ExtDirect4DotNet.baseclasses
     {
         #region IMetaData Member
 
+        public string rootPropertyName = "rows";
+
         public string getRootPropertyName()
         {
-            return "rows";
+            return rootPropertyName;
         }
 
+        public string successPropertyName = "success";
         public string getSuccessPropertyName()
         {
-            return "success";
+            return successPropertyName;
         }
 
+        public string totalPropertyName = "results";
         public string getTotalPropertyName()
         {
-            return "results";
+            return totalPropertyName;
         }
 
+        public string idPropertyName = "id";
         public string getIdPropertyName()
         {
-            return "id";
+            return idPropertyName;
         }
-        protected Hashtable[] fields;
+        public Hashtable[] fields;
         public Hashtable[] getFieldDescription()
         {
             if (fields == null)
