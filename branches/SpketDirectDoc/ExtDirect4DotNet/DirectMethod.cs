@@ -400,7 +400,7 @@ namespace ExtDirect4DotNet
                     resultWrapper.Add(metadata.getSuccessPropertyName(), true);
                     if (((bool)actionInstance.GetType().GetMethod("addMetaData").Invoke(actionInstance, new Object[] { })))
                     {
-                        resultWrapper.Add("metaData", metadata);
+                        resultWrapper.Add("metaData", metadata.toSerializible());
                     }
                     resultWrapper.Add(metadata.getTotalPropertyName(), ((int)actionInstance.GetType().GetMethod("getResultCount").Invoke(actionInstance, new Object[] { })));
                     resultWrapper.Add(metadata.getRootPropertyName(), result);

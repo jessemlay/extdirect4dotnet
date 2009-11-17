@@ -30,10 +30,14 @@ namespace ExtDirect4DotNet.baseclasses
         {
             return "id";
         }
-
-        public ArrayList getFieldDescription()
+        protected Hashtable[] fields;
+        public Hashtable[] getFieldDescription()
         {
-            throw new NotImplementedException();
+            if (fields == null)
+            {
+                throw new NotImplementedException("you have to set the fields Propertie of the MetaData to use addMetaData = true");
+            }
+            return fields;
         }
 
         public string getPagingStartPropertyName()
@@ -66,6 +70,22 @@ namespace ExtDirect4DotNet.baseclasses
         public string getSortDirPropertyName()
         {
             return "dir";
+        }
+
+        #endregion
+
+        #region IMetaData Member
+
+
+        public Hashtable toSerializible()
+        {
+            Hashtable metadata = new Hashtable();
+            metadata.Add("idProperty", getIdPropertyName());
+            metadata.Add("root", getRootPropertyName());
+            metadata.Add("totalProperty", getTotalPropertyName());
+            metadata.Add("successProperty",getSuccessPropertyName());
+            metadata.Add("fields", getFieldDescription());
+            return metadata;
         }
 
         #endregion
