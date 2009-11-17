@@ -69,7 +69,8 @@ namespace ExtDirect4DotNet.baseclasses
         {
             string sortString = dataRows.Sort;
             sortString = sortBy + " " + sortDir;
-            dataRows.Sort = sortString;
+            if (dataRows.Table.Columns[sortBy] != null)
+                dataRows.Sort = sortString;
 
             return dataRows;
         }

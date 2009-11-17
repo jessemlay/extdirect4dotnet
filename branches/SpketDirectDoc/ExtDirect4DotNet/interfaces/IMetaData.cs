@@ -18,7 +18,7 @@ namespace ExtDirect4DotNet.interfaces
         string getSortDirPropertyName();
         string getGroupByPropertyName();
         string getGroupDirPropertyName();
-        ArrayList getFieldDescription();
+        Hashtable[] getFieldDescription();
 
         Hashtable toSerializible();
     }

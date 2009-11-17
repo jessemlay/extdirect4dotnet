@@ -175,7 +175,7 @@ namespace ExtDirect4DotNet
 
             string className = actionClassType.FullName;
 
-            if (actionClassType is IActionWithMultipleInstancesPerRequest && requestData != null)
+            if (actionInstance is IActionWithMultipleInstancesPerRequest && requestData != null)
             {
                 className = className + "-" + ((IActionWithMultipleInstancesPerRequest)actionInstance).getIstanceId((Hashtable)JsonConvert.DeserializeObject(requestData[0].ToString(), typeof(Hashtable)));
             }
