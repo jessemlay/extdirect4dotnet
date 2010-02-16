@@ -298,6 +298,7 @@ namespace ExtDirect4DotNet
             Object[] paramMap = null;
             IMetaData metadata = null;
             string rootname = null;
+
             // just collect additional Information for CRUD
             if (implementsICRUDAction)
             {
@@ -358,7 +359,12 @@ namespace ExtDirect4DotNet
             // actually inkoe the method save the reference to the returned value
             Object result = this.Method.Invoke(actionInstance, paramMap);
 
-            
+            // after invoke handling?
+            if (implementsIActionWithAfterInvoke)
+            {
+                // call the afterMethodInvoke Method with the result
+                result = ((IActionWithAfterInvoke)actionInstance).afterMethodInvoke(this.MethodType, this.Name, result);
+            }
 
             // add post invoke handling for crud methods here
             if (methodType == DirectMethodType.Update || 
@@ -404,17 +410,12 @@ namespace ExtDirect4DotNet
                     }
                     resultWrapper.Add(metadata.getTotalPropertyName(), ((int)actionInstance.GetType().GetMethod("getResultCount").Invoke(actionInstance, new Object[] { })));
                     resultWrapper.Add(metadata.getRootPropertyName(), result);
-
+                    resultWrapper.Add("additionalData", metadata.getAdditionalData());
                     result = resultWrapper;
                 }
             }
 
-            // after invoke handling?
-            if (implementsIActionWithAfterInvoke)
-            {
-                // call the afterMethodInvoke Method with the result
-                result = ((IActionWithAfterInvoke)actionInstance).afterMethodInvoke(this.MethodType, this.Name, result);
-            }
+            
             return result;
         }
 

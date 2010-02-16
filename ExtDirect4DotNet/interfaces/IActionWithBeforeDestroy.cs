@@ -16,6 +16,7 @@ namespace ExtDirect4DotNet.interfaces
         /// <summary>
         /// gets called before the Action gets destroyed
         /// </summary>
+        /// <param name="parameter">The HttpContext this Action was created in.</param>
         void beforeDestroy(HttpContext parameter);
     }
 }

@@ -94,5 +94,15 @@ namespace ExtDirect4DotNet.baseclasses
         }
 
         #endregion
+
+        #region IMetaData Member
+        public Hashtable additionalData = new Hashtable();
+
+        public Hashtable getAdditionalData()
+        {
+            return additionalData;
+        }
+
+        #endregion
     }
 }

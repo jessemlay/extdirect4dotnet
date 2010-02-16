@@ -20,7 +20,7 @@ namespace ExtDirect4DotNet.interfaces
         /// <summary>
         /// used by the DirectMethod as indicator if it sould add the MetaData to a read response
         /// </summary>
-        /// <returns>return True to let direct Method add the metaData to the reponseobject after invoking a as READ marked methdo</returns>
+        /// <returns>return True to let direct Method add the metaData to the reponseobject after invoking a as READ marked method</returns>
         bool addMetaData();
     }
 }

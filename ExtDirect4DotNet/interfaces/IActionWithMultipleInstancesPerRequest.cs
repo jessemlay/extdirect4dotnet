@@ -30,11 +30,13 @@ namespace ExtDirect4DotNet.interfaces
         /// 
         /// return parameter["table"].toString();
         /// 
+        /// in this case a method needs to be called with the parameter table.
+        /// 
         /// The Proccessing Engin of Extdirect4DotNet will create an instance of the
         /// CRUD class for every table in the request.
         /// 
         /// </summary>
-        /// <param name="parameter"></param>
+        /// <param name="parameter">The Parametrs of the Methodcall</param>
         /// <returns>an Identifier for the class instance</returns>
         string getIstanceId(Hashtable parameter);
     }

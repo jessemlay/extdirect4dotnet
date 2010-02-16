@@ -16,7 +16,7 @@ namespace ExtDirect4DotNet.baseclasses
     {
         #region IActionWithAfterInvoke Member
 
-        public object afterMethodInvoke(DirectMethodType methodType, string methodName, object theReturnedObject)
+        public new object afterMethodInvoke(DirectMethodType methodType, string methodName, object theReturnedObject)
         {
             // do sorting first...
             theReturnedObject = base.afterMethodInvoke(methodType, methodName, theReturnedObject);

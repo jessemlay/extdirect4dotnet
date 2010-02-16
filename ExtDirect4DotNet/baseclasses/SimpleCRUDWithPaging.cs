@@ -14,13 +14,15 @@ namespace ExtDirect4DotNet.baseclasses
     public abstract class SimpleCRUDWithPaging : SimpleCRUDWithSorting, IActionWithAfterInvoke
     {
 
+        public bool doPaging = true;
+
         #region IActionWithAfterInvoke Member
 
-        public object afterMethodInvoke(DirectMethodType methodType, string methodName, object theReturnedObject)
+        public new object afterMethodInvoke(DirectMethodType methodType, string methodName, object theReturnedObject)
         {
-            
 
-            if (methodType == DirectMethodType.Read)
+
+            if (methodType == DirectMethodType.Read && doPaging)
             {
                
 
