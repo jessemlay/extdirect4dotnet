@@ -17,7 +17,6 @@ namespace ExtDirect4DotNet.exceptions
     /// </summary>
     public class DirectParameterException : DirectException
     {
-        private ArrayList errors;
         private string msg;
 
         public DirectParameterException(string msg, DirectRequest directRequest, ArrayList errors)

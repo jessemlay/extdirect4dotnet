@@ -110,7 +110,8 @@ namespace ExtDirect4DotNet
                 }
                 catch (Exception e3)
                 {
-                    string test = "";
+                    response = new DirectResponse(directRequest, e3);
+                    responses.Add(response);
                 }
             }
 

@@ -81,6 +81,8 @@ namespace ExtDirect4DotNet.customJsonConverter
             JsonSerializer ser = new JsonSerializer();
 
             ser.Converters.Add(new JavaScriptDateTimeConverter());
+            ser.Converters.Add(new DataRowViewConverter());
+            ser.Converters.Add(new DataRowConverter());
 
             writer.WriteStartObject();
             int i = 0;

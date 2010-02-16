@@ -26,7 +26,6 @@ namespace ExtDirect4DotNet.helper
                 // FIX Shit :)
                 return false;
             }
-            return true;
         }
 
         /// <summary>

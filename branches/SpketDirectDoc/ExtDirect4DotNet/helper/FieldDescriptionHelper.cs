@@ -19,7 +19,7 @@ namespace ExtDirect4DotNet.helper
             List<Hashtable> fields = new List<Hashtable>();
             foreach (DataColumn dc in dataTable.Columns)
             {
-                Hashtable fieldDescription = generateFieldDescription(dc);
+                Hashtable fieldDescription = generateFieldDescription(dc, dataTable);
 
                 if (fieldDescription != null)
                 {
@@ -38,7 +38,7 @@ namespace ExtDirect4DotNet.helper
         /// </summary>
         /// <param name="dc">DataColumn to generate Fielddescription for</param>
         /// <returns>A Hashtable representation of the field or null if this should not become part of the Ext.data.Record</returns>
-        protected Hashtable generateFieldDescription(DataColumn dc)
+        protected Hashtable generateFieldDescription(DataColumn dc, DataTable dt)
         {
             Hashtable fieldDescription = new Hashtable();
             fieldDescription.Add("name", dc.ColumnName);
