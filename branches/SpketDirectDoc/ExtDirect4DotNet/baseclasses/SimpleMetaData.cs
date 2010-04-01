@@ -77,6 +77,13 @@ namespace ExtDirect4DotNet.baseclasses
             return "dir";
         }
 
+        public Hashtable sortInfo = new Hashtable();
+
+        public Hashtable getSortInfo()
+        {
+            return sortInfo;
+        }
+
         #endregion
 
         #region IMetaData Member
@@ -90,6 +97,8 @@ namespace ExtDirect4DotNet.baseclasses
             metadata.Add("totalProperty", getTotalPropertyName());
             metadata.Add("successProperty",getSuccessPropertyName());
             metadata.Add("fields", getFieldDescription());
+            metadata.Add("sortInfo", getSortInfo());
+
             return metadata;
         }
 
