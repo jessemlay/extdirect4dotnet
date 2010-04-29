@@ -384,18 +384,23 @@ namespace ExtDirect4DotNet
                     {
                         // okay lets wrap the result for extjs :)
                         result = new Object[] { result };
-                    }
+                    } 
+                    resultWrapper.Add(metadata.getRootPropertyName(), result);
+                    result = resultWrapper; 
                 }
 
 
                 if (methodType == DirectMethodType.Update)
                 {
                     // do nothing yet just return the returned value (maybe for batch this behave needs a change)
+                    resultWrapper.Add(metadata.getRootPropertyName(), result);
+                    result = resultWrapper;     
                 }
 
                 if (methodType == DirectMethodType.Delete)
                 {
                     resultWrapper.Add(metadata.getSuccessPropertyName(), result);
+                    resultWrapper.Add(metadata.getRootPropertyName(), new ArrayList());
                     result = resultWrapper;
                 }
 
