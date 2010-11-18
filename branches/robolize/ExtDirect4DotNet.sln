@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtDirect4DotNet", "ExtDirect4DotNet\ExtDirect4DotNet.csproj", "{512955A8-BA4C-4801-9DF4-38329BC9BFCF}"
 EndProject
 Global
