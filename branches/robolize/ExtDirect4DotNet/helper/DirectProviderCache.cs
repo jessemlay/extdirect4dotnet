@@ -1,37 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace ExtDirect4DotNet
-{
-
+namespace ExtDirect4DotNet {
     /// <summary>
     /// Simple cache for Ext.Direct providers
     /// </summary>
-    public class DirectProviderCache : Dictionary<string, DirectProvider>
-    {
+    public class DirectProviderCache : Dictionary<string, DirectProvider> {
+        private static readonly DirectProviderCache instance = new DirectProviderCache();
 
-        static readonly DirectProviderCache instance = new DirectProviderCache();
         private Dictionary<string, DirectProviderCache> providers;
 
-        static DirectProviderCache()
-        {
-        }
-
-        DirectProviderCache()
-        {
-            this.providers = new Dictionary<string, DirectProviderCache>();
+        private DirectProviderCache() {
+            providers = new Dictionary<string, DirectProviderCache>();
         }
 
         /// <summary>
         /// Gets the singleton instance of this object.
         /// </summary>
         /// <returns>The DirectProviderCache instance.</returns>
-        public static DirectProviderCache GetInstance()
-        {
+        public static DirectProviderCache GetInstance() {
             return instance;
         }
-
     }
 }

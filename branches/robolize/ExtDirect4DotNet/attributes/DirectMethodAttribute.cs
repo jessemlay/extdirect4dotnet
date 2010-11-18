@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace ExtDirect4DotNet
-{
-    public enum DirectMethodType
-    {
+namespace ExtDirect4DotNet {
+    public enum DirectMethodType {
         /// <summary>
         /// Contains a single Parameter with the Record to save.
         /// If the method has only One Paramter the Parametr gets deserialzed with the typ of that parameter.
@@ -56,8 +52,7 @@ namespace ExtDirect4DotNet
         Hybrid
     }
 
-    public enum ParameterHandling
-    {        
+    public enum ParameterHandling {
         /// <summary>
         /// No Special Handling will be done
         /// The Parameter mapping been done by parameter Position 
@@ -85,13 +80,9 @@ namespace ExtDirect4DotNet
         /// 
         /// </summary>
         AutoResolve
-
-        
-       
     }
 
-    public enum OutputHandling
-    {
+    public enum OutputHandling {
         /// <summary>
         /// Used when the Method returns a Normal Object and this should get Serialized before it gets send to the Browser
         /// </summary>
@@ -105,7 +96,7 @@ namespace ExtDirect4DotNet
         /// "... date[{"propertiename":"propertieValue"}"] ... 
         /// </summary>
         JSON,
-    
+
         /// <summary>
         /// Signalize the router logiic to handle the response of this methode as an collection of events
         /// 
@@ -118,8 +109,12 @@ namespace ExtDirect4DotNet
     /// This attribute should be added to methods that will be Ext.direct methods.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class DirectMethodAttribute : Attribute
-    {
+    public class DirectMethodAttribute : Attribute {
+        /// <summary>
+        /// Set this Option to specifie this Method for the CRUD Actions
+        /// </summary>
+        public DirectMethodType MethodType = DirectMethodType.Normal;
+
         /// <summary>
         /// Set this Option for Specific output Handling
         /// </summary>
@@ -132,21 +127,12 @@ namespace ExtDirect4DotNet
         public ParameterHandling ParameterHandling = ParameterHandling.PassThrough;
 
         /// <summary>
-        /// Set this Option to specifie this Method for the CRUD Actions
-        /// </summary>
-        public DirectMethodType MethodType = DirectMethodType.Normal;
-
-        /// <summary>
         /// Set this to true to let ExtDirect4DotNet try to SerializeParameter Types for you.
         /// 
         /// This Option makes is Usefull when you want to Call a method with a Date for Example
         /// The Router will use the Newtonsofts deserialize Function and trys to deserialize the Json string into 
         /// The needed parameter
         /// </summary>
-        public bool SerializeParameterTypes = false;
-
-        
-        
+        public bool SerializeParameterTypes;
     }
-
 }
