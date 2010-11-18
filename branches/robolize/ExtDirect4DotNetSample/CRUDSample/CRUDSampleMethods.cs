@@ -1,43 +1,18 @@
 ﻿using System;
-using System.Data;
-using System.Configuration;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
-using ExtDirect4DotNet;
 using System.Collections.Generic;
+using System.Linq;
+using ExtDirect4DotNet;
 using ExtDirect4DotNet.helper;
 
-namespace ExtDirect4DotNetSample
-{
+namespace ExtDirect4DotNetSample {
+    public class Person {
+        public string email { get; set; }
 
-    public class Person
-    {
-        public string id
-        {
-            get;
-            set;
-        }
-        public string email
-        {
-            get;
-            set;
-        }
-        public string first
-        {
-            get;
-            set;
-        }
-        public string last
-        {
-            get;
-            set;
-        }
+        public string first { get; set; }
+
+        public string id { get; set; }
+
+        public string last { get; set; }
     }
 
     /// <summary>
@@ -49,58 +24,7 @@ namespace ExtDirect4DotNetSample
     /// availible via the Session member.
     /// </summary>
     [DirectAction]
-    public class CRUDSampleMethods : ActionWithSessionState
-    {
-        /// <summary>
-        /// Just a small Id generator jusing the Session to store the highest id
-        /// </summary>
-        /// <returns>the Id</returns>
-        private string generateId()
-        {
-            Session["lastId"] = ((int)Session["lastId"]) + 1;
-            return Session["lastId"].ToString();
-        }
-
-        /// <summary>
-        /// Returns a (cached) List of Persons from the Session
-        /// </summary>
-        /// <returns>The List of Persons</returns>
-        private List<Person> getData()
-        {
-            return getData(false);
-        }
-
-        /// <summary>
-        /// Returns a (cached) List of Persons from the Session
-        /// </summary>
-        /// <param name="fresh">true to clear the Cache</param>
-        /// <returns>The List of Persons</returns>
-        private List<Person> getData(Boolean fresh)
-        {
-
-            List<Person> personList = (List<Person>)Session["CRUDMethodsData"];
-            if (personList == null || fresh)
-            {
-                personList = new List<Person>();
-
-
-                Person p1 = new Person() { first = "Martin", last = "Späth", email = "email1@extjs.com", id = "1" };
-                personList.Add(p1);
-
-
-                Person p2 = new Person() { first = "Heinz", last = "Erhart", email = "email2@extjs.com", id = "2" };
-                personList.Add(p2);
-
-                Person p3 = new Person() { first = "Albert", last = "Einstein", email = "email1@extjs.com", id = "3" };
-                personList.Add(p3);
-                Session["CRUDMethodsData"] = personList;
-                Session["lastId"] = 3;
-
-            }
-
-            return personList;
-        }
-
+    public class CRUDSampleMethods : ActionWithSessionState {
         /// <summary>
         /// The C in Crud 
         /// Represents a properitary Logic for creating a Person Object
@@ -116,13 +40,37 @@ namespace ExtDirect4DotNetSample
         /// <param name="personToCreate">The Person that should get added to the List in the Session (represents a Record in Extjs)</param>
         /// <returns>The Person that was created</returns>
         [DirectMethod(MethodType = DirectMethodType.Create)]
-        public Person create(Person personToCreate)
-        {
+        public Person create(Person personToCreate) {
             personToCreate.id = generateId();
 
             getData().Add(personToCreate);
 
             return personToCreate;
+        }
+
+        /// <summary>
+        /// The D in cruD 
+        /// Represents a properitary Logic for Deleting an existing Person in the List.
+        /// 
+        /// This Methode is marked as a DirectMethod via the DirectMethod Attribute [DirectMethod]
+        /// You can configure Different Options for this Methods by setting Properties in the Attribute.
+        /// 
+        /// The MethodType is Set to Delete here.
+        /// 
+        /// An nother Special thing here is the OutputHandling Parameter
+        /// This ensures that the Followin Proccess Logic will not rerender the result of this methods
+        /// 
+        /// Make Sure that the ToString Function of this Function returns Clean JSON if you want to use this Method!
+        /// </summary>
+        /// <param name="id">Id Of the Person which should get deleted</param>
+        /// <returns>just retunrs Success to tell the store that the record was deleted on the Server.</returns>
+        [DirectMethod(MethodType = DirectMethodType.Delete, OutputHandling = OutputHandling.JSON)]
+        public string destroy(string id) {
+            List<Person> persons = getData();
+            Person person = persons.Find(t => t.id == id);
+            persons.Remove(person);
+
+            return "{\"success\": true}";
         }
 
         /// <summary>
@@ -149,57 +97,53 @@ namespace ExtDirect4DotNetSample
         /// <param name="dir">The Direction or "ASC"/"DESC"</param>
         /// <returns>A LoadRespone Object that wraps the Persons</returns>
         [DirectMethod(MethodType = DirectMethodType.Read, ParameterHandling = ParameterHandling.AutoResolve)]
-        public LoadResponse read(string sort, string dir, int start, int limit)
-        {
-
+        public LoadResponse read(string sort, string dir, int start, int limit) {
             List<Person> rows = getData();
 
-            switch (sort)
-            {
+            switch (sort) {
                 case "email":
-                    rows.Sort(delegate(Person p1, Person p2)
-                    {
-                        return p1.email.CompareTo(p2.email);
-                    });
+                    rows.Sort(delegate(Person p1, Person p2) { return p1.email.CompareTo(p2.email); });
                     break;
                 case "first":
-                    rows.Sort(delegate(Person p1, Person p2)
-                    {
-                        return p1.first.CompareTo(p2.first);
-                    });
+                    rows.Sort(delegate(Person p1, Person p2) { return p1.first.CompareTo(p2.first); });
                     break;
                 case "last":
                 default:
-                    rows.Sort(delegate(Person p1, Person p2)
-                    {
-                        return p1.last.CompareTo(p2.last);
-                    });
+                    rows.Sort(delegate(Person p1, Person p2) { return p1.last.CompareTo(p2.last); });
                     break;
-
-
             }
 
-            if (dir != "ASC")
-            {
+            if (dir != "ASC") {
                 rows.Reverse();
             }
 
-            if (start != null && limit != null)
-            {
-                List<Person> returnList = new List<Person>(); 
+            if (start != null && limit != null) {
+                List<Person> returnList = new List<Person>();
                 int i = 0;
-                foreach (Person curPers in rows)
-                {
-                    if (i >= start && i <= (start + limit))
-                    {
+                foreach (Person curPers in rows) {
+                    if (i >= start && i <= (start + limit)) {
                         returnList.Add(curPers);
                     }
                     i++;
                 }
-                return new LoadResponse() { Results = rows.Count, Rows = returnList };
+                return new LoadResponse {
+                    Results = rows.Count,
+                    Rows = returnList
+                };
             }
 
-            return new LoadResponse() { Results = rows.Count, Rows = rows };
+            return new LoadResponse {
+                Results = rows.Count,
+                Rows = rows
+            };
+        }
+
+        /// <summary>
+        /// just a small function that resets the content of the Session Object
+        /// </summary>
+        [DirectMethod]
+        public void reset() {
+            getData(true);
         }
 
         /// <summary>
@@ -223,24 +167,20 @@ namespace ExtDirect4DotNetSample
         /// <param name="dir">The Direction or "ASC"/"DESC"</param>
         /// <returns>A LoadRespone Object that wraps the Persons</returns>
         [DirectMethod(MethodType = DirectMethodType.Update)]
-        public Person update(string id, Person personWithUpdatedValues)
-        {
+        public Person update(string id, Person personWithUpdatedValues) {
             List<Person> persons = getData();
             Person person = persons.Find(t => t.id == id);
 
             // update logic
-            if (personWithUpdatedValues.last != null)
-            {
+            if (personWithUpdatedValues.last != null) {
                 person.last = personWithUpdatedValues.last;
             }
 
-            if (personWithUpdatedValues.first != null)
-            {
+            if (personWithUpdatedValues.first != null) {
                 person.first = personWithUpdatedValues.first;
             }
 
-            if (personWithUpdatedValues.email != null)
-            {
+            if (personWithUpdatedValues.email != null) {
                 person.email = personWithUpdatedValues.email;
             }
 
@@ -248,38 +188,60 @@ namespace ExtDirect4DotNetSample
         }
 
         /// <summary>
-        /// The D in cruD 
-        /// Represents a properitary Logic for Deleting an existing Person in the List.
-        /// 
-        /// This Methode is marked as a DirectMethod via the DirectMethod Attribute [DirectMethod]
-        /// You can configure Different Options for this Methods by setting Properties in the Attribute.
-        /// 
-        /// The MethodType is Set to Delete here.
-        /// 
-        /// An nother Special thing here is the OutputHandling Parameter
-        /// This ensures that the Followin Proccess Logic will not rerender the result of this methods
-        /// 
-        /// Make Sure that the ToString Function of this Function returns Clean JSON if you want to use this Method!
+        /// Just a small Id generator jusing the Session to store the highest id
         /// </summary>
-        /// <param name="id">Id Of the Person which should get deleted</param>
-        /// <returns>just retunrs Success to tell the store that the record was deleted on the Server.</returns>
-        [DirectMethod(MethodType = DirectMethodType.Delete, OutputHandling=OutputHandling.JSON)]
-        public string destroy(string id)
-        {
-            List<Person> persons = getData();
-            Person person = persons.Find(t => t.id == id);
-            persons.Remove(person);
-
-            return "{\"success\": true}";
+        /// <returns>the Id</returns>
+        private string generateId() {
+            Session["lastId"] = ((int) Session["lastId"]) + 1;
+            return Session["lastId"].ToString();
         }
 
         /// <summary>
-        /// just a small function that resets the content of the Session Object
+        /// Returns a (cached) List of Persons from the Session
         /// </summary>
-        [DirectMethod]
-        public void reset()
-        {
-            getData(true);
+        /// <returns>The List of Persons</returns>
+        private List<Person> getData() {
+            return getData(false);
+        }
+
+        /// <summary>
+        /// Returns a (cached) List of Persons from the Session
+        /// </summary>
+        /// <param name="fresh">true to clear the Cache</param>
+        /// <returns>The List of Persons</returns>
+        private List<Person> getData(Boolean fresh) {
+            List<Person> personList = (List<Person>) Session["CRUDMethodsData"];
+            if (personList == null || fresh) {
+                personList = new List<Person>();
+
+                Person p1 = new Person {
+                    first = "Martin",
+                    last = "Späth",
+                    email = "email1@extjs.com",
+                    id = "1"
+                };
+                personList.Add(p1);
+
+                Person p2 = new Person {
+                    first = "Heinz",
+                    last = "Erhart",
+                    email = "email2@extjs.com",
+                    id = "2"
+                };
+                personList.Add(p2);
+
+                Person p3 = new Person {
+                    first = "Albert",
+                    last = "Einstein",
+                    email = "email1@extjs.com",
+                    id = "3"
+                };
+                personList.Add(p3);
+                Session["CRUDMethodsData"] = personList;
+                Session["lastId"] = 3;
+            }
+
+            return personList;
         }
     }
 }
