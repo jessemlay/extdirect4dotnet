@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.Web;
 
-namespace ExtDirect.Direct
-{
-    public static class DirectProxyGenerator
-    {
+namespace ExtDirect.Direct {
+    public static class DirectProxyGenerator {
         /**
         public static string generateDirectApi()
         {
