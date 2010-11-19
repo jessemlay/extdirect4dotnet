@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="extdirect4dotnet" basedir="." default="build">
+    <property name="nant.settings.currentframework" value="net-4.0" />
+    <property name="project.config" value="Release" />
+
+    <property name="tools.dir" value="tools" />
+    <property name="build.dir" value="build" />
+    <property name="solution.dir" value="src" />
+    <property name="solution.file" value="${solution.dir}\${project::get-name()}.sln" />
+    <property name="deploy.dir" value="${solution.dir}\WebDeploy\Deploy" />
+    <property name="log.file" value="${project::get-name()}_NAnt.log" />
+    
+    <target name="build" depends="log-start, clean, init, commonassemblyinfo, compile, copy-output, log-end" />
+    
+    <target name="log-start" description="Start the logging file.">
+        <delete file="${log.file}" failonerror="false" />
+        <record name="${log.file}" action="Start" />
+    </target>
+    
+    <target name="log-end" description="End the logging file.">
+        <record name="${log.file}" action="Close" />
+    </target>
+    
+    <target name="clean">
+        <delete dir="${build.dir}" failonerror="false" />
+    </target>
+    
+    <target name="init">
+        <tstamp>
+            <formatter property="datetime.buildtime" pattern="yyyy-MM-dd, HH:mm:ss" />
+        </tstamp>
+        <property name="build.dir" value="${build.dir}\${project::get-name()}-${project.config}\" />
+        <mkdir dir="${build.dir}" />
+        <echo message="Current Directory: ${project::get-base-directory()}" />
+    </target>
+    
+    <target name="commonassemblyinfo">
+        <version buildtype="NoIncrement" revisiontype="Automatic" path="${solution.dir}\build.number" verbose="false" />
+        <property name="CCNetLabel" value="${buildnumber.revision}" overwrite="false"  />
+        <property name="version.full" value="${buildnumber.major}.${buildnumber.minor}.${buildnumber.build}.${CCNetLabel}" />
+        <echo message="Version for this build is set as: ${version.full}" />
+        
+        <delete file="${solution.dir}\CommonAssemblyInfo.cs" failonerror="false" />
+        <asminfo output="${solution.dir}\CommonAssemblyInfo.cs" language="CSharp">
+            <imports>
+                <import namespace="System" />
+                <import namespace="System.Reflection" />
+                <import namespace="System.Runtime.InteropServices" />
+            </imports>
+            <attributes>
+                <attribute type="ComVisibleAttribute" value="false" />
+                <attribute type="AssemblyVersionAttribute" value="${version.full}" />
+                <attribute type="AssemblyFileVersionAttribute" value="${version.full}" />
+                <attribute type="AssemblyProductAttribute" value="${project::get-name()}" />
+                <attribute type="AssemblyConfigurationAttribute" value="${project.config}" />
+                <attribute type="AssemblyInformationalVersionAttribute" value="${version.full}" />
+            </attributes>
+            <references>
+                <include name="System.dll" />
+            </references>
+        </asminfo>
+    </target>
+    
+    <target name="compile" depends="init">
+        <!-- Test for required properties. -->
+        <if test="${not property::exists('project.config')}">
+            <fail message="The 'project.config' property is required, but has not been set." />
+        </if>
+        <if test="${not property::exists('solution.file')}">
+            <fail message="The 'solution.file' property is required, but has not been set." />
+        </if>
+        
+        <!-- Set property defaults if they have not already been set. -->
+        <property name="msbuild.exe" value="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe" overwrite="false" />
+        
+		<!-- Build the solution. -->
+        <exec program="${msbuild.exe}" commandline="${solution.file} /t:Clean /p:Configuration=${project.config} /v:q" workingdir="." />
+		<exec program="${msbuild.exe}" commandline="${solution.file} /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
+	</target>
+    
+    <target name="copy-output" depends="compile">
+        <echo message="Copy binary files." />
+        <copy todir="${build.dir}\bin">
+            <fileset basedir="${solution.dir}\${project::get-name()}\bin\${project.config}">
+                <include name="**" />
+            </fileset>
+        </copy>
+        
+        <echo message="Copy sample website files." />
+        <copy todir="${build.dir}\WebSamples">
+			<fileset basedir="${deploy.dir}">
+				<exclude name="**/obj/**" />
+				<exclude name="**/*.csproj" />
+				<exclude name="**/*.user" />
+				<include name="**" />
+			</fileset>
+		</copy>
+    </target>
+</project>
