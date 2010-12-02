@@ -1,27 +1,25 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using ExtDirect4DotNet.customJsonConverter;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace ExtDirect4DotNet {
     [JsonObject]
-    internal class DirectResponse {
+    public class DirectResponse {
         public DirectResponse(DirectRequest request, object result, OutputHandling outputHandling) {
             Type = request.Type;
             TransactionId = request.TransactionId;
             Action = request.Action;
             Method = request.Method;
 
-            // TODO maybe there is a better way to avoi re parsing a string to json....
+            // TODO maybe there is a better way to avoid reparsing a string to json....
             if (outputHandling == OutputHandling.JSON) {
                 Result = result;
             }
             else {
-                JsonConverterCollection jc = new JsonConverterCollection();
-
-                Result = JsonConvert.SerializeObject(result, new JavaScriptDateTimeConverter(), new DataRowConverter(), new DataRowViewConverter(), new DataRowCollectionConverter());
+                //FUTURE:Expose API or some kind of configuration to allow users to add additional converters if needed. 
+                Result = JsonConvert.SerializeObject(result, new JavaScriptDateTimeConverter());
             }
 
             IsUpload = request.IsUpload;
@@ -30,9 +28,8 @@ namespace ExtDirect4DotNet {
         public DirectResponse(DirectEvent eventObj) {
             Type = "event";
             Name = eventObj.name;
-            JsonConverterCollection jc = new JsonConverterCollection();
-
-            Result = JsonConvert.SerializeObject(eventObj.data, new JavaScriptDateTimeConverter(), new DataRowConverter(), new DataRowViewConverter(), new DataRowCollectionConverter());
+                //FUTURE:Expose API or some kind of configuration to allow users to add additional converters if needed. 
+            Result = JsonConvert.SerializeObject(eventObj.data, new JavaScriptDateTimeConverter());
         }
 
         public DirectResponse(DirectRequest request, Exception e) {
@@ -43,7 +40,7 @@ namespace ExtDirect4DotNet {
             Message = e.Message;
             Where = e.StackTrace;
             if (e is DirectException) {
-                ErrorCode = ((DirectException) e).errorCode;
+                ErrorCode = ((DirectException) e).ErrorCode;
             }
             Result = "{success:false}";
 

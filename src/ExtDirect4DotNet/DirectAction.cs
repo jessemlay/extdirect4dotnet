@@ -6,6 +6,7 @@ using ExtDirect4DotNet.helper;
 using Newtonsoft.Json;
 
 namespace ExtDirect4DotNet {
+    //TODO:Need to do a full review of this class and remove unused code.
     /// <summary>
     /// This class represents a container for a series of related Ext.Direct methods.
     /// </summary>

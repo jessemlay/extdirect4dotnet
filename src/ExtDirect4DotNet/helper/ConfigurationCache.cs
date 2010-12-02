@@ -4,22 +4,30 @@ using System.Linq;
 using System.Web.Configuration;
 
 namespace ExtDirect4DotNet.helper {
+    //TODO:This class could be removed.  It only needs to resolve a path to the router.  If it stays, it doesn't need to be static and there is no caching going on here.
+    [Obsolete("This class could be removed.")]
     public static class ConfigurationCache {
         private static string cachedRouterUrl = "";
 
-        public static string getRouterUrl() {
-            return getRouterUrl(false);
+        /// <summary>
+        /// Trys to find the configured handler for the router. Cache is not cleared when calling this method.
+        /// </summary>
+        /// <returns>Returns the url to the Ext Direct Router.</returns>
+        public static string GetRouterUrl() {
+            return GetRouterUrl(false);
         }
 
         /// <summary>
-        /// trys to find the configured handler for the router
+        /// Trys to find the configured handler for the router.
         /// </summary>
-        /// <param name="clear">clear Cache and reload config</param>
-        /// <returns>returns the url to the Ext Direct Router</returns>
-        public static string getRouterUrl(bool clear) {
+        /// <param name="clear">Clear Cache and reload config.</param>
+        /// <returns>Returns the url to the Ext Direct Router.</returns>
+        public static string GetRouterUrl(bool clear) {
+            //TODO:This if will never evaluate to true.
             if (!clear && cachedRouterUrl != "") {
                 return cachedRouterUrl;
             }
+
             string routerUrl = "";
 
             // readout the system.web/httpHandlers secion in the webconfig this dll is bound. 
@@ -27,18 +35,19 @@ namespace ExtDirect4DotNet.helper {
             HttpHandlersSection httpHandlers = ConfigurationManager.GetSection("system.web/httpHandlers") as HttpHandlersSection;
 
             // now itterate over all the available actions and find the one containing the url.
-            foreach (HttpHandlerAction curHandler in httpHandlers.Handlers) {
-                // search for the handler link to the router class.
-                if (curHandler.Type.IndexOf("ExtDirect4DotNet.DirectRouter") != -1) {
-                    routerUrl = curHandler.Path;
-                    break;
+            if (httpHandlers != null) {
+                foreach (HttpHandlerAction curHandler in httpHandlers.Handlers) {
+                    // search for the handler link to the router class.
+                    //TODO:Need to verify this will always resolve the correct path to the router. Path could be wrong depending on site configuration in IIS.
+                    if (curHandler.Type.IndexOf("ExtDirect4DotNet.DirectRouter") != -1) {
+                        routerUrl = curHandler.Path;
+                        break;
+                    }
                 }
             }
 
             if (routerUrl == "") {
-                throw new Exception("Configuration for the DirectRouter wasn't found. "
-                                    + "Please add e.g.<add verb=\"*\" path=\"directRouter.rfc\" type=\"ExtDirect4DotNet.DirectProxy,ExtDirect4DotNet\" /> to your web.config"
-                    );
+                throw new DirectConfigurationException();
             }
 
             return routerUrl;

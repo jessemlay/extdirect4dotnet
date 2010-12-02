@@ -7,23 +7,20 @@ using ExtDirect4DotNet.helper;
 using Newtonsoft.Json;
 
 namespace ExtDirect4DotNet {
-    /// <summary>
-    /// 
-    /// </summary>
+    //TODO:Need to do a full review of this class and remove unused code. Also, this class could probabily be made internal or even private within the DirectProxy class.
     public class DirectProvider {
         public const string REMOTING_PROVIDER = "remoting";
 
-        private Dictionary<string, DirectAction> actions;
+        private readonly Dictionary<string, DirectAction> _actions = new Dictionary<string, DirectAction>();
 
-        private string api = string.Empty;
+        private string _api = string.Empty;
 
         /// <summary>
         /// Creates an instance of the object.
         /// </summary>
         /// <param name="name">The name of the provider.</param>
         /// <param name="url">The url of the provider.</param>
-        public DirectProvider(string name, string url)
-            : this(name, url, REMOTING_PROVIDER) {
+        public DirectProvider(string name, string url) : this(name, url, REMOTING_PROVIDER) {
         }
 
         /// <summary>
@@ -36,8 +33,6 @@ namespace ExtDirect4DotNet {
             Name = name;
             Url = url;
             Type = type;
-
-            actions = new Dictionary<string, DirectAction>();
         }
 
         /// <summary>
@@ -61,7 +56,7 @@ namespace ExtDirect4DotNet {
         public string Url { get; set; }
 
         public override string ToString() {
-            if (Configured && String.IsNullOrEmpty(api)) {
+            if (Configured && String.IsNullOrEmpty(_api)) {
                 using (StringWriter sw = new StringWriter()) {
                     using (JsonTextWriter jw = new JsonTextWriter(sw)) {
                         jw.WriteStartObject();
@@ -72,24 +67,25 @@ namespace ExtDirect4DotNet {
                         Utility.WriteProperty(jw, "url", Url);
                         jw.WritePropertyName("actions");
                         jw.WriteStartObject();
-                        foreach (DirectAction action in actions.Values) {
+                        foreach (DirectAction action in _actions.Values) {
                             action.Write(jw);
                         }
                         jw.WriteEndObject();
                         jw.WriteEndObject();
-                        api = String.Format("{0} = {1};", Name, sw.ToString());
+                        _api = String.Format("{0} = {1};", Name, sw.ToString());
                     }
                 }
             }
-            return api;
+            return _api;
         }
 
         /// <summary>
         /// Clears any previous configuration for this provider.
         /// </summary>
         public void Clear() {
+            //NOTE:Not currently used.
             Configured = false;
-            actions.Clear();
+            _actions.Clear();
         }
 
         /// <summary>
@@ -97,11 +93,9 @@ namespace ExtDirect4DotNet {
         /// </summary>
         /// <param name="assembly">The assembly to automatically generate parameters from.</param>
         public void Configure(Assembly assembly) {
+            //NOTE:Not currently used.
             if (!Configured) {
-                List<Type> types = new List<Type>();
-                foreach (Type type in assembly.GetTypes()) {
-                    types.Add(type);
-                }
+                List<Type> types = assembly.GetTypes().ToList();
                 Configure(types);
             }
         }
@@ -109,66 +103,34 @@ namespace ExtDirect4DotNet {
         /// <summary>
         /// Configure the provider by adding the available API methods.
         /// </summary>
-        /// <param name="items">A series of object instances that contain Ext.Direct methods.</param>
+        /// <param name="assemblyList">A series of object instances that contain Ext.Direct methods.</param>
         public void Configure(Assembly[] assemblyList) {
             if (!Configured) {
-                List<Type> types = new List<Type>();
-                foreach (Assembly curAssembly in assemblyList) {
-                    foreach (Type type in curAssembly.GetTypes()) {
-                        types.Add(type);
-                    }
-                }
-
+                List<Type> types = assemblyList.SelectMany(curAssembly => curAssembly.GetTypes()).ToList();
                 Configure(types);
             }
         }
 
-        /// <summary>
-        /// Configure the provider by adding the available API methods.
-        /// </summary>
-        /// <param name="items">A series of object instances that contain Ext.Direct methods.</param>
-        /*
-        public void Configure(Type[] typelist)
-        {
-
-            if (!this.Configured)
-            {
-                List<object> types = new List<object>();
-                foreach (var allAssembly in assemblyList)
-                {
-                    if (allAssembly != null)
-                    {
-                        types.AddRange(allAssembly.GetTypes());
-                    }
-                }
-
-                this.Configure(types);
-            }
-        }*/
         /// <summary>
         /// Configure the provider by adding the available API methods.
         /// </summary>
         /// <param name="items">A series of object instances that contain Ext.Direct methods.</param>
         public void Configure(IEnumerable<object> items) {
+            //NOTE:Not currently used.
             if (!Configured) {
-                List<Type> types = new List<Type>();
-                foreach (object item in items) {
-                    if (item != null) {
-                        types.Add(item.GetType());
-                    }
-                }
+                List<Type> types = (items.Where(item => item != null).Select(item => item.GetType())).ToList();
                 Configure(types);
             }
         }
 
         internal object Execute(DirectRequest request) {
-            DirectAction action = actions[request.Action];
+            DirectAction action = _actions[request.Action];
             if (action == null) {
-                throw new DirectException("Unable to find action, " + request.Action, request);
+                throw new DirectException(string.Format("Unable to find action, {0}", request.Action), request);
             }
             DirectMethod method = action.GetMethod(request.Method);
             if (method == null) {
-                throw new DirectException("Unable to find method, " + request.Method + " in Action: " + request.Action, request);
+                throw new DirectException(string.Format("Unable to find method, {0} in Action: {1}", request.Method, request.Action), request);
             }
             Type type = action.Type;
             return ""; //; method.Method.Invoke(type.Assembly.CreateInstance(type.FullName), request.Data);
@@ -180,9 +142,9 @@ namespace ExtDirect4DotNet {
         /// <param name="request">the request you want to find the assembly to</param>
         /// <returns></returns>
         internal DirectAction GetDirectAction(DirectRequest request) {
-            DirectAction action = actions[request.Action];
+            DirectAction action = _actions[request.Action];
             if (action == null) {
-                throw new DirectException("Unable to find action, " + request.Action, request);
+                throw new DirectException(string.Format("Unable to find action, {0}", request.Action), request);
             }
             return action;
         }
@@ -191,18 +153,15 @@ namespace ExtDirect4DotNet {
             DirectAction action = GetDirectAction(request);
             DirectMethod method = action.GetMethod(request.Method);
             if (method == null) {
-                throw new DirectException("Unable to find method, " + request.Method + " in Action: " + request.Action, request);
+                throw new DirectException(string.Format("Unable to find method, {0} in Action: {1}", request.Method, request.Action), request);
             }
             return method;
         }
 
         private void Configure(IEnumerable<Type> types) {
             foreach (Type type in types) {
-                if (type.Name == "Class1") {
-                    string test = "";
-                }
                 if (DirectAction.IsAction(type)) {
-                    actions.Add(type.Name, new DirectAction(type));
+                    _actions.Add(type.Name, new DirectAction(type));
                 }
             }
             Configured = true;
