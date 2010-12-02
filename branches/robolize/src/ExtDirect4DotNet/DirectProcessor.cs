@@ -7,67 +7,63 @@ using System.Web;
 using Newtonsoft.Json.Linq;
 
 namespace ExtDirect4DotNet {
+    //TODO:Need to do a full review of this class.
     /// <summary>
     /// Class for processing Ext Direct requests.
     /// </summary>
-    public class DirectProcessor {
+    internal class DirectProcessor {
+        private readonly DirectRouter _directRouter;
+
+        internal DirectProcessor(DirectRouter directRouter) {
+            _directRouter = directRouter;
+        }
+
         /// <summary>
         /// Processes an incoming request.
         /// </summary>
-        /// <param name="provider">The provider that triggered the request.</param>
-        /// <param name="httpRequest">The http information.</param>
         /// <returns>The result from the client method.</returns>
-        public static DirectExceution Execute(DirectProvider provider, HttpContext httpContext) {
-            DirectExceution directExecution = new DirectExceution();
-
-            HttpRequest httpRequest = httpContext.Request;
-            // parse the a list of requests from the httpRequest
-            List<DirectRequest> requests = ParseRequest(httpRequest);
+        internal DirectExecution Execute() {
+            //Parse the a list of requests from the httpRequest.
+            List<DirectRequest> requests = ParseRequest();
             List<DirectResponse> responses = new List<DirectResponse>();
 
             // after parsing was successfull Proccess the list of requests
             foreach (DirectRequest request in requests) {
                 // try to find the method in the provider 
-                DirectMethod directMethod = provider.GetDirectMethod(request);
-                DirectResponse response;
+                DirectMethod directMethod = DirectProxy.GetDirectProviderCache().GetDirectMethod(request);
 
                 // try to Invoke the Method and serialize the Data
                 try {
-                    Object result = directMethod.invoke(request, httpContext);
+                    Object result = directMethod.Invoke(request, _directRouter.HttpContext);
 
                     // Handle as Poll?
                     if (directMethod.OutputHandling == OutputHandling.Poll) {
-                        response = new DirectResponse(request, "{success:true}", directMethod.OutputHandling);
-                        responses.Add(response);
+                        //TODO:Verify the handling of the response.
+                        DirectResponse response = new DirectResponse(request, "{success:true}", directMethod.OutputHandling);
+                        responses.Add(response); //TODO:Should this "Add" be added here?
 
-                        if (result is List<DirectEvent>) {
-                            foreach (DirectEvent currEvent in (List<DirectEvent>) result) {
-                                response = new DirectResponse(currEvent);
+                        if (!(result is List<DirectEvent>)) {
+                            throw new Exception("A Method with outputhandling Poll is required to return List<DirectEvent>.");
+                        }
 
-                                responses.Add(response);
-                            }
-                        }
-                        else {
-                            throw new Exception("A Method with outputhandling Poll has to return a List<DirectEvent>");
-                        }
+                        responses.AddRange(((List<DirectEvent>) result).Select(de => new DirectResponse(de)));
                     }
                     else {
-                        response = new DirectResponse(request, result, directMethod.OutputHandling);
-                        responses.Add(response);
+                        responses.Add(new DirectResponse(request, result, directMethod.OutputHandling));
                     }
                 }
-                catch (TargetInvocationException e) {
-                    response = new DirectResponse(request, e.InnerException);
+                catch (TargetInvocationException ex) {
+                    DirectResponse response = _directRouter.OnError(request, ex);
                     responses.Add(response);
                 }
             }
 
+            bool containsErrors = false;
             string output = "[";
-
             int i3 = 1;
             foreach (DirectResponse response in responses) {
                 if (response.Type == "exception") {
-                    directExecution.containsErrors = true;
+                    containsErrors = true;
                 }
                 output += response.toJson();
                 if (responses.Count > i3) {
@@ -75,26 +71,29 @@ namespace ExtDirect4DotNet {
                 }
                 i3++;
             }
-
             output += "]";
-            directExecution.jsonResponse = output;
 
+            DirectExecution directExecution = new DirectExecution {
+                jsonResponse = output,
+                containsErrors = containsErrors
+            };
             return directExecution;
         }
 
-        internal static List<DirectRequest> ParseRequest(HttpRequest httpRequest) {
-            // TODO Throw parse Exception
+        internal List<DirectRequest> ParseRequest() {
+            HttpRequest httpRequest = _directRouter.HttpContext.Request;
 
             List<DirectRequest> proccessList = new List<DirectRequest>();
             if (!String.IsNullOrEmpty(httpRequest[DirectRequest.RequestFormAction])) {
-                DirectRequest request = new DirectRequest();
-                request.Action = httpRequest[DirectRequest.RequestFormAction] ?? string.Empty;
-                request.Method = httpRequest[DirectRequest.RequestFormMethod] ?? string.Empty;
-                request.Type = httpRequest[DirectRequest.RequestFormType] ?? string.Empty;
-                request.IsUpload = Convert.ToBoolean(httpRequest[DirectRequest.RequestFormUpload]);
-                request.TransactionId = Convert.ToInt32(httpRequest[DirectRequest.RequestFormTransactionId]);
-                request.Data = null;
-                request.HttpRequest = httpRequest;
+                DirectRequest request = new DirectRequest {
+                    Action = httpRequest[DirectRequest.RequestFormAction] ?? string.Empty,
+                    Method = httpRequest[DirectRequest.RequestFormMethod] ?? string.Empty,
+                    Type = httpRequest[DirectRequest.RequestFormType] ?? string.Empty,
+                    IsUpload = Convert.ToBoolean(httpRequest[DirectRequest.RequestFormUpload]),
+                    TransactionId = Convert.ToInt32(httpRequest[DirectRequest.RequestFormTransactionId]),
+                    Data = null,
+                    HttpRequest = httpRequest
+                };
                 proccessList.Add(request);
             }
             else {
@@ -105,7 +104,7 @@ namespace ExtDirect4DotNet {
                 try {
                     directRequests = JArray.Parse(json);
                 }
-                catch (Exception e) {
+                catch (Exception) {
                     directRequests = JArray.Parse("[" + json + "]");
                 }
 

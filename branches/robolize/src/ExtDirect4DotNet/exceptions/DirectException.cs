@@ -6,29 +6,31 @@ namespace ExtDirect4DotNet {
     /// Thrown when an error occurs during a Ext.Direct call.
     /// </summary>
     public class DirectException : ApplicationException {
-        public uint errorCode;
+        /// <summary>
+        /// Gets or sets the error code.
+        /// </summary>
+        /// <value>The error code.</value>
+        public uint ErrorCode { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DirectException"/> class.
+        /// </summary>
         public DirectException() {
         }
 
-        public DirectException(string msg)
-            : base(msg) {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DirectException"/> class.
+        /// </summary>
+        /// <param name="message">The error message.</param>
+        public DirectException(string message) : base(message) {
         }
 
-        public DirectException(string msg, DirectRequest directRequest)
-            : base(msg + " DirectAction: " + directRequest.Action + " DirectMethod " + directRequest.Method) {
-        }
-    }
-
-    /// <summary>
-    /// Thrown when an error occurs during a Ext.Direct call.
-    /// </summary>
-    public class DirectParameterException : DirectException {
-        public DirectParameterException() {
-        }
-
-        public DirectParameterException(string msg, DirectRequest directRequest)
-            : base(msg, directRequest) {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DirectException"/> class.
+        /// </summary>
+        /// <param name="message">The error message.</param>
+        /// <param name="directRequest">The direct request.</param>
+        public DirectException(string message, DirectRequest directRequest) : base(string.Format("{0} DirectAction: {1} DirectMethod {2}", message, directRequest.Action, directRequest.Method)) {
         }
     }
 }

@@ -7,12 +7,9 @@ namespace ExtDirect4DotNet {
     /// Simple cache for Ext.Direct providers
     /// </summary>
     public class DirectProviderCache : Dictionary<string, DirectProvider> {
-        private static readonly DirectProviderCache instance = new DirectProviderCache();
-
-        private Dictionary<string, DirectProviderCache> providers;
+        private static readonly DirectProviderCache Instance = new DirectProviderCache();
 
         private DirectProviderCache() {
-            providers = new Dictionary<string, DirectProviderCache>();
         }
 
         /// <summary>
@@ -20,7 +17,7 @@ namespace ExtDirect4DotNet {
         /// </summary>
         /// <returns>The DirectProviderCache instance.</returns>
         public static DirectProviderCache GetInstance() {
-            return instance;
+            return Instance;
         }
     }
 }
