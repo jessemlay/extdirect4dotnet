@@ -39,7 +39,7 @@ namespace ExtDirect4DotNet {
         public DirectResponse DirectResponse {
             get {
                 if (_directResponse == null) {
-                    return new DirectResponse(DirectRequest, InnerException);
+                    return GetDefaultDirectResponse();
                 }
                 return _directResponse;
             }
@@ -62,6 +62,14 @@ namespace ExtDirect4DotNet {
         /// <value>The inner exception.</value>
         public Exception InnerException {
             get { return _exception.InnerException; }
+        }
+
+        /// <summary>
+        /// Gets the default <see cref="DirectResponse"/> object configured as an exception response.
+        /// </summary>
+        /// <returns></returns>
+        public DirectResponse GetDefaultDirectResponse() {
+            return new DirectResponse(DirectRequest, InnerException);
         }
     }
 }
