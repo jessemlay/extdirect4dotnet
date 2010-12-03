@@ -25,22 +25,22 @@ namespace ExtDirect4DotNet {
             IsUpload = request.IsUpload;
         }
 
-        public DirectResponse(DirectEvent eventObj) {
+        public DirectResponse(DirectEvent directEvent) {
             Type = "event";
-            Name = eventObj.name;
-                //FUTURE:Expose API or some kind of configuration to allow users to add additional converters if needed. 
-            Result = JsonConvert.SerializeObject(eventObj.data, new JavaScriptDateTimeConverter());
+            Name = directEvent.name;
+            //FUTURE:Expose API or some kind of configuration to allow users to add additional converters if needed. 
+            Result = JsonConvert.SerializeObject(directEvent.data, new JavaScriptDateTimeConverter());
         }
 
-        public DirectResponse(DirectRequest request, Exception e) {
+        public DirectResponse(DirectRequest request, Exception exception) {
             Type = "exception";
             TransactionId = request.TransactionId;
             Action = request.Action;
             Method = request.Method;
-            Message = e.Message;
-            Where = e.StackTrace;
-            if (e is DirectException) {
-                ErrorCode = ((DirectException) e).ErrorCode;
+            Message = exception.Message;
+            Where = exception.StackTrace;
+            if (exception is DirectException) {
+                ErrorCode = ((DirectException) exception).ErrorCode;
             }
             Result = "{success:false}";
 
