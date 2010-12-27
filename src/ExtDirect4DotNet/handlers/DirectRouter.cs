@@ -3,12 +3,15 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.SessionState;
+using log4net;
 
 namespace ExtDirect4DotNet {
     /// <summary>
     /// Implementation of <see cref="IHttpHandler"/> responsible for handling Ext.Direct requests.
     /// </summary>
     public class DirectRouter : IHttpHandler, IRequiresSessionState {
+        private static readonly ILog Logger = LogManager.GetLogger("ExtDirect4DotNet.JSON");
+
         /// <summary>
         /// Gets the current instance of the <see cref="HttpContext"/> passed into this handler.
         /// </summary>
@@ -50,9 +53,12 @@ namespace ExtDirect4DotNet {
                 HttpContext.Response.StatusCode = 207;
             }
 
+            string response = directExecution.jsonResponse;
+            Logger.Info(response);
+
             // send eventually wraped content back to the browser
             HttpContext.Response.Write(responseWrapStart);
-            HttpContext.Response.Write(directExecution.jsonResponse);
+            HttpContext.Response.Write(response);
             HttpContext.Response.Write(responseWrapEnd);
             HttpContext.Response.End();
         }
