@@ -13,9 +13,9 @@ using System.Runtime.InteropServices;
 //------------------------------------------------------------------------------
 
 [assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyVersionAttribute("3.1.0.5863")]
-[assembly: AssemblyFileVersionAttribute("3.1.0.5863")]
+[assembly: AssemblyVersionAttribute("3.1.0.7948")]
+[assembly: AssemblyFileVersionAttribute("3.1.0.7948")]
 [assembly: AssemblyProductAttribute("extdirect4dotnet")]
 [assembly: AssemblyConfigurationAttribute("Release")]
-[assembly: AssemblyInformationalVersionAttribute("3.1.0.5863")]
+[assembly: AssemblyInformationalVersionAttribute("3.1.0.7948")]
 
