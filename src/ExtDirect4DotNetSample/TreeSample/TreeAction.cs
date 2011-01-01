@@ -31,7 +31,7 @@ namespace WebApplication1.TreeSample {
     }
 
     [DirectAction]
-    public class TreeAction : ActionWithSessionState {
+    public class TreeAction : DirectActionBase {
         [DirectMethod(MethodType = DirectMethodType.TreeLoad)]
         public List<TreeNode> getChildNodes(string id) {
             TreeNode rootNode = getData();

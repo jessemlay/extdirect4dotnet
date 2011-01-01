@@ -44,9 +44,12 @@
           <PLACE_SIMPLE_INITIALIZER_ON_SINGLE_LINE>False</PLACE_SIMPLE_INITIALIZER_ON_SINGLE_LINE>
           <PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>False</PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>
           <TYPE_DECLARATION_BRACES>END_OF_LINE</TYPE_DECLARATION_BRACES>
+          <WRAP_FOR_STMT_HEADER_STYLE>WRAP_IF_LONG</WRAP_FOR_STMT_HEADER_STYLE>
           <WRAP_LINES>False</WRAP_LINES>
-          <WRAP_MULTIPLE_TYPE_PARAMEER_CONSTRAINTS_STYLE>CHOP_ALWAYS</WRAP_MULTIPLE_TYPE_PARAMEER_CONSTRAINTS_STYLE>
+          <WRAP_MULTIPLE_DECLARATION_STYLE>CHOP_ALWAYS</WRAP_MULTIPLE_DECLARATION_STYLE>
+          <WRAP_MULTIPLE_TYPE_PARAMEER_CONSTRAINTS_STYLE>WRAP_IF_LONG</WRAP_MULTIPLE_TYPE_PARAMEER_CONSTRAINTS_STYLE>
           <WRAP_OBJECT_AND_COLLECTION_INITIALIZER_STYLE>CHOP_ALWAYS</WRAP_OBJECT_AND_COLLECTION_INITIALIZER_STYLE>
+          <WRAP_TERNARY_EXPR_STYLE>WRAP_IF_LONG</WRAP_TERNARY_EXPR_STYLE>
         </FormatSettings>
         <UsingsSettings>
           <KeepImports IsNull="False">
@@ -541,6 +544,7 @@ II.2.12 <HandlesEvent />
         <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
         <Abbreviation Text="ID" />
         <Abbreviation Text="DTO" />
+        <Abbreviation Text="DC" />
       </Naming2>
     </CodeStyleSettings>
     <HighlightingSettings>
@@ -559,13 +563,13 @@ II.2.12 <HandlesEvent />
         <UnknownItemGroup>WARNING</UnknownItemGroup>
         <UnknownTask>WARNING</UnknownTask>
         <UnknownTaskElement>WARNING</UnknownTaskElement>
-        <LoopCanBeConvertedToQuery>SUGGESTION</LoopCanBeConvertedToQuery>
+        <LoopCanBeConvertedToQuery>HINT</LoopCanBeConvertedToQuery>
         <LoopCanBePartlyConvertedToQuery>HINT</LoopCanBePartlyConvertedToQuery>
         <ForCanBeConvertedToForeach>SUGGESTION</ForCanBeConvertedToForeach>
         <UnusedType.Local>WARNING</UnusedType.Local>
         <UnusedType.Global>SUGGESTION</UnusedType.Global>
         <UnusedMember.Local>WARNING</UnusedMember.Local>
-        <UnusedMember.Global>SUGGESTION</UnusedMember.Global>
+        <UnusedMember.Global>HINT</UnusedMember.Global>
         <UnusedMemberInSuper.Local>WARNING</UnusedMemberInSuper.Local>
         <UnusedMemberInSuper.Global>SUGGESTION</UnusedMemberInSuper.Global>
         <UnusedMemberHiearchy.Local>WARNING</UnusedMemberHiearchy.Local>
@@ -632,7 +636,7 @@ II.2.12 <HandlesEvent />
         <FieldCanBeMadeReadOnly.Global>SUGGESTION</FieldCanBeMadeReadOnly.Global>
         <SuggestBaseTypeForParameter>HINT</SuggestBaseTypeForParameter>
         <ParameterTypeCanBeEnumerable.Local>SUGGESTION</ParameterTypeCanBeEnumerable.Local>
-        <ParameterTypeCanBeEnumerable.Global>SUGGESTION</ParameterTypeCanBeEnumerable.Global>
+        <ParameterTypeCanBeEnumerable.Global>HINT</ParameterTypeCanBeEnumerable.Global>
         <ReturnTypeCanBeEnumerable.Local>SUGGESTION</ReturnTypeCanBeEnumerable.Local>
         <ReturnTypeCanBeEnumerable.Global>SUGGESTION</ReturnTypeCanBeEnumerable.Global>
         <MemberCanBeMadeStatic.Local>HINT</MemberCanBeMadeStatic.Local>

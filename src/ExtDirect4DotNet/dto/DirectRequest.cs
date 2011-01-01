@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
@@ -6,6 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ExtDirect4DotNet {
     [JsonObject]
+    [DebuggerDisplay("{Action,nq}.{Method,nq}: Data = {Data}")]
     public class DirectRequest {
         public const string RequestFormAction = "extAction";
 

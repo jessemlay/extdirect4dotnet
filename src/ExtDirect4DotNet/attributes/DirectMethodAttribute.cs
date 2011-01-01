@@ -8,7 +8,7 @@ namespace ExtDirect4DotNet {
     [AttributeUsage(AttributeTargets.Method)]
     public class DirectMethodAttribute : Attribute {
         /// <summary>
-        /// Set this Option to specifie this Method for the CRUD Actions
+        /// Set this Option to specify this Method for the CRUD Actions
         /// </summary>
         public DirectMethodType MethodType = DirectMethodType.Normal;
 

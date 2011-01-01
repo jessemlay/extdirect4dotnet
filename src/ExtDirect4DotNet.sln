@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtDirect4DotNetSample", "E
 EndProject
 Project("{2CFEAB61-6A3B-4EB8-B523-560B4BEEF521}") = "WebDeploy", "WebDeploy\WebDeploy.wdproj", "{5D86A286-987B-4ADF-8670-43D2A24E329F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtDirect4DotNet.Test", "ExtDirect4DotNet.Test\ExtDirect4DotNet.Test.csproj", "{A3310118-0BD6-48D7-8797-E4B329516B43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{5D86A286-987B-4ADF-8670-43D2A24E329F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D86A286-987B-4ADF-8670-43D2A24E329F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D86A286-987B-4ADF-8670-43D2A24E329F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3310118-0BD6-48D7-8797-E4B329516B43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3310118-0BD6-48D7-8797-E4B329516B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3310118-0BD6-48D7-8797-E4B329516B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3310118-0BD6-48D7-8797-E4B329516B43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

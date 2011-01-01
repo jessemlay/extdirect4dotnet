@@ -7,7 +7,7 @@ using ExtDirect4DotNet.helper;
 using Newtonsoft.Json;
 
 namespace ExtDirect4DotNet {
-    //TODO:Need to do a full review of this class and remove unused code. Also, this class could probabily be made internal or even private within the DirectProxy class.
+    //TODO:Need to do a full review of this class and remove unused code. Also, this class could probably be made internal or even private within the DirectProxy class.
     public class DirectProvider {
         public const string REMOTING_PROVIDER = "remoting";
 
@@ -38,7 +38,7 @@ namespace ExtDirect4DotNet {
         /// <summary>
         /// Indicates whether the provider has been configured or not.
         /// </summary>
-        public bool Configured { get; private set; }
+        public bool IsConfigured { get; private set; }
 
         /// <summary>
         /// Gets/sets the name of the provider.
@@ -56,14 +56,12 @@ namespace ExtDirect4DotNet {
         public string Url { get; set; }
 
         public override string ToString() {
-            if (Configured && String.IsNullOrEmpty(_api)) {
+            if (IsConfigured && String.IsNullOrEmpty(_api)) {
                 using (StringWriter sw = new StringWriter()) {
                     using (JsonTextWriter jw = new JsonTextWriter(sw)) {
                         jw.WriteStartObject();
                         Utility.WriteProperty(jw, "type", Type);
 
-                        Utility.WriteProperty(jw, "id", "1");
-                        // Utility.WriteProperty<int>(jw, "enableBuffer", 3000);
                         Utility.WriteProperty(jw, "url", Url);
                         jw.WritePropertyName("actions");
                         jw.WriteStartObject();
@@ -84,7 +82,7 @@ namespace ExtDirect4DotNet {
         /// </summary>
         public void Clear() {
             //NOTE:Not currently used.
-            Configured = false;
+            IsConfigured = false;
             _actions.Clear();
         }
 
@@ -94,7 +92,7 @@ namespace ExtDirect4DotNet {
         /// <param name="assembly">The assembly to automatically generate parameters from.</param>
         public void Configure(Assembly assembly) {
             //NOTE:Not currently used.
-            if (!Configured) {
+            if (!IsConfigured) {
                 List<Type> types = assembly.GetTypes().ToList();
                 Configure(types);
             }
@@ -105,7 +103,7 @@ namespace ExtDirect4DotNet {
         /// </summary>
         /// <param name="assemblyList">A series of object instances that contain Ext.Direct methods.</param>
         public void Configure(Assembly[] assemblyList) {
-            if (!Configured) {
+            if (!IsConfigured) {
                 List<Type> types = assemblyList.SelectMany(curAssembly => curAssembly.GetTypes()).ToList();
                 Configure(types);
             }
@@ -117,13 +115,14 @@ namespace ExtDirect4DotNet {
         /// <param name="items">A series of object instances that contain Ext.Direct methods.</param>
         public void Configure(IEnumerable<object> items) {
             //NOTE:Not currently used.
-            if (!Configured) {
+            if (!IsConfigured) {
                 List<Type> types = (items.Where(item => item != null).Select(item => item.GetType())).ToList();
                 Configure(types);
             }
         }
 
         internal object Execute(DirectRequest request) {
+            //NOTE:Not currently used.
             DirectAction action = _actions[request.Action];
             if (action == null) {
                 throw new DirectException(string.Format("Unable to find action, {0}", request.Action), request);
@@ -132,12 +131,12 @@ namespace ExtDirect4DotNet {
             if (method == null) {
                 throw new DirectException(string.Format("Unable to find method, {0} in Action: {1}", request.Method, request.Action), request);
             }
-            Type type = action.Type;
+            Type type = action.ActionType;
             return ""; //; method.Method.Invoke(type.Assembly.CreateInstance(type.FullName), request.Data);
         }
 
         /// <summary>
-        /// Finds the action in the assemblys
+        /// Finds the action in the assemblies.
         /// </summary>
         /// <param name="request">the request you want to find the assembly to</param>
         /// <returns></returns>
@@ -158,13 +157,22 @@ namespace ExtDirect4DotNet {
             return method;
         }
 
-        private void Configure(IEnumerable<Type> types) {
+        public void Configure(IEnumerable<Type> types) {
             foreach (Type type in types) {
-                if (DirectAction.IsAction(type)) {
+                if (IsAction(type)) {
                     _actions.Add(type.Name, new DirectAction(type));
                 }
             }
-            Configured = true;
+            IsConfigured = true;
+        }
+
+        /// <summary>
+        /// Checks whether a particular type is an Ext.Direct action.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns>True if the type is an Ext.Direct action.</returns>
+        internal static bool IsAction(Type type) {
+            return Utility.HasAttribute(type, typeof (DirectActionAttribute));
         }
     }
 }

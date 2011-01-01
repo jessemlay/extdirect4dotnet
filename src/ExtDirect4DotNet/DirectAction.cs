@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using ExtDirect4DotNet.helper;
 using Newtonsoft.Json;
 
 namespace ExtDirect4DotNet {
@@ -10,79 +10,76 @@ namespace ExtDirect4DotNet {
     /// <summary>
     /// This class represents a container for a series of related Ext.Direct methods.
     /// </summary>
+    [DebuggerDisplay("ActionName = {ActionName}")]
+    [JsonObject(MemberSerialization.OptIn)]
     internal class DirectAction {
-        private Dictionary<string, DirectMethod> methods;
+        private readonly Dictionary<string, DirectMethod> _methods = new Dictionary<string, DirectMethod>();
+
+        //TODO:This property needs to be read as a JArray.
+        internal Dictionary<string, DirectMethod> DirectMethods {
+            get { return _methods; }
+        }
 
         /// <summary>
         /// Creates an instance of this object.
         /// </summary>
         /// <param name="type">The type of the object.</param>
         internal DirectAction(Type type) {
-            Type = type;
-            methods = new Dictionary<string, DirectMethod>();
-            Configure();
-        }
-
-        /// <summary>
-        /// Gets the name of the action.
-        /// </summary>
-        internal string Name {
-            get { return Type.Name; }
+            ActionType = type;
+            LoadDirectMethods();
         }
 
         /// <summary>
         /// Gets the type of the action.
         /// </summary>
-        internal Type Type { get; private set; }
+        internal Type ActionType { get; private set; }
+
+        /// <summary>
+        /// Gets the name of the action.
+        /// </summary>
+        //[JsonProperty("dynamic")]
+        //TODO:This JSON property needs to have a dynamic name.
+        internal string ActionName {
+            get { return ActionType.Name; }
+        }
 
         internal DirectMethod GetMethod(string name) {
-            return methods[name];
+            return _methods[name];
         }
 
         /// <summary>
         /// Write API JSON.
         /// </summary>
         /// <param name="jw">The JSON writer.</param>
+        [Obsolete("This method needs to be removed and make use of JSON serialization with attributes.")]
         internal void Write(JsonTextWriter jw) {
-            jw.WritePropertyName(Name);
+            jw.WritePropertyName(ActionName);
             jw.WriteStartArray();
-            foreach (DirectMethod method in methods.Values) {
+            foreach (DirectMethod method in _methods.Values.OrderBy(m => m.Name)) {
                 method.Write(jw);
             }
             jw.WriteEndArray();
         }
 
-        internal void WriteDocumentation(JsonTextWriter jw) {
-            jw.WriteRaw("var " + Name + " = ");
-            jw.WriteStartObject();
-            foreach (DirectMethod method in methods.Values) {
-                method.Write(jw);
-            }
-            jw.WriteEndObject();
-        }
+        private void LoadDirectMethods() {
+            foreach (MethodInfo methodInfo in ActionType.GetMethods()) {
+                if (!DirectMethod.IsMethod(methodInfo)) {
+                    continue;
+                }
 
-        private void Configure() {
-            foreach (MethodInfo mi in Type.GetMethods()) {
-                if (DirectMethod.IsMethod(mi)) {
-                    DirectMethodType methType = ((DirectMethodAttribute) mi.GetCustomAttributes(typeof (DirectMethodAttribute), true)[0]).MethodType;
-                    if (methType == DirectMethodType.Hybrid) {
-                        methods.Add(mi.Name, new DirectMethod(mi, DirectMethodType.Normal, this));
-                        methods.Add(mi.Name + "_Form", new DirectMethod(mi, DirectMethodType.Form, this, mi.Name + "_Form"));
-                    }
-                    else {
-                        methods.Add(mi.Name, new DirectMethod(mi, methType, this));
-                    }
+                DirectMethodAttribute attribute = (DirectMethodAttribute) methodInfo.GetCustomAttributes(typeof (DirectMethodAttribute), true)[0];
+                DirectMethodType methType = attribute.MethodType;
+                if (methType == DirectMethodType.Hybrid) {
+                    _methods.Add(methodInfo.Name, new DirectMethod(methodInfo, DirectMethodType.Normal, this));
+
+                    string name = string.Format("{0}_Form", methodInfo.Name);
+                    _methods.Add(name, new DirectMethod(methodInfo, DirectMethodType.Form, this, name));
+                }
+                else {
+                    _methods.Add(methodInfo.Name, new DirectMethod(methodInfo, methType, this));
                 }
             }
-        }
 
-        /// <summary>
-        /// Checks whether a particular type is an Ext.Direct action.
-        /// </summary>
-        /// <param name="type">The type to check.</param>
-        /// <returns>True if the type is an Ext.Direct action.</returns>
-        internal static bool IsAction(Type type) {
-            return Utility.HasAttribute(type, typeof (DirectActionAttribute));
         }
     }
 }

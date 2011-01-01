@@ -25,7 +25,7 @@ namespace ExtDirect4DotNetSample {
     /// availible via the Session member.
     /// </summary>
     [DirectAction]
-    public class CRUDSampleMethods : ActionWithSessionState {
+    public class CRUDSampleMethods : DirectActionBase {
         /// <summary>
         /// The C in Crud 
         /// Represents a properitary Logic for creating a Person Object

@@ -27,7 +27,7 @@ namespace ExtDirect4DotNet {
             List<DirectRequest> requests = ParseRequest();
             List<DirectResponse> responses = new List<DirectResponse>();
 
-            // after parsing was successfull Proccess the list of requests
+            // after parsing was successful process the list of requests
             foreach (DirectRequest request in requests) {
                 // try to find the method in the provider 
                 DirectMethod directMethod = DirectProxy.GetDirectProviderCache().GetDirectMethod(request);
@@ -43,7 +43,7 @@ namespace ExtDirect4DotNet {
                         responses.Add(response); //TODO:Should this "Add" be added here?
 
                         if (!(result is List<DirectEvent>)) {
-                            throw new Exception("A Method with outputhandling Poll is required to return List<DirectEvent>.");
+                            throw new Exception("A Method with output handling Poll is required to return List<DirectEvent>.");
                         }
 
                         responses.AddRange(((List<DirectEvent>) result).Select(de => new DirectResponse(de)));

@@ -1,0 +1,762 @@
+<Configuration>
+  <CodeStyleSettings>
+    <ExternalPath IsNull="False">
+    </ExternalPath>
+    <Sharing>SOLUTION</Sharing>
+    <CSharp>
+      <FormatSettings>
+        <ALIGN_MULTILINE_ARRAY_AND_OBJECT_INITIALIZER>False</ALIGN_MULTILINE_ARRAY_AND_OBJECT_INITIALIZER>
+        <ANONYMOUS_METHOD_DECLARATION_BRACES>END_OF_LINE</ANONYMOUS_METHOD_DECLARATION_BRACES>
+        <BLANK_LINES_AROUND_SINGLE_LINE_FIELD>1</BLANK_LINES_AROUND_SINGLE_LINE_FIELD>
+        <BLANK_LINES_AROUND_SINGLE_LINE_INVOCABLE>1</BLANK_LINES_AROUND_SINGLE_LINE_INVOCABLE>
+        <CASE_BLOCK_BRACES>END_OF_LINE</CASE_BLOCK_BRACES>
+        <FORCE_FIXED_BRACES_STYLE>ALWAYS_ADD</FORCE_FIXED_BRACES_STYLE>
+        <FORCE_FOR_BRACES_STYLE>ALWAYS_ADD</FORCE_FOR_BRACES_STYLE>
+        <FORCE_FOREACH_BRACES_STYLE>ALWAYS_ADD</FORCE_FOREACH_BRACES_STYLE>
+        <FORCE_IFELSE_BRACES_STYLE>ALWAYS_ADD</FORCE_IFELSE_BRACES_STYLE>
+        <FORCE_WHILE_BRACES_STYLE>ALWAYS_ADD</FORCE_WHILE_BRACES_STYLE>
+        <INDENT_ANONYMOUS_METHOD_BLOCK>False</INDENT_ANONYMOUS_METHOD_BLOCK>
+        <INITIALIZER_BRACES>END_OF_LINE</INITIALIZER_BRACES>
+        <INVOCABLE_DECLARATION_BRACES>END_OF_LINE</INVOCABLE_DECLARATION_BRACES>
+        <KEEP_BLANK_LINES_IN_CODE>1</KEEP_BLANK_LINES_IN_CODE>
+        <KEEP_BLANK_LINES_IN_DECLARATIONS>1</KEEP_BLANK_LINES_IN_DECLARATIONS>
+        <MODIFIERS_ORDER IsNull="False">
+          <Item>public</Item>
+          <Item>protected</Item>
+          <Item>internal</Item>
+          <Item>private</Item>
+          <Item>new</Item>
+          <Item>abstract</Item>
+          <Item>virtual</Item>
+          <Item>override</Item>
+          <Item>sealed</Item>
+          <Item>static</Item>
+          <Item>readonly</Item>
+          <Item>extern</Item>
+          <Item>unsafe</Item>
+          <Item>volatile</Item>
+        </MODIFIERS_ORDER>
+        <OTHER_BRACES>END_OF_LINE</OTHER_BRACES>
+        <PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>False</PLACE_FIELD_ATTRIBUTE_ON_SAME_LINE>
+        <PLACE_SIMPLE_INITIALIZER_ON_SINGLE_LINE>False</PLACE_SIMPLE_INITIALIZER_ON_SINGLE_LINE>
+        <PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>False</PLACE_SIMPLE_LINQ_ON_SINGLE_LINE>
+        <TYPE_DECLARATION_BRACES>END_OF_LINE</TYPE_DECLARATION_BRACES>
+        <WRAP_FOR_STMT_HEADER_STYLE>WRAP_IF_LONG</WRAP_FOR_STMT_HEADER_STYLE>
+        <WRAP_LINES>False</WRAP_LINES>
+        <WRAP_MULTIPLE_DECLARATION_STYLE>CHOP_ALWAYS</WRAP_MULTIPLE_DECLARATION_STYLE>
+        <WRAP_MULTIPLE_TYPE_PARAMEER_CONSTRAINTS_STYLE>WRAP_IF_LONG</WRAP_MULTIPLE_TYPE_PARAMEER_CONSTRAINTS_STYLE>
+        <WRAP_OBJECT_AND_COLLECTION_INITIALIZER_STYLE>CHOP_ALWAYS</WRAP_OBJECT_AND_COLLECTION_INITIALIZER_STYLE>
+        <WRAP_TERNARY_EXPR_STYLE>WRAP_IF_LONG</WRAP_TERNARY_EXPR_STYLE>
+      </FormatSettings>
+      <UsingsSettings>
+        <KeepImports IsNull="False">
+          <Item>System</Item>
+          <Item>System.Linq</Item>
+        </KeepImports>
+        <MandatoryImports IsNull="False">
+          <Item>System</Item>
+          <Item>System.Linq</Item>
+        </MandatoryImports>
+      </UsingsSettings>
+      <Naming2>
+        <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
+        <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
+        <ExceptionName IsNull="False">
+        </ExceptionName>
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="TypesAndNamespaces" />
+        <PredefinedRule Inspect="True" Prefix="I" Suffix="" Style="AaBb" ElementKind="Interfaces" />
+        <PredefinedRule Inspect="True" Prefix="T" Suffix="" Style="AaBb" ElementKind="TypeParameters" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="MethodPropertyEvent" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Locals" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="LocalConstants" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Parameters" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PublicFields" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Constants" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="StaticReadonly" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="EnumMember" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Other" />
+        <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateInstanceFields" />
+        <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateStaticFields" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateConstants" />
+        <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
+      </Naming2>
+      <CustomMemberReorderingPatterns><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+I. Overall
+
+I.1 Each pattern can have <Match>....</Match> element. For the given type declaration, the pattern with the match, evaluated to 'true' with the largest weight, will be used 
+I.2 Each pattern consists of the sequence of <Entry>...</Entry> elements. Type member declarations are distributed between entries
+I.3 If pattern has RemoveAllRegions="true" attribute, then all regions will be cleared prior to reordering. Otherwise, only auto-generated regions will be cleared
+I.4 The contents of each entry is sorted by given keys (First key is primary,  next key is secondary, etc). Then the declarations are grouped and en-regioned by given property
+
+II. Available match operands
+
+Each operand may have Weight="..." attribute. This weight will be added to the match weight if the operand is evaluated to 'true'.
+The default weight is 1
+
+II.1 Boolean functions:
+II.1.1 <And>....</And>
+II.1.2 <Or>....</Or>
+II.1.3 <Not>....</Not>
+
+II.2 Operands
+II.2.1 <Kind Is="..."/>. Kinds are: class, struct, interface, enum, delegate, type, constructor, destructor, property, indexer, method, operator, field, constant, event, member
+II.2.2 <Name Is="..." [IgnoreCase="true/false"] />. The 'Is' attribute contains regular expression
+II.2.3 <HasAttribute CLRName="..." [Inherit="true/false"] />. The 'CLRName' attribute contains regular expression
+II.2.4 <Access Is="..."/>. The 'Is' values are: public, protected, internal, protected internal, private
+II.2.5 <Static/>
+II.2.6 <Abstract/>
+II.2.7 <Virtual/>
+II.2.8 <Override/>
+II.2.9 <Sealed/>
+II.2.10 <Readonly/>
+II.2.11 <ImplementsInterface CLRName="..."/>. The 'CLRName' attribute contains regular expression
+II.2.12 <HandlesEvent />
+-->
+
+<Patterns xmlns="urn:shemas-jetbrains-com:member-reordering-patterns">
+
+    <!--Do not reorder COM interfaces and structs marked by StructLayout attribute-->
+    <Pattern>
+        <Match>
+            <Or Weight="100">
+                <And>
+                    <Kind Is="interface"/>
+                    <Or>
+                        <HasAttribute CLRName="System.Runtime.InteropServices.InterfaceTypeAttribute"/>
+                        <HasAttribute CLRName="System.Runtime.InteropServices.ComImport"/>
+                    </Or>
+                </And>
+                <HasAttribute CLRName="System.Runtime.InteropServices.StructLayoutAttribute"/>
+            </Or>
+        </Match>
+    </Pattern>
+
+    <!--Special formatting of NUnit test fixture-->
+    <Pattern RemoveAllRegions="true">
+        <Match>
+            <And Weight="100">
+                <Kind Is="class"/>
+                <HasAttribute CLRName="NUnit.Framework.TestFixtureAttribute"
+                              Inherit="true"/>
+            </And>
+        </Match>
+
+        <!--Setup/Teardow-->
+        <Entry>
+            <Match>
+                <And>
+                    <Kind Is="method"/>
+                    <Or>
+                        <HasAttribute CLRName="NUnit.Framework.SetUpAttribute"
+                                      Inherit="true"/>
+                        <HasAttribute CLRName="NUnit.Framework.TearDownAttribute"
+                                      Inherit="true"/>
+                        <HasAttribute CLRName="NUnit.Framework.FixtureSetUpAttribute"
+                                      Inherit="true"/>
+                        <HasAttribute CLRName="NUnit.Framework.FixtureTearDownAttribute"
+                                      Inherit="true"/>
+                    </Or>
+                </And>
+            </Match>
+        </Entry>
+
+        <!--All other members-->
+        <Entry/>
+
+        <!--Test methods-->
+        <Entry>
+            <Match>
+                <And Weight="100">
+                    <Kind Is="method"/>
+                    <HasAttribute CLRName="NUnit.Framework.TestAttribute"
+                                  Inherit="false"/>
+                </And>
+            </Match>
+            <Sort>
+                <Name/>
+            </Sort>
+        </Entry>
+    </Pattern>
+
+    <!--Default pattern-->
+    <Pattern RemoveAllRegions="true">
+
+        <!--delegate-->
+        <Entry>
+            <Match>
+                <And Weight="100">
+                    <Access Is="public"/>
+                    <Kind Is="delegate"/>
+                </And>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--enums-->
+        <Entry>
+            <Match>
+                <Kind Is="enum"/>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--constants-->
+        <Entry>
+            <Match>
+                <Kind Is="constant"/>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--static and readonly fields-->
+        <Entry>
+            <Match>
+                <And>
+                    <Kind Is="field"/>
+                    <Or>
+                        <Static/>
+                        <Readonly/>
+                    </Or>
+                </And>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--fields-->
+        <Entry>
+            <Match>
+                <Kind Is="field"/>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--Constructors. Place static one first-->
+        <Entry>
+            <Match>
+                <Kind Is="constructor"/>
+            </Match>
+            <Sort>
+                <Static/>
+                <Access Order="public protected internal private" />
+            </Sort>
+        </Entry>
+
+        <!--Destructors. Place static one first-->
+        <Entry>
+            <Match>
+                <Kind Is="destructor"/>
+            </Match>
+            <Sort>
+                <Static/>
+                <Access Order="public protected internal private" />
+            </Sort>
+        </Entry>
+
+        <!--Instance indexers-->
+        <Entry>
+            <Match>
+                <And>
+                    <Kind Is="indexer"/>
+                    <Not>
+                        <Static/>
+                    </Not>
+                </And>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Abstract/>
+                <Virtual/>
+                <Override/>
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--instance properties-->
+        <Entry>
+            <Match>
+                <And>
+                    <Kind Is="property"/>
+                    <Not>
+                        <Static/>
+                    </Not>
+                    <Not>
+                        <Kind Is="indexer"/>
+                    </Not>
+                </And>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Abstract/>
+                <Virtual/>
+                <Override/>
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--Public Methods-->
+        <Entry>
+            <Match>
+                <And>
+                    <Kind Is="method"/>
+                    <Access Is="public" />
+                    <Not>
+                        <Static/>
+                    </Not>
+                    <Not>
+                        <HandlesEvent />
+                    </Not>
+                    <Not>
+                        <Kind Is="destructor"/>
+                    </Not>
+                </And>
+            </Match>
+            <Sort>
+                <Access Order="public" />
+                <Abstract/>
+                <Virtual/>
+                <Override/>
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--Not Public Methods-->
+        <Entry>
+            <Match>
+                <And>
+                    <Kind Is="method"/>
+                    <Not>
+                        <Access Is="public" />
+                    </Not>
+                    <Not>
+                        <Static/>
+                    </Not>
+                    <Not>
+                        <HandlesEvent />
+                    </Not>
+                    <Not>
+                        <Kind Is="destructor"/>
+                    </Not>
+                </And>
+            </Match>
+            <Sort>
+                <Access Order="protected internal private" />
+                <Abstract/>
+                <Virtual/>
+                <Override/>
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--Event Handling-->
+        <Entry>
+            <Match>
+                <HandlesEvent />
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Abstract/>
+                <Virtual/>
+                <Override/>
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!-- event -->
+        <Entry>
+            <Match>
+                <Kind Is="event"/>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!-- operator -->
+        <Entry>
+            <Match>
+                <Kind Is="operator"/>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--interface implementations-->
+        <!--<Entry>
+            <Match>
+                <And Weight="100">
+                    <Kind Is="member"/>
+                    <ImplementsInterface/>
+                </And>
+            </Match>
+            <Sort>
+                <ImplementsInterface Immediate="true"/>
+            </Sort>
+        </Entry>-->
+
+        <!--Class indexers-->
+        <Entry>
+            <Match>
+                <And>
+                    <Kind Is="indexer"/>
+                    <Static/>
+                </And>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Abstract/>
+                <Virtual/>
+                <Override/>
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--Class properties-->
+        <Entry>
+            <Match>
+                <And>
+                    <Kind Is="property"/>
+                    <Static/>
+                </And>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Abstract/>
+                <Virtual/>
+                <Override/>
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--Class Methods-->
+        <Entry>
+            <Match>
+                <And>
+                    <Kind Is="method"/>
+                    <Static/>
+                </And>
+            </Match>
+            <Sort>
+                <Access Order="public protected internal private" />
+                <Abstract/>
+                <Virtual/>
+                <Override/>
+                <Name/>
+            </Sort>
+        </Entry>
+
+        <!--all other members-->
+        <Entry/>
+
+        <!--nested types-->
+        <Entry>
+            <Match>
+                <Kind Is="type"/>
+            </Match>
+            <Sort>
+                <Name/>
+            </Sort>
+        </Entry>
+    </Pattern>
+    
+</Patterns>]]></CustomMemberReorderingPatterns>
+    </CSharp>
+    <VB>
+      <FormatSettings />
+      <ImportsSettings>
+        <KeepImports IsNull="False">
+          <Item>System</Item>
+        </KeepImports>
+        <MandatoryImports IsNull="False">
+          <Item>System</Item>
+        </MandatoryImports>
+      </ImportsSettings>
+      <Naming2>
+        <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
+        <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
+      </Naming2>
+    </VB>
+    <Web>
+      <Naming2>
+        <UserRule Name="ASP_TAG_NAME" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="ASP_TAG_PREFIX" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="ASP_FIELD" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="ASP_HTML_CONTROL" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+      </Naming2>
+    </Web>
+    <Xaml>
+      <Naming2>
+        <UserRule Name="XAML_FIELD" Inspect="True" Prefix="_" Suffix="" Style="aaBb" />
+        <UserRule Name="NAMESPACE_ALIAS" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+        <UserRule Name="XAML_RESOURCE" Inspect="True" Prefix="" Suffix="" Style="AaBb" />
+      </Naming2>
+    </Xaml>
+    <XML>
+      <FormatSettings>
+        <BlankLineAfterProcessingInstructions>False</BlankLineAfterProcessingInstructions>
+        <MaxBlankLines>0</MaxBlankLines>
+        <MaxSingleLineTagLength>100</MaxSingleLineTagLength>
+      </FormatSettings>
+    </XML>
+    <GenerateMemberBody />
+    <Naming2>
+      <EventHandlerPatternLong>$object$_On$event$</EventHandlerPatternLong>
+      <EventHandlerPatternShort>$event$Handler</EventHandlerPatternShort>
+      <ExceptionName IsNull="False">
+      </ExceptionName>
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Locals" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="Parameters" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="StaticReadonly" />
+      <PredefinedRule Inspect="False" Prefix="" Suffix="" Style="AaBb" ElementKind="MethodPropertyEvent" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="TypesAndNamespaces" />
+      <PredefinedRule Inspect="True" Prefix="I" Suffix="" Style="AaBb" ElementKind="Interfaces" />
+      <PredefinedRule Inspect="True" Prefix="T" Suffix="" Style="AaBb" ElementKind="TypeParameters" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="aaBb" ElementKind="LocalConstants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PublicFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AA_BB" ElementKind="Constants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="EnumMember" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="Other" />
+      <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateInstanceFields" />
+      <PredefinedRule Inspect="True" Prefix="_" Suffix="" Style="aaBb" ElementKind="PrivateStaticFields" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateConstants" />
+      <PredefinedRule Inspect="True" Prefix="" Suffix="" Style="AaBb" ElementKind="PrivateStaticReadonly" />
+      <Abbreviation Text="ID" />
+      <Abbreviation Text="DTO" />
+      <Abbreviation Text="DC" />
+    </Naming2>
+  </CodeStyleSettings>
+  <SharedSolutionTemplateManager>
+    <Surrounds>
+      <Template uid="b1b22c52-b332-4297-adc9-4dfeefda2674" shortcut="" description="TransactionScope" text="using (var scope = new System.Transactions.TransactionScope()) {&#xD;&#xA;	$SELECTION$$END$&#xD;&#xA;	scope.Complete();&#xD;&#xA;}" reformat="True" shortenQualifiedReferences="True">
+        <Context>
+          <CSharpContext context="Statement" minimumLanguageVersion="2.0" />
+        </Context>
+        <Categories />
+        <Variables />
+        <CustomProperties />
+      </Template>
+    </Surrounds>
+  </SharedSolutionTemplateManager>
+  <CustomStructuralPatterns>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Method StringBuilder.Append can be converted to StringBuilder.AppendFormat</Comment>
+      <ReplaceComment>Convert to StringBuilder.AppendFormat</ReplaceComment>
+      <ReplacePattern>$sb$.AppendFormat($args$)</ReplacePattern>
+      <SearchPattern>$sb$.Append(string.Format($args$))</SearchPattern>
+      <Params />
+      <Placeholders>
+        <ExpressionPlaceholder Name="sb" ExpressionType="System.Text.StringBuilder" ExactType="True" />
+        <ArgumentPlaceholder Name="args" Minimal="-1" Maximal="-1" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="WARNING">
+      <Comment>'try/finally' block can be converted to 'using' statement</Comment>
+      <ReplaceComment>Convert to 'using' statement</ReplaceComment>
+      <ReplacePattern><![CDATA[using($type$ $var$ = new $type$($args$))
+{
+  $stmt$
+}]]></ReplacePattern>
+      <SearchPattern><![CDATA[$type$ $var$ = new $type$($args$);
+try {
+  $stmt$
+} finally {
+  $var$.Dispose();
+}]]></SearchPattern>
+      <Params />
+      <Placeholders>
+        <IdentifierPlaceholder Name="var" Type="" ExactType="False" RegEx="" CaseSensitive="True" />
+        <TypePlaceholder Name="type" Type="System.IDisposable" ExactType="False" />
+        <ArgumentPlaceholder Name="args" Minimal="-1" Maximal="-1" />
+        <StatementPlaceholder Name="stmt" Minimal="-1" Maximal="-1" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Comparison with true is redundant</Comment>
+      <ReplaceComment>Remove comparison with true</ReplaceComment>
+      <ReplacePattern>if($expr$) $stmt$</ReplacePattern>
+      <SearchPattern>if($expr$ == true) $stmt$</SearchPattern>
+      <Params />
+      <Placeholders>
+        <ExpressionPlaceholder Name="expr" ExpressionType="System.Boolean" ExactType="True" />
+        <StatementPlaceholder Name="stmt" Minimal="1" Maximal="1" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Conditional statement is redundant</Comment>
+      <ReplaceComment>Remove conditional statement</ReplaceComment>
+      <ReplacePattern>$stmt$</ReplacePattern>
+      <SearchPattern>if(true) $stmt$</SearchPattern>
+      <Params />
+      <Placeholders>
+        <StatementPlaceholder Name="stmt" Minimal="1" Maximal="1" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Code is unreachable</Comment>
+      <ReplaceComment>Remove unreachable code</ReplaceComment>
+      <SearchPattern>if(false) $stmt$</SearchPattern>
+      <Params />
+      <Placeholders>
+        <StatementPlaceholder Name="stmt" Minimal="1" Maximal="1" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>'if' block is never executed</Comment>
+      <ReplaceComment>Leave only statements from 'else' block</ReplaceComment>
+      <ReplacePattern>$else$</ReplacePattern>
+      <SearchPattern><![CDATA[if(false)
+  $stmt$
+else
+  $else$]]></SearchPattern>
+      <Params />
+      <Placeholders>
+        <StatementPlaceholder Name="stmt" Minimal="1" Maximal="1" />
+        <StatementPlaceholder Name="else" Minimal="1" Maximal="1" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Identical branches in a conditional statement</Comment>
+      <ReplaceComment>Replace with a single branch</ReplaceComment>
+      <ReplacePattern>$stmt$</ReplacePattern>
+      <SearchPattern><![CDATA[if($expr$)
+  $stmt$
+else
+  $stmt$]]></SearchPattern>
+      <Params />
+      <Placeholders>
+        <ExpressionPlaceholder Name="expr" ExpressionType="System.Boolean" ExactType="True" />
+        <StatementPlaceholder Name="stmt" Minimal="1" Maximal="1" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Redundant compound assignment with |= operator</Comment>
+      <ReplaceComment>Replace with simple assignment</ReplaceComment>
+      <ReplacePattern>$bool$ = true</ReplacePattern>
+      <SearchPattern>$bool$ |= true</SearchPattern>
+      <Params />
+      <Placeholders>
+        <ExpressionPlaceholder Name="bool" ExpressionType="System.Boolean" ExactType="True" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment><![CDATA[Redundant compound assignment with &= operator]]></Comment>
+      <ReplaceComment>Replace with simple assignment</ReplaceComment>
+      <ReplacePattern>$bool$ = false</ReplacePattern>
+      <SearchPattern><![CDATA[$bool$ &= false]]></SearchPattern>
+      <Params />
+      <Placeholders>
+        <ExpressionPlaceholder Name="bool" ExpressionType="System.Boolean" ExactType="True" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Redundant compound assignment with |= operator</Comment>
+      <ReplaceComment>Remove assignment</ReplaceComment>
+      <SearchPattern>$bool$ |= false;</SearchPattern>
+      <Params />
+      <Placeholders>
+        <ExpressionPlaceholder Name="bool" ExpressionType="System.Boolean" ExactType="True" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment><![CDATA[Redundant compound assignment with &= operator]]></Comment>
+      <ReplaceComment>Remove assignment</ReplaceComment>
+      <SearchPattern><![CDATA[$bool$ &= true;]]></SearchPattern>
+      <Params />
+      <Placeholders>
+        <ExpressionPlaceholder Name="bool" ExpressionType="System.Boolean" ExactType="True" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Redundant initialization to false and condition block</Comment>
+      <ReplaceComment>Initialize with conditional statement</ReplaceComment>
+      <ReplacePattern>$T$ $x$ = $bool$;</ReplacePattern>
+      <SearchPattern><![CDATA[$T$ $x$ = false;
+if($bool$) $x$ = true;]]></SearchPattern>
+      <Params />
+      <Placeholders>
+        <TypePlaceholder Name="T" Type="" ExactType="True" />
+        <IdentifierPlaceholder Name="x" Type="" ExactType="False" RegEx="" CaseSensitive="True" />
+        <ExpressionPlaceholder Name="bool" ExpressionType="System.Boolean" ExactType="True" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Redundant initialization to true and condition block</Comment>
+      <ReplaceComment>Initialize with conditional statement</ReplaceComment>
+      <ReplacePattern>$T$ $x$ = !$bool$;</ReplacePattern>
+      <SearchPattern><![CDATA[$T$ $x$ = true;
+if($bool$) $x$ = false;]]></SearchPattern>
+      <Params />
+      <Placeholders>
+        <TypePlaceholder Name="T" Type="" ExactType="True" />
+        <IdentifierPlaceholder Name="x" Type="" ExactType="False" RegEx="" CaseSensitive="True" />
+        <ExpressionPlaceholder Name="bool" ExpressionType="System.Boolean" ExactType="True" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Method Array.CreateInstance can be replaced with an array creation expression</Comment>
+      <ReplaceComment>Use array creation expression</ReplaceComment>
+      <ReplacePattern>new $T$[$long$]</ReplacePattern>
+      <SearchPattern>Array.CreateInstance(typeof($T$), $long$)</SearchPattern>
+      <Params />
+      <Placeholders>
+        <TypePlaceholder Name="T" Type="" ExactType="True" />
+        <ExpressionPlaceholder Name="long" ExpressionType="System.Int64" ExactType="False" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Method Array.CreateInstance can be replaced with a two-dimensional array creation expression</Comment>
+      <ReplaceComment>Use two-dimensional array creation expression</ReplaceComment>
+      <ReplacePattern>new $T$[$long$, $long2$]</ReplacePattern>
+      <SearchPattern>Array.CreateInstance(typeof($T$), $long$, $long2$)</SearchPattern>
+      <Params />
+      <Placeholders>
+        <TypePlaceholder Name="T" Type="" ExactType="True" />
+        <ExpressionPlaceholder Name="long" ExpressionType="System.Int64" ExactType="False" />
+        <ExpressionPlaceholder Name="long2" ExpressionType="Int64" ExactType="False" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment>Redundant usage of GetType() == typeof() with a value type</Comment>
+      <ReplaceComment>Replace with 'is' operator</ReplaceComment>
+      <ReplacePattern>$expr$ is $S$</ReplacePattern>
+      <SearchPattern>$expr$.GetType() == typeof($S$)</SearchPattern>
+      <Params />
+      <Placeholders>
+        <ExpressionPlaceholder Name="expr" ExpressionType="" ExactType="True" />
+        <TypePlaceholder Name="S" Type="System.ValueType" ExactType="False" />
+      </Placeholders>
+    </Pattern>
+    <Pattern Severity="SUGGESTION">
+      <Comment><![CDATA[Method OfType<TResult> can be used for type-based filtering]]></Comment>
+      <ReplaceComment><![CDATA[Replace with OfType<TResult>]]></ReplaceComment>
+      <ReplacePattern><![CDATA[$seq$.OfType<$T$>()]]></ReplacePattern>
+      <SearchPattern><![CDATA[$seq$.Where($x$ => $x$ is $T$).Select($y$ => ($T$)$y$)]]></SearchPattern>
+      <Params />
+      <Placeholders>
+        <TypePlaceholder Name="T" Type="" ExactType="True" />
+        <ExpressionPlaceholder Name="seq" ExpressionType="System.Collections.IEnumerable" ExactType="False" />
+        <IdentifierPlaceholder Name="x" Type="" ExactType="False" RegEx="" CaseSensitive="True" />
+        <IdentifierPlaceholder Name="y" Type="" ExactType="False" RegEx="" CaseSensitive="True" />
+      </Placeholders>
+    </Pattern>
+  </CustomStructuralPatterns>
+</Configuration>
