@@ -39,9 +39,9 @@ namespace ExtDirect4DotNet {
             Method = request.Method;
             Message = exception.Message;
             Where = exception.StackTrace;
-            if (exception is DirectException) {
+            /*if (exception is DirectException) {
                 ErrorCode = ((DirectException) exception).ErrorCode;
-            }
+            }*/
             Result = "{success:false}";
 
             IsUpload = request.IsUpload;
@@ -50,8 +50,8 @@ namespace ExtDirect4DotNet {
         [JsonProperty(PropertyName = "action")]
         public string Action { get; set; }
 
-        [JsonProperty(PropertyName = "errorcode")]
-        public uint ErrorCode { get; set; }
+        /*[JsonProperty(PropertyName = "errorcode")]
+        public uint ErrorCode { get; set; }*/
 
         [JsonIgnore]
         public bool IsUpload { get; private set; }
@@ -118,8 +118,8 @@ namespace ExtDirect4DotNet {
             writer.WritePropertyName("where");
             writer.WriteValue(Where);
 
-            writer.WritePropertyName("errorcode");
-            writer.WriteValue(ErrorCode);
+            /*writer.WritePropertyName("errorcode");
+            writer.WriteValue(ErrorCode);*/
 
             // }
             writer.WriteEndObject();

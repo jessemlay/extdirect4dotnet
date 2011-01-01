@@ -62,16 +62,17 @@ namespace ExtDirect4DotNet {
             DirectProviderCache cache = DirectProviderCache.GetInstance();
             DirectProvider provider;
 
+            string key = string.Format("{0}/{1}", apiNamespace, rUrl);
             //After being configured, the provider should be cached.
-            if (!cache.ContainsKey(apiNamespace + "/" + rUrl)) {
+            if (!cache.ContainsKey(key)) {
                 provider = new DirectProvider(apiNamespace, rUrl);
                 provider.Configure(AppDomain.CurrentDomain.GetAssemblies());
-                if (!cache.ContainsKey(apiNamespace + "/" + rUrl)) {
-                    cache.Add(apiNamespace + "/" + rUrl, provider);
+                if (!cache.ContainsKey(key)) {
+                    cache.Add(key, provider);
                 }
             }
             else {
-                provider = cache[apiNamespace + "/" + rUrl];
+                provider = cache[key];
             }
             return provider;
         }
