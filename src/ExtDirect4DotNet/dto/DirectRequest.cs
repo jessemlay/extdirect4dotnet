@@ -36,9 +36,7 @@ namespace ExtDirect4DotNet {
         public string Action { get; set; }
 
         [JsonProperty("data")]
-        public Object Data { get; set; }
-
-        public HttpRequest HttpRequest { get; set; }
+        public object Data { get; set; }
 
         public bool IsForm { get; set; }
 

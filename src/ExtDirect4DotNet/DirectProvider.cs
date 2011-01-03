@@ -56,7 +56,7 @@ namespace ExtDirect4DotNet {
         public string Url { get; set; }
 
         public override string ToString() {
-            if (IsConfigured && String.IsNullOrEmpty(_api)) {
+            if (IsConfigured && string.IsNullOrEmpty(_api)) {
                 using (StringWriter sw = new StringWriter()) {
                     using (JsonTextWriter jw = new JsonTextWriter(sw)) {
                         jw.WriteStartObject();
@@ -70,7 +70,7 @@ namespace ExtDirect4DotNet {
                         }
                         jw.WriteEndObject();
                         jw.WriteEndObject();
-                        _api = String.Format("{0} = {1};", Name, sw.ToString());
+                        _api = string.Format("{0} = {1};", Name, sw.ToString());
                     }
                 }
             }
@@ -140,19 +140,19 @@ namespace ExtDirect4DotNet {
         /// </summary>
         /// <param name="request">the request you want to find the assembly to</param>
         /// <returns></returns>
-        internal DirectAction GetDirectAction(DirectRequest request) {
-            DirectAction action = _actions[request.Action];
+        internal DirectAction GetDirectAction(string directActionName) {
+            DirectAction action = _actions[directActionName];
             if (action == null) {
-                throw new DirectException(string.Format("Unable to find action, {0}", request.Action), request);
+                throw new DirectException(string.Format("Unable to find DirectAction: \"{0}\"", directActionName));
             }
             return action;
         }
 
-        internal DirectMethod GetDirectMethod(DirectRequest request) {
-            DirectAction action = GetDirectAction(request);
-            DirectMethod method = action.GetMethod(request.Method);
+        internal DirectMethod GetDirectMethod(string directActionName, string directMethodName) {
+            DirectAction action = GetDirectAction(directActionName);
+            DirectMethod method = action.GetMethod(directMethodName);
             if (method == null) {
-                throw new DirectException(string.Format("Unable to find method, {0} in Action: {1}", request.Method, request.Action), request);
+                throw new DirectException(string.Format("Unable to find DirectMethod: \"{0}\" in DirectAction: \"{1}\"", directMethodName, directActionName));
             }
             return method;
         }

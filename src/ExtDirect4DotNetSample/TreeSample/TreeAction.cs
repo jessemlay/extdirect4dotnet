@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ExtDirect4DotNet;
+using ExtDirect4DotNetSample;
 
 namespace WebApplication1.TreeSample {
     public class TreeNode {
