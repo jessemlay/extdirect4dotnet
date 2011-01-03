@@ -92,19 +92,19 @@ namespace ExtDirect4DotNet {
         /// Calls this Direct Methods and parses the parameter as via the customAttribute DirectMethodAttribute configured.
         /// </summary>
         /// <param name="directRequest">The direct request.</param>
-        /// <param name="httpContext">The HTTP context.</param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        internal Object Invoke(DirectRequest directRequest, HttpContext httpContext) {
-            HttpRequest httpRequest = directRequest.HttpRequest;
+        internal object Invoke(DirectRequest directRequest) {
+            HttpRequest httpRequest = HttpContext.Current.Request;
 
             ParameterInfo[] parmInfo = Method.GetParameters();
 
             // will contain the parameters the function gets called with
-            Object[] paramMap = new object[parmInfo.Length];
+            object[] paramMap = new object[parmInfo.Length];
 
-            if (httpRequest != null) {
+            if (directRequest.IsForm) {
                 // do the method wants to take care of the request by it self?
-                if (parmInfo[0].ParameterType == httpRequest.GetType()) {
+                if (parmInfo[0].ParameterType == typeof(HttpRequest)) {
                     paramMap[0] = httpRequest;
                 }
                 else {
@@ -116,7 +116,7 @@ namespace ExtDirect4DotNet {
                             i2++;
                             continue;
                         }
-                        String curentParameter = (httpRequest).Form[parm.Name];
+                        string curentParameter = httpRequest.Form[parm.Name];
                         if (curentParameter == null) {
                             i2++;
                             continue;
@@ -142,11 +142,11 @@ namespace ExtDirect4DotNet {
                     // try to find Parameters in the Files-list
                     foreach (ParameterInfo parm in parmInfo) {
                         Type type = parmInfo[i3].ParameterType;
-                        if ((httpRequest).Files[parm.Name] != null) {
+                        if (httpRequest.Files[parm.Name] != null) {
                             if (type.Name != "HttpPostedFile") {
                                 throw new DirectParameterException(string.Format("The Parameter {0} is not an instance of \"System.WebHttpPosted\" File.", parm.Name), directRequest);
                             }
-                            paramMap[i3] = (httpRequest).Files[parm.Name];
+                            paramMap[i3] = httpRequest.Files[parm.Name];
                         }
                         i3++;
                     }
@@ -182,10 +182,6 @@ namespace ExtDirect4DotNet {
             Type actionClassType = ParentAction.ActionType;
             object actionInstanz = actionClassType.Assembly.CreateInstance(actionClassType.FullName);
 
-            if (actionInstanz is IDirectAction) {
-                ((IDirectAction) actionInstanz).CurrentHttpContext = httpContext;
-            }
-            
             object result = Method.Invoke(actionInstanz, paramMap);
             return result;
         }
@@ -203,9 +199,9 @@ namespace ExtDirect4DotNet {
             jw.WriteEndObject();
         }
 
-        private Object[] ResolveParametersByIndex(DirectRequest directRequest) {
+        private object[] ResolveParametersByIndex(DirectRequest directRequest) {
             ParameterInfo[] parmInfo = Method.GetParameters();
-            Object[] paramMap = new object[parmInfo.Length];
+            object[] paramMap = new object[parmInfo.Length];
 
             if (!(directRequest.Data is JValue)) {
                 JArray parameter = ((JArray) directRequest.Data);
@@ -232,25 +228,25 @@ namespace ExtDirect4DotNet {
             return paramMap;
         }
 
-        private Object[] ResolveParametersByName(DirectRequest directRequest) {
+        private object[] ResolveParametersByName(DirectRequest directRequest) {
             //Future:Ext Direct will support named arguments in the future and therefore an object literal here.
             JArray parameter = ((JArray) directRequest.Data);
             return ResolveParametersByName(directRequest, parameter);
         }
 
-        private Object[] ResolveParametersByName(DirectRequest directRequest, JArray parameter) {
+        private object[] ResolveParametersByName(DirectRequest directRequest, JArray parameter) {
             ParameterInfo[] parmInfo = Method.GetParameters();
-            Object[] paramMap = new object[parmInfo.Length];
+            object[] paramMap = new object[parmInfo.Length];
 
             if (parameter != null) {
                 for (int i = 0; i < parameter.Count; i++) {
-                    Object curParam = parameter[i];
+                    object curParam = parameter[i];
                     if (curParam is JObject) {
                         int i2 = 0;
 
                         foreach (ParameterInfo parm in parmInfo) {
                             if (((JObject) curParam)[parm.Name] != null) {
-                                Object curentParameter = ((JObject) curParam)[parm.Name];
+                                object curentParameter = ((JObject) curParam)[parm.Name];
 
                                 if (curentParameter != null) {
                                     Type type = parmInfo[i2].ParameterType;
@@ -282,9 +278,9 @@ namespace ExtDirect4DotNet {
         /// </summary>
         /// <param name="directRequest"></param>
         /// <returns></returns>
-        private Object[] ResolveUpdateParameter(DirectRequest directRequest) {
+        private object[] ResolveUpdateParameter(DirectRequest directRequest) {
             ParameterInfo[] parmInfo = Method.GetParameters();
-            Object[] paramMap = new object[parmInfo.Length];
+            object[] paramMap = new object[parmInfo.Length];
 
             //Future:Ext Direct will support named arguments in the future and therefore an object literal here.
             JArray parameter = ((JArray) directRequest.Data);
@@ -294,7 +290,7 @@ namespace ExtDirect4DotNet {
                 }
                 Type paramTyp = parmInfo[0].ParameterType;
 
-                Object id = new Object();
+                object id = new object();
                 //paramMap[0] = ((paramTyp)parameter[0]);
                 if (parameter[0] is JValue) {
                     try {

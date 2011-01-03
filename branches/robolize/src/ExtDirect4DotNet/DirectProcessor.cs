@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Web;
-using Newtonsoft.Json.Linq;
 
 namespace ExtDirect4DotNet {
     //TODO:Need to do a full review of this class.
@@ -12,29 +9,22 @@ namespace ExtDirect4DotNet {
     /// Class for processing Ext Direct requests.
     /// </summary>
     internal class DirectProcessor {
-        private readonly DirectRouter _directRouter;
-
-        internal DirectProcessor(DirectRouter directRouter) {
-            _directRouter = directRouter;
-        }
-
         /// <summary>
         /// Processes an incoming request.
         /// </summary>
         /// <returns>The result from the client method.</returns>
-        internal DirectExecution Execute() {
+        internal DirectExecution Execute(List<DirectRequest> requests, DirectProvider directProvider) {
             //Parse the a list of requests from the httpRequest.
-            List<DirectRequest> requests = ParseRequest();
             List<DirectResponse> responses = new List<DirectResponse>();
 
             // after parsing was successful process the list of requests
             foreach (DirectRequest request in requests) {
                 // try to find the method in the provider 
-                DirectMethod directMethod = DirectProxy.GetDirectProviderCache().GetDirectMethod(request);
+                DirectMethod directMethod = directProvider.GetDirectMethod(request.Action, request.Method);
 
                 // try to Invoke the Method and serialize the Data
                 try {
-                    Object result = directMethod.Invoke(request, _directRouter.HttpContext);
+                    object result = directMethod.Invoke(request);
 
                     // Handle as Poll?
                     if (directMethod.OutputHandling == OutputHandling.Poll) {
@@ -53,7 +43,7 @@ namespace ExtDirect4DotNet {
                     }
                 }
                 catch (TargetInvocationException ex) {
-                    DirectResponse response = _directRouter.OnError(request, ex);
+                    DirectResponse response = OnError(request, ex);
                     responses.Add(response);
                 }
             }
@@ -80,39 +70,19 @@ namespace ExtDirect4DotNet {
             return directExecution;
         }
 
-        internal List<DirectRequest> ParseRequest() {
-            HttpRequest httpRequest = _directRouter.HttpContext.Request;
-
-            List<DirectRequest> proccessList = new List<DirectRequest>();
-            if (!String.IsNullOrEmpty(httpRequest[DirectRequest.RequestFormAction])) {
-                DirectRequest request = new DirectRequest {
-                    Action = httpRequest[DirectRequest.RequestFormAction] ?? string.Empty,
-                    Method = httpRequest[DirectRequest.RequestFormMethod] ?? string.Empty,
-                    Type = httpRequest[DirectRequest.RequestFormType] ?? string.Empty,
-                    IsUpload = Convert.ToBoolean(httpRequest[DirectRequest.RequestFormUpload]),
-                    TransactionId = Convert.ToInt32(httpRequest[DirectRequest.RequestFormTransactionId]),
-                    Data = null,
-                    HttpRequest = httpRequest
-                };
-                proccessList.Add(request);
+        private DirectResponse OnError(DirectRequest directRequest, TargetInvocationException exception) {
+            DirectMethodErrorEventArgs args = new DirectMethodErrorEventArgs(directRequest, exception);
+            EventHandler<DirectMethodErrorEventArgs> handler = DirectMethodError;
+            if (handler != null) {
+                handler(this, args);
             }
-            else {
-                UTF8Encoding encoding = new UTF8Encoding();
-                string json = encoding.GetString(httpRequest.BinaryRead(httpRequest.TotalBytes));
 
-                JArray directRequests;
-                try {
-                    directRequests = JArray.Parse(json);
-                }
-                catch (Exception) {
-                    directRequests = JArray.Parse("[" + json + "]");
-                }
-
-                foreach (JObject dreq in directRequests) {
-                    proccessList.Add(new DirectRequest(dreq));
-                }
-            }
-            return proccessList;
+            return args.DirectResponse;
         }
+
+        /// <summary>
+        /// Occurs when an unhandled exception is thrown during the invocation of a DirectMethod.
+        /// </summary>
+        public event EventHandler<DirectMethodErrorEventArgs> DirectMethodError;
     }
 }

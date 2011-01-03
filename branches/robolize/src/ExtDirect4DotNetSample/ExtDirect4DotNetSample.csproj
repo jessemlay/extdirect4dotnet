@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="CallTypes\CallTypes.cs" />
     <Compile Include="CRUDSample\CRUDSampleMethods.cs" />
+    <Compile Include="DirectActionBase.cs" />
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>

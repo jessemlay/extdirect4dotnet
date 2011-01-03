@@ -73,8 +73,6 @@
     </Compile>
     <Compile Include="attributes\DirectActionAttribute.cs" />
     <Compile Include="attributes\DirectMethodAttribute.cs" />
-    <Compile Include="baseclasses\DirectActionBase.cs" />
-    <Compile Include="baseclasses\IDirectAction.cs" />
     <Compile Include="enum\OutputHandling.cs" />
     <Compile Include="enum\ParameterHandling.cs" />
     <Compile Include="enum\DirectMethodType.cs" />
