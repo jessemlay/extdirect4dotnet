@@ -51,7 +51,7 @@ namespace ExtDirect4DotNet {
 
             //Execute the DirectAction.
             DirectProvider directProvider = DirectProxy.GetDirectProviderCache();
-            List<DirectRequest> requests = ParseRequest(this);
+            List<DirectRequest> requests = ParseRequest();
             DirectProcessor directProcessor = new DirectProcessor();
             directProcessor.DirectMethodError += OnDirectMethodError;
             DirectExecution directExecution = directProcessor.Execute(requests, directProvider);
@@ -60,7 +60,7 @@ namespace ExtDirect4DotNet {
             }
 
             string response = directExecution.jsonResponse;
-            Logger.Info(response);
+            Logger.Info(string.Format("Response: {0}", response));
 
             // send eventually wrapped content back to the browser
             HttpContext.Response.Write(responseWrapStart);
@@ -69,8 +69,8 @@ namespace ExtDirect4DotNet {
             HttpContext.Response.End();
         }
 
-        internal List<DirectRequest> ParseRequest(DirectRouter directRouter) {
-            HttpRequest httpRequest = directRouter.HttpContext.Request;
+        internal List<DirectRequest> ParseRequest() {
+            HttpRequest httpRequest = HttpContext.Current.Request;
 
             List<DirectRequest> proccessList = new List<DirectRequest>();
             if (!string.IsNullOrEmpty(httpRequest[DirectRequest.RequestFormAction])) {
@@ -89,16 +89,19 @@ namespace ExtDirect4DotNet {
                 UTF8Encoding encoding = new UTF8Encoding();
                 string json = encoding.GetString(httpRequest.BinaryRead(httpRequest.TotalBytes));
 
-                JArray directRequests;
+                JArray jArrayRequests;
                 try {
-                    directRequests = JArray.Parse(json);
+                    jArrayRequests = JArray.Parse(json);
                 }
                 catch (Exception) {
-                    directRequests = JArray.Parse("[" + json + "]");
+                    jArrayRequests = JArray.Parse(string.Format("[{0}]", json));
                 }
 
-                foreach (JObject dreq in directRequests) {
-                    proccessList.Add(new DirectRequest(dreq));
+                foreach (JObject oRequest in jArrayRequests) {
+                    DirectRequest directRequest = new DirectRequest(oRequest);
+                    string requestString = Newtonsoft.Json.JsonConvert.SerializeObject(directRequest);
+                    Logger.Info(string.Format("Request: {0}", requestString));
+                    proccessList.Add(directRequest);
                 }
             }
             return proccessList;

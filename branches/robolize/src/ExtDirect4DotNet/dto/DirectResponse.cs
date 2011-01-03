@@ -47,34 +47,34 @@ namespace ExtDirect4DotNet {
             IsUpload = request.IsUpload;
         }
 
-        [JsonProperty(PropertyName = "action")]
+        [JsonProperty("action")]
         public string Action { get; set; }
 
-        /*[JsonProperty(PropertyName = "errorcode")]
+        /*[JsonProperty("errorcode")]
         public uint ErrorCode { get; set; }*/
 
         [JsonIgnore]
         public bool IsUpload { get; private set; }
 
-        [JsonProperty(PropertyName = "message")]
+        [JsonProperty("message")]
         public string Message { get; set; }
 
-        [JsonProperty(PropertyName = "method")]
+        [JsonProperty("method")]
         public string Method { get; set; }
 
-        [JsonProperty(PropertyName = "name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "result")]
+        [JsonProperty("result")]
         public object Result { get; set; }
 
-        [JsonProperty(PropertyName = "tid")]
+        [JsonProperty("tid")]
         public int TransactionId { get; set; }
 
-        [JsonProperty(PropertyName = "type")]
+        [JsonProperty("type")]
         public string Type { get; set; }
 
-        [JsonProperty(PropertyName = "where")]
+        [JsonProperty("where")]
         public string Where { get; set; }
 
         public string toJson() {
