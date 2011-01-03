@@ -2,11 +2,14 @@
 using System.Configuration;
 using System.Linq;
 using System.Web.Configuration;
+using log4net;
 
 namespace ExtDirect4DotNet.helper {
     //TODO:This class could be removed.  It only needs to resolve a path to the router.  If it stays, it doesn't need to be static and there is no caching going on here.
     [Obsolete("This class could be removed.")]
     public static class ConfigurationCache {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof (ConfigurationCache));
+
         private static string cachedRouterUrl = "";
 
         /// <summary>
@@ -47,7 +50,9 @@ namespace ExtDirect4DotNet.helper {
             }
 
             if (routerUrl == "") {
-                throw new DirectConfigurationException();
+                DirectConfigurationException exception = new DirectConfigurationException();
+                Logger.Error("routerUrl must be set.", exception);
+                throw exception;
             }
 
             return routerUrl;

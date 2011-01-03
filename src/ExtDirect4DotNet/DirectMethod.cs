@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using ExtDirect4DotNet.helper;
+using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -12,6 +13,8 @@ namespace ExtDirect4DotNet {
     [DebuggerDisplay("Name = {Name}")]
     [JsonObject(MemberSerialization.OptIn)]
     internal class DirectMethod {
+        private static readonly ILog Logger = LogManager.GetLogger(typeof (DirectProvider));
+
         internal DirectMethod(MethodInfo method, DirectMethodType methType, DirectAction parentAction)
             : this(method, methType, parentAction, method.Name) {
         }
@@ -104,7 +107,7 @@ namespace ExtDirect4DotNet {
 
             if (directRequest.IsForm) {
                 // do the method wants to take care of the request by it self?
-                if (parmInfo[0].ParameterType == typeof(HttpRequest)) {
+                if (parmInfo[0].ParameterType == typeof (HttpRequest)) {
                     paramMap[0] = httpRequest;
                 }
                 else {
@@ -132,7 +135,9 @@ namespace ExtDirect4DotNet {
                         catch (Exception ex) {
                             string message = string.Format("An Exception occurred while trying to deserialize the parameter {0} of the type {1} from json: {2}",
                                                            parmInfo[i2].Name, parmInfo[i2].ParameterType, curentParameter);
-                            throw new DirectParameterException(message, ex, directRequest);
+                            DirectParameterException exception = new DirectParameterException(message, ex);
+                            Logger.Error(exception.Message, exception);
+                            throw exception;
                         }
 
                         i2++;
@@ -144,7 +149,10 @@ namespace ExtDirect4DotNet {
                         Type type = parmInfo[i3].ParameterType;
                         if (httpRequest.Files[parm.Name] != null) {
                             if (type.Name != "HttpPostedFile") {
-                                throw new DirectParameterException(string.Format("The Parameter {0} is not an instance of \"System.WebHttpPosted\" File.", parm.Name), directRequest);
+                                string message = string.Format("The Parameter {0} is not an instance of \"System.Web.HttpPostedFile\" File.", parm.Name);
+                                DirectParameterException exception = new DirectParameterException(message);
+                                Logger.Error(exception.Message, exception);
+                                throw exception;
                             }
                             paramMap[i3] = httpRequest.Files[parm.Name];
                         }
@@ -221,7 +229,9 @@ namespace ExtDirect4DotNet {
                     catch (Exception ex) {
                         string message = string.Format("An Exception occurred while trying to deserialize the parameter {0} of the type {1} from json: {2}",
                                                        parmInfo[i].Name, parmInfo[i].ParameterType, parameter[i]);
-                        throw new DirectParameterException(message, ex, directRequest);
+                        DirectParameterException exception = new DirectParameterException(message, ex);
+                        Logger.Error(exception.Message, exception);
+                        throw exception;
                     }
                 }
             }
@@ -261,7 +271,9 @@ namespace ExtDirect4DotNet {
                                     catch (Exception ex) {
                                         string message = string.Format("An Exception occurred while trying to deserialize the parameter {0} of the type {1} from json: {2}",
                                                                        parmInfo[i2].Name, parmInfo[i2].ParameterType, parameter[i2]);
-                                        throw new DirectParameterException(message, ex, directRequest);
+                                        DirectParameterException exception = new DirectParameterException(message, ex);
+                                        Logger.Error(exception.Message, exception);
+                                        throw exception;
                                     }
                                 }
                             }
@@ -286,7 +298,9 @@ namespace ExtDirect4DotNet {
             JArray parameter = ((JArray) directRequest.Data);
             if (parameter != null) {
                 if (parameter.Count < 2) {
-                    throw new DirectParameterException("Tried to call an Update method with less than 2 Parameters.", directRequest);
+                    DirectParameterException exception = new DirectParameterException("Tried to call an Update method with less than 2 Parameters.");
+                    Logger.Error(exception.Message, exception);
+                    throw exception;
                 }
                 Type paramTyp = parmInfo[0].ParameterType;
 
@@ -305,7 +319,9 @@ namespace ExtDirect4DotNet {
                     catch (Exception ex) {
                         string message = string.Format("An Exception occurred while trying to deserialize the parameter {0} of the type {1} from json: {2}",
                                                        parmInfo[0].Name, parmInfo[0].ParameterType, parameter[0]);
-                        throw new DirectParameterException(message, ex, directRequest);
+                        DirectParameterException exception = new DirectParameterException(message, ex);
+                        Logger.Error(exception.Message, exception);
+                        throw exception;
                     }
                 }
 

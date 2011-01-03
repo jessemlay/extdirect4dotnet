@@ -29,17 +29,9 @@ namespace ExtDirect4DotNet {
         /// Initializes a new instance of the <see cref="DirectException"/> class.
         /// </summary>
         /// <param name="message">The error message.</param>
-        /// <param name="directRequest">The direct request.</param>
-        public DirectException(string message, DirectRequest directRequest) : base(string.Format("{0} DirectAction: {1} DirectMethod {2}", message, directRequest.Action, directRequest.Method)) {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DirectException"/> class.
-        /// </summary>
-        /// <param name="message">The error message.</param>
         /// <param name="innerException">The inner exception.</param>
         /// <param name="directRequest">The direct request.</param>
-        public DirectException(string message, Exception innerException, DirectRequest directRequest) : base(string.Format("{0} DirectAction: {1} DirectMethod {2}", message, directRequest.Action, directRequest.Method), innerException) {
+        public DirectException(string message, Exception innerException) : base(message, innerException) {
         }
     }
 }

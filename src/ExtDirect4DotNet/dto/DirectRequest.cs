@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ExtDirect4DotNet {
-    [JsonObject]
+    [JsonObject(MemberSerialization.OptIn)]
     [DebuggerDisplay("{Action,nq}.{Method,nq}: Data = {Data}")]
     public class DirectRequest {
         public const string RequestFormAction = "extAction";
@@ -45,7 +44,7 @@ namespace ExtDirect4DotNet {
         [JsonProperty("method")]
         public string Method { get; set; }
 
-        [JsonProperty(PropertyName = "tid")]
+        [JsonProperty("tid")]
         public int TransactionId { get; set; }
 
         [JsonProperty("type")]

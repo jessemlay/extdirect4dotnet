@@ -4,12 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ExtDirect4DotNet.helper;
+using log4net;
 using Newtonsoft.Json;
 
 namespace ExtDirect4DotNet {
     //TODO:Need to do a full review of this class and remove unused code. Also, this class could probably be made internal or even private within the DirectProxy class.
     public class DirectProvider {
         public const string REMOTING_PROVIDER = "remoting";
+
+        private static readonly ILog Logger = LogManager.GetLogger(typeof (DirectProvider));
 
         private readonly Dictionary<string, DirectAction> _actions = new Dictionary<string, DirectAction>();
 
@@ -121,19 +124,28 @@ namespace ExtDirect4DotNet {
             }
         }
 
-        internal object Execute(DirectRequest request) {
+        public void Configure(IEnumerable<Type> types) {
+            foreach (Type type in types) {
+                if (IsAction(type)) {
+                    _actions.Add(type.Name, new DirectAction(type));
+                }
+            }
+            IsConfigured = true;
+        }
+
+        /*internal object Execute(DirectRequest request) {
             //NOTE:Not currently used.
             DirectAction action = _actions[request.Action];
             if (action == null) {
-                throw new DirectException(string.Format("Unable to find action, {0}", request.Action), request);
+                throw new DirectException(string.Format("Unable to find action, {0}", request.Action));
             }
             DirectMethod method = action.GetMethod(request.Method);
             if (method == null) {
-                throw new DirectException(string.Format("Unable to find method, {0} in Action: {1}", request.Method, request.Action), request);
+                throw new DirectException(string.Format("Unable to find method, {0} in Action: {1}", request.Method, request.Action));
             }
             Type type = action.ActionType;
             return ""; //; method.Method.Invoke(type.Assembly.CreateInstance(type.FullName), request.Data);
-        }
+        }*/
 
         /// <summary>
         /// Finds the action in the assemblies.
@@ -143,7 +155,9 @@ namespace ExtDirect4DotNet {
         internal DirectAction GetDirectAction(string directActionName) {
             DirectAction action = _actions[directActionName];
             if (action == null) {
-                throw new DirectException(string.Format("Unable to find DirectAction: \"{0}\"", directActionName));
+                DirectException exception = new DirectException(string.Format("Unable to find DirectAction: \"{0}\"", directActionName));
+                Logger.Error(exception.Message, exception);
+                throw exception;
             }
             return action;
         }
@@ -152,18 +166,11 @@ namespace ExtDirect4DotNet {
             DirectAction action = GetDirectAction(directActionName);
             DirectMethod method = action.GetMethod(directMethodName);
             if (method == null) {
-                throw new DirectException(string.Format("Unable to find DirectMethod: \"{0}\" in DirectAction: \"{1}\"", directMethodName, directActionName));
+                DirectException exception = new DirectException(string.Format("Unable to find DirectMethod: \"{0}\" in DirectAction: \"{1}\"", directMethodName, directActionName));
+                Logger.Error(exception.Message, exception);
+                throw exception;
             }
             return method;
-        }
-
-        public void Configure(IEnumerable<Type> types) {
-            foreach (Type type in types) {
-                if (IsAction(type)) {
-                    _actions.Add(type.Name, new DirectAction(type));
-                }
-            }
-            IsConfigured = true;
         }
 
         /// <summary>
