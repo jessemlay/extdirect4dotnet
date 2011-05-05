@@ -204,6 +204,7 @@ namespace ExtDirect4DotNet
                         Utility.WriteProperty<string>(jw, "id", "1");
                        // Utility.WriteProperty<int>(jw, "enableBuffer", 3000);
                         Utility.WriteProperty<string>(jw, "url", this.Url);
+                        Utility.WriteProperty<int>(jw, "timeout", 0);
                         jw.WritePropertyName("actions");
                         jw.WriteStartObject();
                         foreach (DirectAction action in this.actions.Values)
