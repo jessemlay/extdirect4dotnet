@@ -10,6 +10,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ExtDirect4DotNet;
+using ExtDirect4DotNet.exceptions;
+using System.Collections;
 
 namespace WebApplication1.CallTypes
 {
@@ -47,9 +49,14 @@ namespace WebApplication1.CallTypes
         /// 
         /// </summary>
         /// <param name="request"></param>
-        [DirectMethod(MethodType = DirectMethodType.Form, OutputHandling=OutputHandling.JSON)]
+        [DirectMethod(MethodType = DirectMethodType.Form)]
         public string UploadHttpRequestParam(HttpRequest request)
         {
+            Hashtable errors = new Hashtable();
+            errors.Add("firstName", "aaaaarg ");
+
+            throw new DirectFormInvalidException(errors);
+
             return "{success:false, errors: {firstName: 'bullshit'}}";
             // return "the File: " + request.Files[0].FileName + " was successfully uploaded Firstname:" + request.Form["firstName"]; 
         }
@@ -61,14 +68,21 @@ namespace WebApplication1.CallTypes
         /// <param name="firstName"></param>
         /// <returns></returns>
         [DirectMethod(MethodType = DirectMethodType.Form)]
-        public string UploadNamedParameter(HttpPostedFile file, string firstName)
+        public string UploadNamedParameter(HttpPostedFile file, int firstName, string parameter2)
         {
+            if (parameter2 == null || parameter2.Length == 0)
+            {
+                Hashtable errors = new Hashtable();
+                errors.Add("parameter2", "Ist ein Pflichtfeld ");
+
+                throw new DirectFormInvalidException(errors);
+            }
             return "the File: " + file.FileName + " was successfully uploaded Firstname:" + firstName; 
         }
 
 
         /// <summary>
-        /// A Hyprid Bethod
+        /// A Hyprid method
         /// You can call this method from the Browser
         /// Via CallTypes.SaveMethod(1,"Martin","Spaeth")
         /// Or with a Form as Parameter but with the Postfix _Form CallTypes.SaveMethod_Form(1,"Martin","Spaeth")

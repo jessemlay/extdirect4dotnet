@@ -11,6 +11,9 @@ using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 using ExtDirect4DotNet;
 using System.Collections.Generic;
+using ExtDirect4DotNet.interfaces;
+using System.Web.SessionState;
+using ExtDirect4DotNet.exceptions;
 
 namespace WebApplication1.TreeSample
 {
@@ -55,7 +58,7 @@ namespace WebApplication1.TreeSample
     }
 
     [DirectAction]
-    public class TreeAction : ActionWithSessionState
+    public class TreeAction : IActionWithAfterCreation<HttpContext>
     {
         [DirectMethod(MethodType=DirectMethodType.TreeLoad)]
         public List<TreeNode> getChildNodes(string id)
@@ -141,5 +144,14 @@ namespace WebApplication1.TreeSample
 
             return rootNode;
         }
+
+        #region IActionWithAfterCreation<HttpContext> Member
+        private HttpSessionState Session;
+        public void afterCreation(HttpContext parameter)
+        {
+            Session = parameter.Session;
+        }
+
+        #endregion
     }
 }

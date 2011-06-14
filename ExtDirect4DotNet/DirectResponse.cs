@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.IO;
 using ExtDirect4DotNet.customJsonConverter;
 using Newtonsoft.Json.Converters;
+using ExtDirect4DotNet.exceptions;
 
 namespace ExtDirect4DotNet
 {
@@ -48,26 +49,79 @@ namespace ExtDirect4DotNet
             this.Result = JsonConvert.SerializeObject(eventObj.data, new JavaScriptDateTimeConverter(), new DataRowConverter(), new DataRowViewConverter(), new DataRowCollectionConverter());
         }
 
-        public DirectResponse(DirectRequest request, Exception e)
+        public DirectResponse(DirectRequest request, DirectException e)
         {
-            this.Type = "exception";
+            
+
+            this.Type = e.type;
             this.TransactionId = request.TransactionId;
             this.Action = request.Action;
             this.Method = request.Method;
             this.Message = e.Message;
             this.Where = e.StackTrace;
+            this.Result = JsonConvert.SerializeObject(e.result); ;
             if (e is DirectException)
             {
                 this.ErrorCode = ((DirectException)e).errorCode;
+                this.ExceptionType = ((DirectException)e).ExcetionType;
+                if (((DirectException)e).result != null)
+                    this.Result = JsonConvert.SerializeObject(((DirectException)e).result);
             }
+
+
+            this.IsUpload = request.IsUpload;
+        }
+
+        public DirectResponse(DirectRequest request, Exception e)
+        {
+            if (e is DirectException)
+            {
+                DirectException de = (DirectException)e;
+                this.Type = de.type;
+                if (e is DirectParameterException)
+                {
+                    DirectException de2 = (DirectParameterException)e;
+                    if (de2.directRequest == null)
+                    {
+                        de2.directRequest = request;
+                    }
+                }
+                
+            }
+            else
+            {
+                this.Type = "exception";
+            }
+            this.TransactionId = request.TransactionId;
+            this.Action = request.Action;
+            this.Method = request.Method;
+            this.Message = e.Message;
+            this.Where = e.StackTrace;
             this.Result = "{success:false}";
+            if (e is DirectException)
+            {
+                this.ErrorCode = ((DirectException)e).errorCode;
+                this.ExceptionType = ((DirectException)e).ExcetionType;
+                if (((DirectException)e).result != null)
+                    this.Result = JsonConvert.SerializeObject(((DirectException)e).result);
+            }
+
+            
+            
 
             
 
             this.IsUpload = request.IsUpload;
         }
 
-        
+        [JsonProperty(PropertyName = "exceptionType")]
+        public string ExceptionType
+        {
+            get;
+            set;
+        }
+
+
         [JsonProperty(PropertyName = "type")]
         public string Type
         {
@@ -174,9 +228,13 @@ namespace ExtDirect4DotNet
             {
                 writer.WriteRawValue("null");
             }
-            else
+            else if (this.Result is string)
             {
                 writer.WriteRawValue((string)this.Result);
+            }
+            else
+            {
+                writer.WriteValue(this.Result);
             }
 
 
@@ -189,6 +247,9 @@ namespace ExtDirect4DotNet
 
             writer.WritePropertyName("errorcode");
             writer.WriteValue(this.ErrorCode);
+
+            writer.WritePropertyName("exceptionType");
+            writer.WriteValue(this.ExceptionType);
            
 
             // }

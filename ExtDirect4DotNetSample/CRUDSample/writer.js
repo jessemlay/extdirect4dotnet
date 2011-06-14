@@ -6,11 +6,20 @@ var Employee = Ext.data.Record.create([
     {name: 'job', mapping: 'occupation'}  // map the Record's "job" field to the row object's "occupation" key
 ]);
 
+var proxy = new Ext.data.DirectProxy({
+    api: {
+        read: CRUDSampleMethods.read,
+        create: CRUDSampleMethods.create,
+        update: CRUDSampleMethods.update,
+        destroy: CRUDSampleMethods.destroy
+    }
+});
+
 var reader = new Ext.data.JsonReader({
     totalProperty: 'results',
     successProperty: 'success',
     idProperty: 'id',
-    root: 'data'
+    root: 'rows'
     },[
 	    { name: 'id' },
 	    { name: 'email', allowBlank: false },
@@ -18,38 +27,30 @@ var reader = new Ext.data.JsonReader({
 	    { name: 'last', allowBlank: false }
     ]
 );
-	var writer = new Ext.data.JsonWriter({
-	    returnJson: false,
-	    writeAllFields: true
-	});
 
-	var store = new Ext.data.DirectStore({	    	    
-	    api: {
-	        read: CRUDSampleMethods.read,
-	        create: CRUDSampleMethods.create,
-	        update: CRUDSampleMethods.update,
-	        destroy: CRUDSampleMethods.destroy
-	    },
-	    reader: reader,
-	    baseParams: {dummy:'blubb'},
-	    writer: writer, 	// <-- plug a DataWriter into the store just as you would a Reader
-	    paramsAsHash: true,
-	    batchSave: false,
-	    batch: false,
-	    prettyUrls: false,
-	    remoteSort: true,
-	    listeners: {
-	        load: function(result) {	        
-	        },
-	        loadexception: function() {
+var writer = new Ext.data.JsonWriter({
+    encode: false,
+    writeAllFields: false
+});
 
-	        },
-	        scope: this
-	    }
-	});
-//
+var store = new Ext.data.DirectStore({	    
+    id: 'person',	    
+    proxy : proxy,
+    reader: reader,
+    writer: writer, 
+    baseParams: {dummy:'blubb'},
+    batch: false,
+    remoteSort: true,
+    listeners: {
+        load: function(result) {	        
+        },
+        loadexception: function() {
 
-var myPageSize = 10;
+        },
+        scope: this
+    }
+});
+
 
 var userColumns =  [
     {header: "ID", width: 40, sortable: true, dataIndex: 'id'},
@@ -57,9 +58,17 @@ var userColumns =  [
     {header: "First", width: 50, sortable: true, dataIndex: 'first', editor: new Ext.form.TextField({})},
     {header: "Last", width: 50, sortable: true, dataIndex: 'last', editor: new Ext.form.TextField({})}
 ];
+
+
 Ext.onReady(function() {
 	Ext.QuickTips.init();
 
+
+// load the store immeditately
+store.load({params: {
+    start: 0,          // specify params for the first page load if using paging
+    limit: 10
+}});
 	var userForm = new App.user.Form({
 		renderTo: 'user-form',
 		listeners: {
@@ -78,7 +87,7 @@ Ext.onReady(function() {
 		bbar: new Ext.PagingToolbar({
             store: store,       // grid and PagingToolbar using same store
             displayInfo: true,
-            pageSize: myPageSize,
+            pageSize: 10,
             prependButtons: true,
             items: [
                 'text 1'
@@ -93,17 +102,6 @@ Ext.onReady(function() {
 				userForm.getForm().reset();
 			}
 		}
-});
-setTimeout(function() {
-    Ext.get('loading').remove();
-    Ext.fly('loading-mask').fadeOut({
-        remove: true
     });
-    store.load({params: {
-            start: 0,          // specify params for the first page load if using paging
-            limit: myPageSize,
-            foo:   'bar'
-    }});
-
-}, 250);
+    
 });

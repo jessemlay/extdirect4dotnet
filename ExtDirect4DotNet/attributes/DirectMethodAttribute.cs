@@ -109,7 +109,7 @@ namespace ExtDirect4DotNet
         /// <summary>
         /// Signalize the router logiic to handle the response of this methode as an collection of events
         /// 
-        /// The Returned Value has to be a List<DirectEvent>
+        /// The Returned Value has to be a List
         /// </summary>
         Poll
     }

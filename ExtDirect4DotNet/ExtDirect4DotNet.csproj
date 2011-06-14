@@ -12,6 +12,21 @@
     <AssemblyName>ExtDirect4DotNet</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>http://localhost/ExtDirect4DotNet/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,10 +48,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExtDirect4DotNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\FxxJs\FelixxExperience\bin\ExtDirect4DotNet.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\FxxJs\FelixxExperience\bin\Newtonsoft.Json.dll</HintPath>
@@ -59,15 +70,30 @@
   <ItemGroup>
     <Compile Include="attributes\DirectActionAttribute.cs" />
     <Compile Include="attributes\DirectMethodAttribute.cs" />
-    <Compile Include="baseclasses\ActionWithServer.cs" />
-    <Compile Include="baseclasses\ActionWithSessionState.cs" />
-    <Compile Include="baseclasses\IActionWithSessionState.cs" />
-    <Compile Include="baseclasses\IActionWithServer.cs" />
+    <Compile Include="baseclasses\SimpleCRUDAction.cs" />
+    <Compile Include="baseclasses\SimpleCRUDActionHybrid.cs" />
+    <Compile Include="baseclasses\SimpleCRUDWithGrouping.cs" />
+    <Compile Include="baseclasses\SimpleCRUDWithPaging.cs" />
+    <Compile Include="baseclasses\SimpleCRUDWithSorting.cs" />
+    <Compile Include="baseclasses\SimpleMetaData.cs" />
+    <Compile Include="exceptions\DirectFormInvalidException.cs" />
+    <Compile Include="exceptions\DirectParameterException.cs" />
+    <Compile Include="helper\FieldDescriptionHelper.cs" />
+    <Compile Include="interfaces\IActionWithAfterCreation.cs" />
+    <Compile Include="interfaces\IActionWithAfterInvoke.cs" />
+    <Compile Include="interfaces\IActionWithBeforeDestroy.cs" />
+    <Compile Include="interfaces\IActionWithBeforeInvoke.cs" />
+    <Compile Include="interfaces\IActionWithHttpContext.cs" />
+    <Compile Include="interfaces\IActionWithMultipleInstancesPerRequest.cs" />
+    <Compile Include="interfaces\ICRUDAction.cs" />
+    <Compile Include="interfaces\ICRUDActionWithMetaData.cs" />
     <Compile Include="customJsonConverter\DataRowArrayConverter.cs" />
     <Compile Include="customJsonConverter\DataRowConverter.cs" />
+    <Compile Include="dataclasses\CRUDFieldDefinition.cs" />
+    <Compile Include="dataclasses\CRUDMetaData.cs" />
     <Compile Include="DirectAction.cs" />
     <Compile Include="DirectEvent.cs" />
-    <Compile Include="DirectExceution.cs" />
+    <Compile Include="DirectExecution.cs" />
     <Compile Include="DirectProxy.cs" />
     <Compile Include="exceptions\DirectException.cs" />
     <Compile Include="DirectMethod.cs" />
@@ -81,8 +107,42 @@
     <Compile Include="helper\DirectProxyGenerator.cs" />
     <Compile Include="helper\LoadResponse.cs" />
     <Compile Include="helper\Utility.cs" />
+    <Compile Include="interfaces\IMetaData.cs" />
+    <Compile Include="parametermapper\FormParameterMapper.cs" />
+    <Compile Include="parametermapper\IParameterMapper.cs" />
+    <Compile Include="parametermapper\IndexParameterMapper.cs" />
+    <Compile Include="parametermapper\MetaDataMapper.cs" />
+    <Compile Include="parametermapper\NameParameterMapper.cs" />
+    <Compile Include="parametermapper\CRUDParameterMapper.cs" />
+    <Compile Include="parametermapper\ParameterMapperBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="responsewrapper\StoreLoadResponseWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

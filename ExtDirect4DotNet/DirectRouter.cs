@@ -8,14 +8,12 @@ using System.Web.SessionState;
 namespace ExtDirect4DotNet
 {
     /// <summary>
-    /// represents the HttpHandler Class that handles the all requests done by Ext.Direct's providers
+    /// represents the HttpHandler Class that handles all requests done by Ext.Direct's providers
     /// </summary>
     public class DirectRouter : IHttpHandler, IRequiresSessionState
     {
         public void ProcessRequest(HttpContext context)
         {
-            
-            
             // set default contenttype to json
             context.Response.ContentType = "application/json";
 
@@ -33,28 +31,32 @@ namespace ExtDirect4DotNet
                 responseWrapEnd = "</textarea></html>";
             }
 
-            // execute the Action
-           // var rpc = new ExtRPC();
 
-
+            // get a reference to the directprovider
             DirectProvider provider = DirectProxy.getDirectProviderCache("Ext.app.REMOTING_API");
-            DirectExceution directExecution = DirectProcessor.Execute(provider, context);
 
+            // now let the direct Processor execute all ExtDirect calls the context contains with the provider
+            DirectExecution directExecution = DirectProcessor.Execute(provider, context);
+
+            // check if one ore more actions thrown an Exception if so set the statuscode to 207 for Multistatus
+            // this makes debugging in Firebug a bit more confortable
             if (directExecution.containsErrors)
             {
                 context.Response.StatusCode = 207;
             }
 
-            // send eventually wraped content back to the browser
+            
 
+            // wirte eventually needed textarea wrapping start tags to the browser
             context.Response.Write(responseWrapStart);
 
+            // send the JSON response back to the Browser
             context.Response.Write(directExecution.jsonResponse);
 
+            // wirte eventually needed textarea wrapping end tags to the browser
             context.Response.Write(responseWrapEnd);
 
             context.Response.End();
-
             
         }
 
@@ -65,5 +67,7 @@ namespace ExtDirect4DotNet
                 return false;
             }
         }
+
+        
     }
 }

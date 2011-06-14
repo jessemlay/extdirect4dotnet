@@ -6,6 +6,8 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ExtDirect4DotNet.helper;
+using System.Xml;
+using ExtDirect4DotNet.exceptions;
 
 
 namespace ExtDirect4DotNet
@@ -20,6 +22,7 @@ namespace ExtDirect4DotNet
 
         private Dictionary<string, DirectAction> actions;
         private string api = string.Empty;
+        private string doc = string.Empty;
 
         /// <summary>
         /// Creates an instance of the object.
@@ -134,9 +137,6 @@ namespace ExtDirect4DotNet
         {
             foreach (Type type in types)
             {
-                if(type.Name == "Class1"){
-                    string test = "";
-                }
                 if (DirectAction.IsAction(type))
                 {
                     this.actions.Add(type.Name, new DirectAction(type));
@@ -204,6 +204,7 @@ namespace ExtDirect4DotNet
                         Utility.WriteProperty<string>(jw, "id", "1");
                        // Utility.WriteProperty<int>(jw, "enableBuffer", 3000);
                         Utility.WriteProperty<string>(jw, "url", this.Url);
+                        Utility.WriteProperty<int>(jw, "timeout", 0);
                         jw.WritePropertyName("actions");
                         jw.WriteStartObject();
                         foreach (DirectAction action in this.actions.Values)
@@ -217,6 +218,43 @@ namespace ExtDirect4DotNet
                 }
             }
             return this.api;
+        }
+
+        public string toDocString(string docDescriptionPath)
+        {
+            XmlDocument docDesciptionXML = new XmlDocument();
+
+            docDesciptionXML.Load(docDescriptionPath);
+
+            this.doc = "";
+            if (this.Configured && String.IsNullOrEmpty(this.doc))
+            {
+                using (System.IO.StringWriter sw = new System.IO.StringWriter())
+                {
+                    using (JsonTextWriter jw = new JsonTextWriter(sw))
+                    {
+                        /*
+                        jw.WriteStartObject();
+                        Utility.WriteProperty<string>(jw, "type", this.Type);
+
+                        Utility.WriteProperty<string>(jw, "id", "1");
+                         * 
+                        // Utility.WriteProperty<int>(jw, "enableBuffer", 3000);
+                        Utility.WriteProperty<string>(jw, "url", this.Url);
+                        jw.WritePropertyName("actions");
+                        jw.WriteStartObject();*/
+                        foreach (DirectAction action in this.actions.Values)
+                        {
+                            this.doc += action.toDocString(docDesciptionXML);
+                        }
+                        /*
+                        jw.WriteEndObject();
+                        jw.WriteEndObject();*/
+                        //this.api = String.Format("{0} = {1};", this.Name, sw.ToString());
+                    }
+                }
+            }
+            return this.doc;
         }
 
         /// <summary>

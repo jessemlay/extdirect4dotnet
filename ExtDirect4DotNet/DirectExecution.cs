@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ExtDirect4DotNet
 {
-    public class DirectExceution
+    public class DirectExecution
     {
         public string jsonResponse;
         public bool containsErrors;

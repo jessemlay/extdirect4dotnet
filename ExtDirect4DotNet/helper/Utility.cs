@@ -23,10 +23,9 @@ namespace ExtDirect4DotNet.helper
                 return t.GetCustomAttributes(attribute, true).Length > 0;
             }
             catch {
-                // FIX """
+                // FIX Shit :)
                 return false;
             }
-            return true;
         }
 
         /// <summary>
