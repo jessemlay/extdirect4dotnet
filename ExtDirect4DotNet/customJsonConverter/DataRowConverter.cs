@@ -8,7 +8,7 @@ using Newtonsoft.Json.Converters;
 
 namespace ExtDirect4DotNet.customJsonConverter
 {
-    class DataRowConverter : JsonConverter
+    public class DataRowConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
@@ -63,7 +63,7 @@ namespace ExtDirect4DotNet.customJsonConverter
         }
     }
 
-    class DataRowViewConverter : JsonConverter
+    public class DataRowViewConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
@@ -123,7 +123,7 @@ namespace ExtDirect4DotNet.customJsonConverter
         }
     }
 
-    class DataRowCollectionConverter : JsonConverter
+    public class DataRowCollectionConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
