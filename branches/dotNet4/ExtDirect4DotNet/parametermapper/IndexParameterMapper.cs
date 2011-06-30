@@ -41,15 +41,22 @@ namespace ExtDirect4DotNet.parametermapper
 
                     Type type = parmInfo[i].ParameterType;
 
+                    JToken currToken = (JToken) parameter[i];
+
                     try
                     {
-                        if (type == System.Type.GetType("System.Object"))
+                       if (type == typeof(Object))
                         {
-                            paramMap[i] = parameter[i];
+                            paramMap[i] = currToken.Value<Object>();
                         }
-                        else
+                        else if (type == typeof(int) && currToken.Type == JTokenType.Integer)
                         {
-                            paramMap[i] = JsonConvert.DeserializeObject(parameter[i].ToString(), type);
+                            paramMap[i] = currToken.Value<Int32>();
+
+                        }
+                        else if (type == typeof(string) && currToken.Type == JTokenType.String)
+                        {
+                            paramMap[i] = currToken.Value<String>();
                         }
 
 

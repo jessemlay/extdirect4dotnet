@@ -14,7 +14,7 @@ namespace ExtDirect4DotNet.customJsonConverter
         /// </summary>
         /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
         /// <param name="value">The value.</param>
-        public override void WriteJson(JsonWriter writer, object dataRow)
+        public override void WriteJson(JsonWriter writer, object dataRow, JsonSerializer serializer)
         {
             DataRowCollection rows = dataRow as DataRowCollection;
 
@@ -62,7 +62,7 @@ namespace ExtDirect4DotNet.customJsonConverter
         /// <param name="reader">The <see cref="JsonReader"/> to read from.</param>
         /// <param name="objectType">Type of the object.</param>
         /// <returns>The object value.</returns>
-        public override object ReadJson(JsonReader reader, Type objectType)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
