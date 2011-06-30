@@ -8,14 +8,14 @@ using Newtonsoft.Json.Converters;
 
 namespace ExtDirect4DotNet.customJsonConverter
 {
-    class DataRowConverter : JsonConverter
+    public class DataRowConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
         /// <param name="value">The value.</param>
-        public override void WriteJson(JsonWriter writer, object dataRow)
+        public override void WriteJson(JsonWriter writer, object dataRow, JsonSerializer serializer)
         {
             DataRow row = dataRow as DataRow;
 
@@ -57,20 +57,20 @@ namespace ExtDirect4DotNet.customJsonConverter
         /// <param name="reader">The <see cref="JsonReader"/> to read from.</param>
         /// <param name="objectType">Type of the object.</param>
         /// <returns>The object value.</returns>
-        public override object ReadJson(JsonReader reader, Type objectType)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
     }
 
-    class DataRowViewConverter : JsonConverter
+    public class DataRowViewConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
         /// <param name="value">The value.</param>
-        public override void WriteJson(JsonWriter writer, object dataRow)
+        public override void WriteJson(JsonWriter writer, object dataRow, JsonSerializer serializer)
         {
             DataRowView row = dataRow as DataRowView;
 
@@ -80,7 +80,7 @@ namespace ExtDirect4DotNet.customJsonConverter
             //     should be fixed in next ver of JSON.NET with writer.Serialize(object)
             JsonSerializer ser = new JsonSerializer();
 
-            ser.Converters.Add(new JavaScriptDateTimeConverter());
+            ser.Converters.Add(new IsoDateTimeConverter());
             ser.Converters.Add(new DataRowViewConverter());
             ser.Converters.Add(new DataRowConverter());
 
@@ -117,7 +117,7 @@ namespace ExtDirect4DotNet.customJsonConverter
         /// <param name="reader">The <see cref="JsonReader"/> to read from.</param>
         /// <param name="objectType">Type of the object.</param>
         /// <returns>The object value.</returns>
-        public override object ReadJson(JsonReader reader, Type objectType)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
@@ -130,7 +130,7 @@ namespace ExtDirect4DotNet.customJsonConverter
         /// </summary>
         /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
         /// <param name="value">The value.</param>
-        public override void WriteJson(JsonWriter writer, object dataRows)
+        public override void WriteJson(JsonWriter writer, object dataRows, JsonSerializer serializer)
         {
             DataRowCollection rows = dataRows as DataRowCollection;
             DataRowConverter converter = new DataRowConverter();
@@ -148,7 +148,7 @@ namespace ExtDirect4DotNet.customJsonConverter
             {
                 foreach (DataRow dataRow in rows)
                 {
-                    converter.WriteJson(writer, dataRow);
+                    converter.WriteJson(writer, dataRow, serializer);
                 }
             }
             writer.WriteEndArray();
@@ -175,7 +175,7 @@ namespace ExtDirect4DotNet.customJsonConverter
         /// <param name="reader">The <see cref="JsonReader"/> to read from.</param>
         /// <param name="objectType">Type of the object.</param>
         /// <returns>The object value.</returns>
-        public override object ReadJson(JsonReader reader, Type objectType)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }

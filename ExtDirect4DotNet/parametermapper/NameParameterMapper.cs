@@ -114,14 +114,35 @@ namespace ExtDirect4DotNet.parametermapper
                                     Type type = parmInfo[i2].ParameterType;
                                     try
                                     {
-                                        if (type == System.Type.GetType("System.Object"))
+                                        JToken currToken =  (JToken)curentParameter;
+
+
+                                        if (type == typeof(Object))
                                         {
                                             paramMap[i2] = curentParameter;
                                         }
+                                        else if ((type == typeof(int) || type == typeof(Int32) || type == typeof(Int16)) && currToken.Type == JTokenType.Integer)
+                                        {
+                                            paramMap[i2] = currToken.Value<Int32>();
+
+                                        }
+                                        else if ((type == typeof(int) || type == typeof(UInt32) || type == typeof(UInt32)) && currToken.Type == JTokenType.Integer)
+                                        {
+                                            paramMap[i2] = currToken.Value<UInt32>();
+
+                                        }
+                                        else if (type == typeof(string) && currToken.Type == JTokenType.String)
+                                        {
+                                            paramMap[i2] = currToken.Value<String>();
+                                        }
+                                        else if (type == typeof(bool) && currToken.Type == JTokenType.Boolean)
+                                        {
+                                            paramMap[i2] = currToken.Value<bool>();
+                                        }
+                                        /*
                                         else
                                         {
-                                            paramMap[i2] = JsonConvert.DeserializeObject(curentParameter.ToString(), type);
-                                        }
+                                        }*/
                                     }
                                     catch (Exception e)
                                     {
